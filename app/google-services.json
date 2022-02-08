@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "584289473776",
+    "project_id": "diplom-med-project",
+    "storage_bucket": "diplom-med-project.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:584289473776:android:bfdc4306b0831339b15e35",
+        "android_client_info": {
+          "package_name": "com.example.testmed"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "584289473776-rvsj333r4448v5jmkdjt8idje0dh4tcf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.testmed",
+            "certificate_hash": "e54d7cf03ca4f446e58a090be76d55f3508a8282"
+          }
+        },
+        {
+          "client_id": "584289473776-7evv6cjf2i1e40l6ads0eqgptautq2vv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD3xt2gDaoL22gdSQpeGEPzffVSMM-toqU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "584289473776-7evv6cjf2i1e40l6ads0eqgptautq2vv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

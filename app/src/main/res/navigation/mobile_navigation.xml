@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_home">
+    app:startDestination="@+id/navigation_register">
 
     <fragment
         android:id="@+id/navigation_home"
@@ -22,4 +22,63 @@
         android:name="com.example.testmed.ui.notifications.NotificationsFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
+    <fragment
+        android:id="@+id/navigation_register"
+        android:name="com.example.testmed.registeruser.presentation.fragment.RegisterFragment"
+        android:label="fragment_register"
+        tools:layout="@layout/fragment_register" >
+        <action
+            android:id="@+id/action_navigation_register_to_enterCodeFragment"
+            app:destination="@id/navigation_enter" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_enter"
+        android:name="com.example.testmed.registeruser.presentation.fragment.EnterCodeFragment"
+        android:label="fragment_enter_code"
+        tools:layout="@layout/fragment_enter_code" >
+        <argument
+            android:name="id"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_enterCodeFragment_to_userDataSignOutFragment"
+            app:destination="@id/navigation_userDataSignOutFragment" />
+        <argument
+            android:name="phoneNumber"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_userDataSignOutFragment"
+        android:name="com.example.testmed.registeruser.presentation.fragment.UserDataSignOutFragment"
+        android:label="fragment_user_data_sign_out"
+        tools:layout="@layout/fragment_user_data_sign_out" >
+        <action
+            android:id="@+id/action_navigation_userDataSignOutFragment_to_navigation_login"
+            app:destination="@id/navigation_login" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_login"
+        android:name="com.example.testmed.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_navigation_login_to_navigation_register"
+            app:destination="@id/navigation_register" />
+        <argument
+            android:name="login"
+            app:argType="string"
+            android:defaultValue="1" />
+
+        <argument
+            android:name="password"
+            app:argType="string"
+            android:defaultValue="1" />
+        <action
+            android:id="@+id/action_navigation_login_to_navigation_home"
+            app:destination="@id/navigation_home" />
+        <action
+            android:id="@+id/action_navigation_login_to_navigation_userDataSignOutFragment"
+            app:destination="@id/navigation_userDataSignOutFragment" />
+
+    </fragment>
 </navigation>
