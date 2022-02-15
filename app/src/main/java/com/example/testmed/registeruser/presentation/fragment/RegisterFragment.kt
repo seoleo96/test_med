@@ -91,6 +91,7 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
             textLogin.isVisible = false
             sendUsersDataButton.isVisible = false
             textPhoneNumber.isVisible = false
+            tvToRegisterEmail.isVisible = false
         }
     }
 }

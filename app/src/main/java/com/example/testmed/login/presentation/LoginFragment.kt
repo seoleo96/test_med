@@ -2,11 +2,15 @@ package com.example.testmed.login.presentation
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.example.testmed.*
+import com.example.testmed.AUTH
+import com.example.testmed.PHONE_NUMBER
+import com.example.testmed.R
 import com.example.testmed.base.BaseFragment
 import com.example.testmed.databinding.FragmentLoginBinding
+import com.example.testmed.showSnackbar
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException
@@ -24,8 +28,15 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
         }
 
         binding.sendUsersDataButton.setOnClickListener {
+            binding.progressBar.isVisible = true
+            binding.allContent.isVisible = false
             signInWithEmail()
         }
+    }
+
+    private fun invisibleProgress() {
+        binding.progressBar.isVisible = false
+        binding.allContent.isVisible = true
     }
 
     private fun signInWithEmail() {
@@ -37,7 +48,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
                         PHONE_NUMBER = ""
                         findNavController().navigate(R.id.action_navigation_login_to_navigation_home)
                     } else {
-                        invisibleProgress(binding.progressBar)
+                        invisibleProgress()
                         try {
                             throw Objects.requireNonNull<Exception>(task.exception)
                         } catch (existEmail: FirebaseAuthUserCollisionException) {
@@ -51,12 +62,12 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
                             showSnackbar("Недействительные учетные данные, попробуйте еще раз.")
                             binding.etLogin.requestFocus()
                         } catch (e: Exception) {
-                            showSnackbar("Регистрация не удалась. Попробуйте снова.")
+                            showSnackbar("Недействительные учетные данные. Попробуйте снова.")
                             binding.etLogin.requestFocus()
                         }
                     }
                 }
-        }else{
+        } else {
             binding.etLogin.requestFocus()
         }
     }

@@ -19,7 +19,7 @@
 
     <fragment
         android:id="@+id/navigation_profile"
-        android:name="com.example.testmed.ui.notifications.ProfileFragment"
+        android:name="com.example.testmed.profile.presentation.ProfileFragment"
         android:label="@string/title_profile"
         tools:layout="@layout/fragment_profile" >
         <action

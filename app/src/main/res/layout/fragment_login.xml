@@ -8,6 +8,7 @@
     tools:context="com.example.testmed.login.presentation.LoginFragment">
 
     <ScrollView
+        android:id="@+id/all_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
