@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">test med</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_home">Врачи</string>
+    <string name="title_chats">Чаты</string>
+    <string name="title_profile">Профиль</string>
+    <string name="title_about_clinic">О клинике</string>
 </resources>

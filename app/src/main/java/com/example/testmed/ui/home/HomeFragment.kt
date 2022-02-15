@@ -1,45 +1,48 @@
 package com.example.testmed.ui.home
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.TextView
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import com.example.testmed.R
+import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
+import com.example.testmed.*
+import com.example.testmed.base.BaseFragment
+import com.example.testmed.model.PatientData
 import com.example.testmed.databinding.FragmentHomeBinding
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ValueEventListener
 
-class HomeFragment : Fragment() {
+class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate) {
 
     private lateinit var homeViewModel: HomeViewModel
-    private var _binding: FragmentHomeBinding? = null
+    private lateinit var valueEventListener: ValueEventListener
+    private lateinit var rdbRef: DatabaseReference
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private val binding get() = _binding!!
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        rdbRef = DB.reference
+            .child("patients")
+            .child(UID)
+        valueEventListener = rdbRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    val data: PatientData? = snapshot.getValue(PatientData::class.java)
+                    binding.textHome.text =
+                        "${data?.phoneNumber ?: "null"}, ${data?.login ?: "null"}"
+                } else {
+                    findNavController().navigate(R.id.navigation_login,)
+                }
+            }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        homeViewModel =
-            ViewModelProvider(this).get(HomeViewModel::class.java)
-
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        val root: View = binding.root
-
-        val textView: TextView = binding.textHome
-        homeViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
+            override fun onCancelled(error: DatabaseError) {
+//                    requireActivity().finish()
+            }
         })
-        return root
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    override fun onPause() {
+        super.onPause()
+        rdbRef.removeEventListener(valueEventListener)
     }
 }

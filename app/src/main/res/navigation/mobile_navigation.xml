@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_home">
+    app:startDestination="@+id/navigation_login">
 
     <fragment
         android:id="@+id/navigation_home"
@@ -12,14 +12,106 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.example.testmed.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        android:id="@+id/navigation_chats"
+        android:name="com.example.testmed.ui.dashboard.ChatsFragment"
+        android:label="@string/title_chats"
+        tools:layout="@layout/fragment_chats" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="com.example.testmed.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        android:id="@+id/navigation_profile"
+        android:name="com.example.testmed.ui.notifications.ProfileFragment"
+        android:label="@string/title_profile"
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_navigation_profile_to_changePatientDataFragment"
+            app:destination="@id/navigation_change_patient_data" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_clinic"
+        android:name="com.example.testmed.aboutclinic.presentation.ClinicFragment"
+        android:label="@string/title_about_clinic"
+        tools:layout="@layout/fragment_clinic" />
+
+    <fragment
+        android:id="@+id/navigation_register"
+        android:name="com.example.testmed.registeruser.presentation.fragment.RegisterFragment"
+        android:label="fragment_register"
+        tools:layout="@layout/fragment_register" >
+        <action
+            android:id="@+id/action_navigation_register_to_enterCodeFragment"
+            app:destination="@id/navigation_enter"
+           />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_enter"
+        android:name="com.example.testmed.registeruser.presentation.fragment.EnterCodeFragment"
+        android:label="fragment_enter_code"
+        tools:layout="@layout/fragment_enter_code" >
+        <argument
+            android:name="code"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_enterCodeFragment_to_userDataSignOutFragment"
+            app:destination="@id/navigation_userDataSignOutFragment"
+           />
+        <argument
+            android:name="phoneNumber"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_userDataSignOutFragment"
+        android:name="com.example.testmed.registeruser.presentation.fragment.UserDataSignOutFragment"
+        android:label="fragment_user_data_sign_out"
+        tools:layout="@layout/fragment_user_data_sign_out" >
+        <action
+            android:id="@+id/action_navigation_userDataSignOutFragment_to_navigation_login"
+            app:destination="@id/navigation_login"
+            />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_login"
+        android:name="com.example.testmed.login.presentation.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_navigation_login_to_navigation_register"
+            app:destination="@id/navigation_register" />
+        <argument
+            android:name="login"
+            app:argType="string"
+            android:defaultValue="1" />
+
+        <argument
+            android:name="password"
+            app:argType="string"
+            android:defaultValue="1" />
+        <action
+            android:id="@+id/action_navigation_login_to_navigation_home"
+            app:destination="@id/navigation_home"
+            app:popUpTo="@id/mobile_navigation"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_navigation_login_to_navigation_userDataSignOutFragment"
+            app:destination="@id/navigation_userDataSignOutFragment" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_change_patient_data"
+        android:name="com.example.testmed.ChangePatientDataFragment"
+        android:label="fragment_change_patient_data"
+        tools:layout="@layout/fragment_change_patient_data" >
+        <action
+            android:id="@+id/action_navigation_change_patient_data_to_navigation_profile"
+            app:destination="@id/navigation_profile"
+            app:popUpTo="@id/mobile_navigation"
+            app:popUpToInclusive="true"/>
+
+    </fragment>
+
+
 </navigation>
