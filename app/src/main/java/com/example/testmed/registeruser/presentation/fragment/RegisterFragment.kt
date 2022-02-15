@@ -8,8 +8,8 @@ import androidx.navigation.fragment.findNavController
 import com.example.testmed.*
 import com.example.testmed.base.BaseFragment
 import com.example.testmed.databinding.FragmentRegisterBinding
-import com.example.testmed.registeruser.PhoneTextFormatter
 import com.example.testmed.registeruser.domain.usecase.UIValidationState
+import com.example.testmed.registeruser.presentation.PhoneTextFormatter
 import com.example.testmed.registeruser.presentation.viewmodel.RegisterViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 

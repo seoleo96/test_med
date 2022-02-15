@@ -1,14 +1,12 @@
 package com.example.testmed
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.testmed.base.BaseFragment
 import com.example.testmed.databinding.FragmentLoginBinding
+import com.example.testmed.login.presentation.LoginFragmentArgs
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException
@@ -57,7 +55,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
                         }
                     }
                 }
-        }else{
+        } else {
             binding.etLogin.requestFocus()
         }
     }
