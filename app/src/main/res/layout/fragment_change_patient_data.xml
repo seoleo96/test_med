@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_root"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ChangePatientDataFragment">
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="300dp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ScrollView
+        android:id="@+id/content_all_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraint_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/to_back_button"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="@drawable/round_fone_icon"
+                android:padding="6dp"
+                android:src="@drawable/ic_back_vector"
+                app:layout_constraintBottom_toBottomOf="@+id/text_register"
+                app:layout_constraintStart_toStartOf="@+id/constraintLayout"
+                app:layout_constraintTop_toTopOf="@+id/text_register" />
+
+            <TextView
+                android:id="@+id/text_register"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="18dp"
+                android:layout_marginTop="24dp"
+                android:text="Данные о пациенте"
+                android:textAlignment="center"
+                android:textColor="#27214D"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/round_fone"
+                android:paddingBottom="16dp"
+                android:paddingTop="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_register">
+
+                <TextView
+                    android:id="@+id/text_iin"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:text="ИИН"
+                    android:textColor="#616161"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <EditText
+                    android:id="@+id/et_iin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/phone_number_round"
+                    android:digits="0123456789"
+                    android:hint="980819000432"
+                    android:inputType="number"
+                    android:maxLength="12"
+                    android:padding="16dp"
+                    app:layout_constraintEnd_toEndOf="@+id/text_iin"
+                    app:layout_constraintStart_toStartOf="@+id/text_iin"
+                    app:layout_constraintTop_toBottomOf="@+id/text_iin" />
+
+                <TextView
+                    android:id="@+id/tv_fio"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Имя"
+                    android:textColor="#616161"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="@+id/et_iin"
+                    app:layout_constraintStart_toStartOf="@+id/text_iin"
+                    app:layout_constraintTop_toBottomOf="@+id/et_iin" />
+
+                <EditText
+                    android:id="@+id/et_fio"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/phone_number_round"
+                    android:hint="Артем"
+                    android:inputType="textPersonName"
+                    android:maxLength="20"
+                    android:maxLines="1"
+                    android:padding="16dp"
+                    app:layout_constraintEnd_toEndOf="@+id/tv_fio"
+                    app:layout_constraintStart_toStartOf="@+id/tv_fio"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_fio" />
+
+                <TextView
+                    android:id="@+id/tv_lastname"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Фамилия"
+                    android:textColor="#616161"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="@+id/et_fio"
+                    app:layout_constraintStart_toStartOf="@+id/text_iin"
+                    app:layout_constraintTop_toBottomOf="@+id/et_fio" />
+
+                <EditText
+                    android:id="@+id/et_surname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/phone_number_round"
+                    android:hint="Артемов"
+                    android:inputType="textPersonName"
+                    android:maxLength="20"
+                    android:maxLines="1"
+                    android:padding="16dp"
+                    app:layout_constraintEnd_toEndOf="@+id/tv_lastname"
+                    app:layout_constraintHorizontal_bias="0.226"
+                    app:layout_constraintStart_toStartOf="@+id/tv_lastname"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_lastname" />
+
+                <TextView
+                    android:id="@+id/tv_patronymic"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Отчество"
+                    android:textColor="#616161"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="@+id/et_surname"
+                    app:layout_constraintStart_toStartOf="@+id/text_iin"
+                    app:layout_constraintTop_toBottomOf="@+id/et_surname" />
+
+                <EditText
+                    android:id="@+id/et_patronymic"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/phone_number_round"
+                    android:hint="Артемович"
+                    android:inputType="textPersonName"
+                    android:maxLength="20"
+                    android:maxLines="1"
+                    android:padding="16dp"
+                    app:layout_constraintEnd_toEndOf="@+id/tv_patronymic"
+                    app:layout_constraintStart_toStartOf="@+id/tv_patronymic"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_patronymic" />
+
+                <TextView
+                    android:id="@+id/tv_city"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Адрес проживания"
+                    android:textColor="#616161"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="@+id/et_patronymic"
+                    app:layout_constraintStart_toStartOf="@+id/text_iin"
+                    app:layout_constraintTop_toBottomOf="@+id/et_patronymic" />
+
+                <EditText
+                    android:id="@+id/et_city"
+                    style="@style/Widget.AppCompat.EditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/phone_number_round"
+                    android:hint="ул куйбышевская 12"
+                    android:maxLength="30"
+                    android:maxLines="1"
+                    android:padding="16dp"
+                    app:layout_constraintEnd_toEndOf="@+id/tv_city"
+                    app:layout_constraintStart_toStartOf="@+id/tv_city"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_city" />
+
+                <TextView
+                    android:id="@+id/tv_birthday"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Дата рождения"
+                    android:textColor="#616161"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="@+id/et_city"
+                    app:layout_constraintStart_toStartOf="@+id/text_iin"
+                    app:layout_constraintTop_toBottomOf="@+id/et_city" />
+
+                <EditText
+                    android:id="@+id/et_birthday"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/phone_number_round"
+                    android:clickable="true"
+                    android:cursorVisible="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:hint="12.08.2010"
+                    android:inputType="date"
+                    android:maxLength="50"
+                    android:maxLines="1"
+                    android:padding="16dp"
+                    app:layout_constraintEnd_toEndOf="@+id/tv_birthday"
+                    app:layout_constraintStart_toStartOf="@+id/tv_birthday"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_birthday" />
+
+                <TextView
+                    android:id="@+id/tv_phone_number"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Номер телефона"
+                    android:textColor="#616161"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="@+id/et_birthday"
+                    app:layout_constraintStart_toStartOf="@+id/text_iin"
+                    app:layout_constraintTop_toBottomOf="@+id/et_birthday" />
+
+                <EditText
+                    android:id="@+id/et_phone_number"
+                    style="@style/Widget.AppCompat.EditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/phone_number_round"
+                    android:hint="+7 705 559 7335"
+                    android:inputType="phone"
+                    android:maxLength="12"
+                    android:maxLines="1"
+                    android:padding="16dp"
+                    app:layout_constraintEnd_toEndOf="@+id/tv_phone_number"
+                    app:layout_constraintStart_toStartOf="@+id/text_iin"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_phone_number" />
+
+                <TextView
+                    android:id="@+id/tv_login"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Логин"
+                    android:textColor="#616161"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="@+id/et_phone_number"
+                    app:layout_constraintStart_toStartOf="@+id/text_iin"
+                    app:layout_constraintTop_toBottomOf="@+id/et_phone_number" />
+
+                <EditText
+                    android:id="@+id/et_login"
+                    style="@style/Widget.AppCompat.EditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/phone_number_round"
+                    android:hint="seoleo96@gmail.com"
+                    android:inputType="textEmailAddress"
+                    android:maxLines="1"
+                    android:padding="16dp"
+                    app:layout_constraintEnd_toEndOf="@+id/tv_login"
+                    app:layout_constraintStart_toStartOf="@+id/et_fio"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_login" />
+
+
+                <TextView
+                    android:id="@+id/tv_password"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Пароль"
+                    android:textColor="#616161"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="@+id/et_login"
+                    app:layout_constraintStart_toStartOf="@+id/text_iin"
+                    app:layout_constraintTop_toBottomOf="@+id/et_login" />
+
+                <EditText
+                    android:id="@+id/et_password"
+                    style="@style/Widget.AppCompat.EditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/phone_number_round"
+                    android:hint="123456"
+                    android:inputType="textVisiblePassword"
+                    android:maxLines="1"
+                    android:padding="16dp"
+                    app:layout_constraintEnd_toEndOf="@+id/tv_password"
+                    app:layout_constraintStart_toStartOf="@+id/et_birthday"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_password"
+                    tools:ignore="TextFields" />
+
+                <ImageView
+                    android:id="@+id/select_photo"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/ic_baseline_add_a_photo_24"
+                    app:layout_constraintEnd_toEndOf="@+id/et_password"
+                    app:layout_constraintTop_toBottomOf="@+id/et_password" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/save_users_data"
+                android:layout_width="380dp"
+                android:layout_height="@dimen/button_height"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                android:backgroundTint="#2E58AB"
+                android:text="Сохранить"
+                app:cornerRadius="8dp"
+                app:layout_constraintEnd_toEndOf="@+id/constraintLayout"
+                app:layout_constraintStart_toStartOf="@+id/constraintLayout"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
