@@ -6,40 +6,64 @@
         <entry key="..\:/android_projects/testmed/app/src/main/res/drawable-v24/otp_code_fone.xml" value="0.24375" />
         <entry key="..\:/android_projects/testmed/app/src/main/res/drawable-v24/round_fone_icon.xml" value="0.24375" />
         <entry key="..\:/android_projects/testmed/app/src/main/res/drawable-v24/round_fone_image.xml" value="0.24375" />
+        <entry key="..\:/android_projects/testmed/app/src/main/res/drawable-v24/round_fone_recycler.xml" value="0.24375" />
         <entry key="..\:/android_projects/testmed/app/src/main/res/drawable/bottom_nav_selected.xml" value="0.24375" />
         <entry key="..\:/android_projects/testmed/app/src/main/res/drawable/button_round.xml" value="0.24375" />
         <entry key="..\:/android_projects/testmed/app/src/main/res/drawable/button_rount.xml" value="0.24375" />
         <entry key="..\:/android_projects/testmed/app/src/main/res/drawable/fone_vector.xml" value="0.24375" />
+        <entry key="..\:/android_projects/testmed/app/src/main/res/drawable/ic_arrow.xml" value="0.24375" />
         <entry key="..\:/android_projects/testmed/app/src/main/res/drawable/ic_back_icon.xml" value="0.24375" />
         <entry key="..\:/android_projects/testmed/app/src/main/res/drawable/ic_back_vector.xml" value="0.24375" />
+        <entry key="..\:/android_projects/testmed/app/src/main/res/drawable/ic_baseline_add_24.xml" value="0.24375" />
         <entry key="..\:/android_projects/testmed/app/src/main/res/drawable/ic_baseline_add_a_photo_24.xml" value="0.24375" />
+        <entry key="..\:/android_projects/testmed/app/src/main/res/drawable/ic_baseline_add_blue.xml" value="0.24375" />
+        <entry key="..\:/android_projects/testmed/app/src/main/res/drawable/ic_float_60px.xml" value="0.24375" />
         <entry key="..\:/android_projects/testmed/app/src/main/res/drawable/ic_group_970.xml" value="0.24375" />
         <entry key="..\:/android_projects/testmed/app/src/main/res/drawable/ic_home.xml" value="0.22962962962962963" />
         <entry key="..\:/android_projects/testmed/app/src/main/res/drawable/ic_launcher_background.xml" value="0.24375" />
         <entry key="..\:/android_projects/testmed/app/src/main/res/drawable/ic_profile.xml" value="0.11944444444444445" />
         <entry key="..\:/android_projects/testmed/app/src/main/res/drawable/ic_profile_large.xml" value="0.11944444444444445" />
+        <entry key="..\:/android_projects/testmed/app/src/main/res/drawable/ic_send_black_24.xml" value="0.24375" />
         <entry key="..\:/android_projects/testmed/app/src/main/res/drawable/otp_cede_fone1.xml" value="0.24375" />
         <entry key="..\:/android_projects/testmed/app/src/main/res/drawable/phone_number_round.xml" value="0.24375" />
         <entry key="..\:/android_projects/testmed/app/src/main/res/drawable/round_fone.xml" value="0.24375" />
+        <entry key="..\:/android_projects/testmed/app/src/main/res/drawable/round_fone_message_item.xml" value="0.24375" />
+        <entry key="..\:/android_projects/testmed/app/src/main/res/drawable/round_send_edit_text.xml" value="0.24375" />
         <entry key="..\:/android_projects/testmed/app/src/main/res/drawable/round_view_pager.xml" value="0.24375" />
         <entry key="..\:/android_projects/testmed/app/src/main/res/drawable/select_photo_vector.xml" value="0.24375" />
-        <entry key="..\:/android_projects/testmed/app/src/main/res/layout/activity_main.xml" value="0.2234375" />
+        <entry key="..\:/android_projects/testmed/app/src/main/res/drawable/text_size_tab_layout.xml" value="0.24375" />
+        <entry key="..\:/android_projects/testmed/app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="..\:/android_projects/testmed/app/src/main/res/layout/activity_main_doctor.xml" value="0.21979166666666666" />
         <entry key="..\:/android_projects/testmed/app/src/main/res/layout/activity_select_user.xml" value="0.21979166666666666" />
+        <entry key="..\:/android_projects/testmed/app/src/main/res/layout/archive_fragment.xml" value="0.2234375" />
+        <entry key="..\:/android_projects/testmed/app/src/main/res/layout/chat_with_patient_fragment.xml" value="0.2234375" />
+        <entry key="..\:/android_projects/testmed/app/src/main/res/layout/chats_with_patient_fragment.xml" value="0.2234375" />
+        <entry key="..\:/android_projects/testmed/app/src/main/res/layout/consulting_fragment.xml" value="0.2234375" />
+        <entry key="..\:/android_projects/testmed/app/src/main/res/layout/doctors_item_layout.xml" value="0.4" />
         <entry key="..\:/android_projects/testmed/app/src/main/res/layout/fragment_blank.xml" value="0.21979166666666666" />
-        <entry key="..\:/android_projects/testmed/app/src/main/res/layout/fragment_change_patient_data.xml" value="0.1" />
-        <entry key="..\:/android_projects/testmed/app/src/main/res/layout/fragment_chats.xml" value="0.2234375" />
+        <entry key="..\:/android_projects/testmed/app/src/main/res/layout/fragment_change_patient_data.xml" value="0.4" />
+        <entry key="..\:/android_projects/testmed/app/src/main/res/layout/fragment_chat_with_doctor.xml" value="0.176" />
+        <entry key="..\:/android_projects/testmed/app/src/main/res/layout/fragment_chats.xml" value="0.2" />
         <entry key="..\:/android_projects/testmed/app/src/main/res/layout/fragment_clinic.xml" value="0.3221216041397154" />
         <entry key="..\:/android_projects/testmed/app/src/main/res/layout/fragment_dashboard.xml" value="0.264" />
+        <entry key="..\:/android_projects/testmed/app/src/main/res/layout/fragment_doctors.xml" value="0.2234375" />
+        <entry key="..\:/android_projects/testmed/app/src/main/res/layout/fragment_doctors_data.xml" value="0.2234375" />
         <entry key="..\:/android_projects/testmed/app/src/main/res/layout/fragment_enter_code.xml" value="0.2" />
-        <entry key="..\:/android_projects/testmed/app/src/main/res/layout/fragment_home.xml" value="0.21979166666666666" />
+        <entry key="..\:/android_projects/testmed/app/src/main/res/layout/fragment_home.xml" value="0.176" />
+        <entry key="..\:/android_projects/testmed/app/src/main/res/layout/fragment_home_doctor.xml" value="0.2234375" />
         <entry key="..\:/android_projects/testmed/app/src/main/res/layout/fragment_login.xml" value="0.264" />
+        <entry key="..\:/android_projects/testmed/app/src/main/res/layout/fragment_login_doctor.xml" value="0.2234375" />
         <entry key="..\:/android_projects/testmed/app/src/main/res/layout/fragment_notifications.xml" value="0.2234375" />
-        <entry key="..\:/android_projects/testmed/app/src/main/res/layout/fragment_profile.xml" value="0.1" />
+        <entry key="..\:/android_projects/testmed/app/src/main/res/layout/fragment_profile.xml" value="0.264" />
+        <entry key="..\:/android_projects/testmed/app/src/main/res/layout/fragment_profile_doctor.xml" value="0.2234375" />
         <entry key="..\:/android_projects/testmed/app/src/main/res/layout/fragment_register.xml" value="0.2" />
+        <entry key="..\:/android_projects/testmed/app/src/main/res/layout/fragment_scrolling.xml" value="0.176" />
         <entry key="..\:/android_projects/testmed/app/src/main/res/layout/fragment_user_data_sign_out.xml" value="0.2" />
         <entry key="..\:/android_projects/testmed/app/src/main/res/layout/item_slider.xml" value="0.2234375" />
         <entry key="..\:/android_projects/testmed/app/src/main/res/layout/item_view_pager.xml" value="0.10833333333333334" />
+        <entry key="..\:/android_projects/testmed/app/src/main/res/layout/message_item.xml" value="0.264" />
+        <entry key="..\:/android_projects/testmed/app/src/main/res/layout/patient_item_layout.xml" value="0.2234375" />
+        <entry key="..\:/android_projects/testmed/app/src/main/res/layout/speciality_item_layout.xml" value="0.264" />
         <entry key="..\:/android_projects/testmed/app/src/main/res/menu/bottom_nav_menu.xml" value="0.21979166666666666" />
         <entry key="..\:/android_projects/testmed/app/src/main/res/menu/bottom_nav_menu_doctor.xml" value="0.21979166666666666" />
       </map>

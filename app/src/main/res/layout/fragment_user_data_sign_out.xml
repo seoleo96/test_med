@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#EDFCFF"
-    tools:context=".registeruser.presentation.fragment.UserDataSignOutFragment">
+    tools:context=".patient.auth.registeruser.presentation.fragment.UserDataSignOutFragment">
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -48,6 +48,7 @@
                 android:layout_marginStart="18dp"
                 android:layout_marginTop="24dp"
                 android:text="Данные о пациенте"
+                android:textIsSelectable="true"
                 android:textAlignment="center"
                 android:textColor="#27214D"
                 android:textSize="20sp"
@@ -80,6 +81,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <EditText
+                    android:textIsSelectable="true"
                     android:id="@+id/et_iin"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -109,6 +111,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/et_iin" />
 
                 <EditText
+                    android:textIsSelectable="true"
                     android:id="@+id/et_fio"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -138,6 +141,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/et_fio" />
 
                 <EditText
+                    android:textIsSelectable="true"
                     android:id="@+id/et_surname"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -168,6 +172,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/et_surname" />
 
                 <EditText
+                    android:textIsSelectable="true"
                     android:id="@+id/et_patronymic"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -197,6 +202,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/et_patronymic" />
 
                 <EditText
+                    android:textIsSelectable="true"
                     android:id="@+id/et_city"
                     style="@style/Widget.AppCompat.EditText"
                     android:layout_width="match_parent"
@@ -226,6 +232,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/et_city" />
 
                 <EditText
+                    android:textIsSelectable="true"
                     android:id="@+id/et_birthday"
                     android:layout_width="match_parent"
                     android:layout_height="52dp"
@@ -285,6 +292,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/et_gender" />
 
                 <EditText
+                    android:textIsSelectable="true"
                     android:id="@+id/et_phone_number"
                     style="@style/Widget.AppCompat.EditText"
                     android:layout_width="match_parent"
@@ -315,6 +323,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/et_phone_number" />
 
                 <EditText
+                    android:textIsSelectable="true"
                     android:id="@+id/et_login"
                     style="@style/Widget.AppCompat.EditText"
                     android:layout_width="match_parent"
@@ -345,6 +354,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/et_login" />
 
                 <EditText
+                    android:textIsSelectable="true"
                     android:id="@+id/et_password"
                     style="@style/Widget.AppCompat.EditText"
                     android:layout_width="match_parent"

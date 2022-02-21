@@ -1,31 +1,26 @@
 package com.example.testmed
 
 import android.app.Application
-import com.example.testmed.registeruser.data.remote.SendCode
-import com.example.testmed.registeruser.data.remote.SignOutFirebase
-import com.example.testmed.registeruser.data.repository.SendCodeRepository
-import com.example.testmed.registeruser.data.repository.SignOutRepository
-import com.example.testmed.registeruser.di.domainModule
-import com.example.testmed.registeruser.di.remoteModule
-import com.example.testmed.registeruser.di.repositoryModule
-import com.example.testmed.registeruser.di.viewModelModule
-import com.example.testmed.registeruser.domain.usecase.SendCodeUseCase
-import com.example.testmed.registeruser.domain.usecase.SignUpUseCase
-import com.example.testmed.registeruser.domain.usecase.ValidateCode
-import com.example.testmed.registeruser.domain.usecase.ValidatePhone
-import com.example.testmed.registeruser.presentation.viewmodel.EnterCodeViewModel
-import com.example.testmed.registeruser.presentation.viewmodel.RegisterViewModel
-import org.koin.android.ext.koin.androidContext
-import org.koin.android.ext.koin.androidLogger
-import org.koin.core.context.startKoin
-import org.koin.core.logger.Level
+import com.example.testmed.doctor.chatwithpatient.presentation.ChatWithPatientViewModel
+import com.example.testmed.doctor.home.chats.PatientViewModel
+import com.example.testmed.doctor.home.chats.data.ReceivingPatientsDataRepository
+import com.example.testmed.patient.auth.registeruser.data.remote.SendCode
+import com.example.testmed.patient.auth.registeruser.data.remote.SignOutFirebase
+import com.example.testmed.patient.auth.registeruser.data.repository.SendCodeRepository
+import com.example.testmed.patient.auth.registeruser.data.repository.SignOutRepository
+import com.example.testmed.patient.auth.registeruser.domain.usecase.SendCodeUseCase
+import com.example.testmed.patient.auth.registeruser.domain.usecase.SignUpUseCase
+import com.example.testmed.patient.auth.registeruser.domain.usecase.ValidateCode
+import com.example.testmed.patient.auth.registeruser.domain.usecase.ValidatePhone
+import com.example.testmed.patient.auth.registeruser.presentation.viewmodel.EnterCodeViewModel
+import com.example.testmed.patient.auth.registeruser.presentation.viewmodel.RegisterViewModel
 
 
 class TestMedApp : Application() {
 
     lateinit var registerViewModel : RegisterViewModel
     lateinit var enterCodeViewModel : EnterCodeViewModel
-
+    lateinit var patientsDataViewModel : PatientViewModel
 
     override fun onCreate() {
         super.onCreate()
@@ -41,6 +36,7 @@ class TestMedApp : Application() {
         val validateCode = ValidateCode()
         val seCodeUseCase = SendCodeUseCase(sendCodeRepository)
         enterCodeViewModel = EnterCodeViewModel(validateCode, seCodeUseCase)
+
 
 //        startKoin {
 //            androidLogger(Level.INFO)

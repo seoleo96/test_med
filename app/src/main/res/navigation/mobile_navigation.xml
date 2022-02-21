@@ -6,20 +6,18 @@
     app:startDestination="@+id/navigation_login">
 
     <fragment
-        android:id="@+id/navigation_home"
-        android:name="com.example.testmed.ui.home.HomeFragment"
-        android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
-
-    <fragment
         android:id="@+id/navigation_chats"
-        android:name="com.example.testmed.ui.dashboard.ChatsFragment"
+        android:name="com.example.testmed.patient.chats.ChatsFragment"
         android:label="@string/title_chats"
-        tools:layout="@layout/fragment_chats" />
+        tools:layout="@layout/fragment_chats" >
+        <action
+            android:id="@+id/action_navigation_chats_to_navigation_chat_with_doctor"
+            app:destination="@id/navigation_chat_with_doctor" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_profile"
-        android:name="com.example.testmed.profile.presentation.ProfileFragment"
+        android:name="com.example.testmed.patient.profile.profilepatient.presentation.ProfileFragment"
         android:label="@string/title_profile"
         tools:layout="@layout/fragment_profile" >
         <action
@@ -29,13 +27,13 @@
 
     <fragment
         android:id="@+id/navigation_clinic"
-        android:name="com.example.testmed.aboutclinic.presentation.ClinicFragment"
+        android:name="com.example.testmed.patient.aboutclinic.presentation.ClinicFragment"
         android:label="@string/title_about_clinic"
         tools:layout="@layout/fragment_clinic" />
 
     <fragment
         android:id="@+id/navigation_register"
-        android:name="com.example.testmed.registeruser.presentation.fragment.RegisterFragment"
+        android:name="com.example.testmed.patient.auth.registeruser.presentation.fragment.RegisterFragment"
         android:label="fragment_register"
         tools:layout="@layout/fragment_register" >
         <action
@@ -46,7 +44,7 @@
 
     <fragment
         android:id="@+id/navigation_enter"
-        android:name="com.example.testmed.registeruser.presentation.fragment.EnterCodeFragment"
+        android:name="com.example.testmed.patient.auth.registeruser.presentation.fragment.EnterCodeFragment"
         android:label="fragment_enter_code"
         tools:layout="@layout/fragment_enter_code" >
         <argument
@@ -63,7 +61,7 @@
 
     <fragment
         android:id="@+id/navigation_userDataSignOutFragment"
-        android:name="com.example.testmed.registeruser.presentation.fragment.UserDataSignOutFragment"
+        android:name="com.example.testmed.patient.auth.registeruser.presentation.fragment.UserDataSignOutFragment"
         android:label="fragment_user_data_sign_out"
         tools:layout="@layout/fragment_user_data_sign_out" >
         <action
@@ -75,7 +73,7 @@
 
     <fragment
         android:id="@+id/navigation_login"
-        android:name="com.example.testmed.login.presentation.LoginFragment"
+        android:name="com.example.testmed.patient.auth.login.presentation.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
@@ -92,7 +90,7 @@
             android:defaultValue="1" />
         <action
             android:id="@+id/action_navigation_login_to_navigation_home"
-            app:destination="@id/navigation_home"
+            app:destination="@id/navigation"
             app:popUpTo="@id/mobile_navigation"
             app:popUpToInclusive="true" />
         <action
@@ -102,7 +100,7 @@
     </fragment>
     <fragment
         android:id="@+id/navigation_change_patient_data"
-        android:name="com.example.testmed.ChangePatientDataFragment"
+        android:name="com.example.testmed.patient.profile.changepatientdata.ChangePatientDataFragment"
         android:label="fragment_change_patient_data"
         tools:layout="@layout/fragment_change_patient_data" >
         <action
@@ -112,6 +110,54 @@
             app:popUpToInclusive="true"/>
 
     </fragment>
+    <fragment
+        android:id="@+id/navigation_doctors_fragment"
+        android:name="com.example.testmed.patient.speciality.doctors.DoctorsFragment"
+        android:label="fragment_doctors"
+        tools:layout="@layout/fragment_doctors" >
+        <argument
+            android:name="idDoctor"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_doctorsFragment_to_doctorsDataFragment"
+            app:destination="@id/navigation_doctors_data_fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_doctors_data_fragment"
+        android:name="com.example.testmed.patient.speciality.doctors.DoctorsDataFragment"
+        android:label="fragment_doctors_data"
+        tools:layout="@layout/fragment_doctors_data" >
+        <argument
+            android:name="idDoctor"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_doctorsDataFragment_to_chatWithDoctorFragment"
+            app:destination="@id/navigation_chat_with_doctor" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_chat_with_doctor"
+        android:name="com.example.testmed.patient.chats.chatwithdoctor.ChatWithDoctorFragment"
+        android:label="fragment_chat_with_doctor"
+        tools:layout="@layout/fragment_chat_with_doctor" >
+        <argument
+            android:name="idPatient"
+            app:argType="string" />
+        <argument
+            android:name="idDoctor"
+            app:argType="string" />
+    </fragment>
+    <navigation android:id="@+id/navigation"
+        app:startDestination="@id/navigation_home">
+        <fragment
+            android:id="@+id/navigation_home"
+            android:name="com.example.testmed.patient.speciality.presentation.SpecialityDoctorsFragment"
+            android:label="@string/title_home"
+            tools:layout="@layout/fragment_home">
+            <action
+                android:id="@+id/action_navigation_home_to_doctorsFragment"
+                app:destination="@id/navigation_doctors_fragment" />
+        </fragment>
+    </navigation>
 
 
 </navigation>

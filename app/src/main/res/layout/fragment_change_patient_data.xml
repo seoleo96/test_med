@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/background_root"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ChangePatientDataFragment">
+    tools:context=".patient.profile.changepatientdata.ChangePatientDataFragment">
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -88,6 +88,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <EditText
+                    android:textIsSelectable="true"
                     android:id="@+id/et_iin"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -117,6 +118,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/et_iin" />
 
                 <EditText
+                    android:textIsSelectable="true"
                     android:id="@+id/et_fio"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -176,6 +178,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/et_surname" />
 
                 <EditText
+                    android:textIsSelectable="true"
                     android:id="@+id/et_patronymic"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -234,6 +237,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/et_city" />
 
                 <EditText
+                    android:textIsSelectable="true"
                     android:id="@+id/et_birthday"
                     android:layout_width="match_parent"
                     android:layout_height="52dp"
@@ -267,6 +271,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/et_birthday" />
 
                 <EditText
+                    android:textIsSelectable="true"
                     android:id="@+id/et_phone_number"
                     style="@style/Widget.AppCompat.EditText"
                     android:layout_width="match_parent"
@@ -297,6 +302,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/et_phone_number" />
 
                 <EditText
+                    android:textIsSelectable="true"
                     android:id="@+id/et_login"
                     style="@style/Widget.AppCompat.EditText"
                     android:layout_width="match_parent"
@@ -327,6 +333,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/et_login" />
 
                 <EditText
+                    android:textIsSelectable="true"
                     android:id="@+id/et_password"
                     style="@style/Widget.AppCompat.EditText"
                     android:layout_width="match_parent"

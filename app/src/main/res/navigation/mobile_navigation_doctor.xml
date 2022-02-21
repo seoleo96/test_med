@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation_doctor"
+    app:startDestination="@+id/navigation_home_doctor">
+
+    <fragment
+        android:id="@+id/navigation_login_doctor"
+        android:name="com.example.testmed.doctor.login.LoginDoctorFragment"
+        android:label="fragment_login_doctor"
+        tools:layout="@layout/fragment_login_doctor" >
+        <action
+            android:id="@+id/action_navigation_login_doctor_to_navigation_home_doctor"
+            app:destination="@id/navigation_home_doctor"
+            app:popUpTo="@id/mobile_navigation_doctor"
+            app:popUpToInclusive="true"/>
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_profile_doctor"
+        android:name="com.example.testmed.doctor.profile.ProfileDoctorFragment"
+        android:label="@string/title_profile"
+        tools:layout="@layout/fragment_profile_doctor" />
+    <fragment
+        android:id="@+id/navigation_home_doctor"
+        android:name="com.example.testmed.doctor.home.HomeDoctorFragment"
+        android:label="@string/title_home"
+        tools:layout="@layout/fragment_home_doctor" >
+        <action
+            android:id="@+id/action_navigation_home_doctor_to_navigation_chat_with_patient_fragment"
+            app:destination="@id/navigation_chat_with_patient_fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_chat_with_patient_fragment"
+        android:name="com.example.testmed.doctor.chatwithpatient.presentation.ChatWithPatientFragment"
+        android:label="chat_with_patient_fragment"
+        tools:layout="@layout/chat_with_patient_fragment" >
+        <argument
+            android:name="id"
+            app:argType="string" />
+    </fragment>
+
+</navigation>

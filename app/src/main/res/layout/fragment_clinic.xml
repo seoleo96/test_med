@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_color"
-    tools:context="com.example.testmed.aboutclinic.presentation.ClinicFragment">
+    tools:context=".patient.aboutclinic.presentation.ClinicFragment">
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -46,6 +46,7 @@
                 android:layout_marginEnd="18dp"
                 android:layout_marginTop="24dp"
                 android:text="О клинике"
+                android:textIsSelectable="true"
                 android:textAlignment="center"
                 android:textColor="#27214D"
                 android:textSize="20sp"
@@ -109,6 +110,7 @@
                     android:maxWidth="300dp"
                     android:textSize="16sp"
                     android:text=""
+                    android:textIsSelectable="true"
                     android:textColor="@color/black"
                     app:layout_constraintEnd_toEndOf="@+id/tv_clinic_name"
                     app:layout_constraintStart_toStartOf="@+id/tv_clinic_name"
@@ -149,6 +151,7 @@
                     android:textSize="16sp"
                     android:paddingStart="8dp"
                     android:paddingEnd="8dp"
+                    android:textIsSelectable="true"
                     android:layout_marginTop="2dp"
                     android:paddingBottom="8dp"
                     android:text=""
@@ -193,6 +196,7 @@
                     android:layout_marginTop="2dp"
                     android:paddingBottom="8dp"
                     android:textSize="16sp"
+                    android:textIsSelectable="true"
                     android:text=""
                     android:textColor="@color/black"
                     app:layout_constraintEnd_toEndOf="@+id/tv_email"
@@ -234,6 +238,7 @@
                     android:maxWidth="300dp"
                     android:textSize="16sp"
                     android:text=""
+                    android:textIsSelectable="true"
                     android:paddingStart="8dp"
                     android:paddingEnd="8dp"
                     android:paddingBottom="8dp"
@@ -279,6 +284,7 @@
                     android:layout_marginTop="2dp"
                     android:paddingBottom="8dp"
                     android:text=""
+                    android:textIsSelectable="true"
                     android:textColor="@color/black"
                     app:layout_constraintEnd_toEndOf="@+id/tv_phone_number"
                     app:layout_constraintStart_toStartOf="@+id/tv_phone_number"
