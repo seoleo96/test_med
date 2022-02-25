@@ -66,9 +66,6 @@ class ChatsFragment : BaseFragment<FragmentChatsBinding>(FragmentChatsBinding::i
 
                 is ReceivingUsersResult.Success -> {
                     adapter.updateList(data.data)
-                    data.data.forEach {
-                        Log.d("message", it.message)
-                    }
                     binding.apply {
                         progressBar.isVisible = false
                         textview.isVisible = true
@@ -83,9 +80,8 @@ class ChatsFragment : BaseFragment<FragmentChatsBinding>(FragmentChatsBinding::i
 
     private fun toChat(id: String) {
         val action =
-            ChatsFragmentDirections.actionNavigationChatsToNavigationChatWithDoctor(
-                UID(),
-                id)
+            ChatsFragmentDirections.actionNavigationChatsToNavigationChatWithDoctor()
+        action.idDoctor = id
         findNavController().navigate(action)
     }
 

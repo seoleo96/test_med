@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.testmed.*
 import com.example.testmed.base.BaseFragment
+import com.example.testmed.base.BaseFragmentAuth
 import com.example.testmed.databinding.FragmentUserDataSignOutBinding
 import com.example.testmed.model.PatientData
 import com.example.testmed.patient.auth.registeruser.domain.usecase.UserRegisterState
@@ -27,7 +28,7 @@ import java.util.*
 
 
 class UserDataSignOutFragment :
-    BaseFragment<FragmentUserDataSignOutBinding>(FragmentUserDataSignOutBinding::inflate) {
+    BaseFragmentAuth<FragmentUserDataSignOutBinding>(FragmentUserDataSignOutBinding::inflate) {
 
     private lateinit var spinner: Spinner
     private var personNames = emptyArray<String>()
@@ -50,7 +51,7 @@ class UserDataSignOutFragment :
     }
 
     private fun setPhoneNumber() {
-        if (PHONE_NUMBER.isNotEmpty()){
+        if (PHONE_NUMBER.isNotEmpty()) {
             binding.etPhoneNumber.setText(PHONE_NUMBER)
         }
     }
@@ -89,7 +90,7 @@ class UserDataSignOutFragment :
                     cal.get(Calendar.YEAR)
                     cal.get(Calendar.MONTH)
                     cal.get(Calendar.DAY_OF_MONTH)
-                    birthday = "$dayOfMonth.${monthOfYear}.$year"
+                    birthday = "$dayOfMonth.${(1+monthOfYear)}.$year"
                     val age = getAge(year, monthOfYear, dayOfMonth)
                     if (checkAge(age)) {
                         binding.etBirthday.setText(birthday)
@@ -288,7 +289,8 @@ class UserDataSignOutFragment :
             login,
             password,
             PHONE_NUMBER,
-            photoUrl)
+            photoUrl,
+            online)
         DB.reference.child("patients").child(id).setValue(patient).addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 if (uri == null) {

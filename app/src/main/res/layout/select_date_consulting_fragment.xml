@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".patient.speciality.consulting.presentation.SelectDateConsultingFragment">
+
+    <TextView
+        android:id="@+id/text_register"
+        android:layout_width="wrap_content"
+        android:textIsSelectable="true"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="18dp"
+        android:fontFamily="monospace"
+        android:text="Выберите дату и время"
+        android:textColor="#27214D"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_birthday"
+        android:layout_width="0dp"
+        android:layout_marginTop="24dp"
+        android:layout_height="wrap_content"
+        android:text="Выберите дату (Д.М.Г)"
+        android:textColor="#616161"
+        android:layout_marginStart="20dp"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_register" />
+
+    <EditText
+        android:textIsSelectable="true"
+        android:id="@+id/et_birthday"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/phone_number_round"
+        android:clickable="true"
+        android:cursorVisible="false"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:hint="12.08.2010"
+        android:inputType="date"
+        android:maxLength="50"
+        android:maxLines="1"
+        android:padding="16dp"
+        app:layout_constraintEnd_toEndOf="@+id/tv_birthday"
+        app:layout_constraintStart_toStartOf="@+id/tv_birthday"
+        app:layout_constraintTop_toBottomOf="@+id/tv_birthday" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

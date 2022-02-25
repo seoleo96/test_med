@@ -7,13 +7,14 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.testmed.*
 import com.example.testmed.base.BaseFragment
+import com.example.testmed.base.BaseFragmentAuth
 import com.example.testmed.databinding.FragmentLoginBinding
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import java.util.*
 
-class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::inflate) {
+class LoginFragment : BaseFragmentAuth<FragmentLoginBinding>(FragmentLoginBinding::inflate) {
 
     private val args: LoginFragmentArgs? by navArgs()
 
@@ -24,8 +25,12 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
             findNavController().navigate(R.id.action_navigation_login_to_navigation_register)
         }
 
+        binding.apply {
+            etLogin.setText("w1@gmail.com")
+            etPassword.setText("123456")
+        }
         binding.sendUsersDataButton.setOnClickListener {
-            requireView().hideKeyboard()
+           it.hideKeyboard()
             binding.progressBar.isVisible = true
             binding.allContent.isVisible = false
             signInWithEmail()

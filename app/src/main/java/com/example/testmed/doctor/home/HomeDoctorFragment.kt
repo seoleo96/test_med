@@ -4,18 +4,17 @@ import android.os.Bundle
 import android.view.View
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
-import com.example.testmed.base.BaseFragment
+import com.example.testmed.base.BaseFragmentDoctor
 import com.example.testmed.databinding.FragmentHomeDoctorBinding
 import com.google.android.material.tabs.TabLayoutMediator
 
 
 class HomeDoctorFragment :
-    BaseFragment<FragmentHomeDoctorBinding>(FragmentHomeDoctorBinding::inflate) {
+    BaseFragmentDoctor<FragmentHomeDoctorBinding>(FragmentHomeDoctorBinding::inflate) {
 
     private lateinit var viewpager: ViewPager2
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         getDataFromChildFragment()
         setTablayout()
     }
@@ -25,8 +24,10 @@ class HomeDoctorFragment :
             viewLifecycleOwner) { key, bundle ->
             val result: String? = bundle.getString("bundleKey")
             if (result != null) {
-                val action = HomeDoctorFragmentDirections.actionNavigationHomeDoctorToNavigationChatWithPatientFragment(
-                        result)
+                val action =
+                    HomeDoctorFragmentDirections
+                        .actionNavigationHomeDoctorToNavigationChatWithPatientFragment()
+                action.id = result
                 findNavController().navigate(action)
             }
         }

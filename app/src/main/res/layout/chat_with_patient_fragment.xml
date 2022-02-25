@@ -4,8 +4,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/container"
     android:background="@color/background_root"
     tools:context=".doctor.chatwithpatient.presentation.ChatWithPatientFragment">
+
+    <ImageView
+        android:id="@+id/expanded_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/round_fone_icon"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:padding="6dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/container_toolbar"
@@ -55,7 +71,7 @@
             android:paddingEnd="8dp"
             android:text="Юнусов Тахир"
             android:textColor="@color/black"
-            android:textSize="18sp"
+            android:textSize="16sp"
             app:layout_constraintStart_toEndOf="@+id/profile_image"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -126,8 +142,9 @@
             android:weightSum="40">
 
             <EditText
+
                 android:textIsSelectable="true"
-                android:id="@+id/message_edit_text"
+                android:id="@+id/send_message_edit_text"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:layout_weight="36"
@@ -149,8 +166,8 @@
                 android:foreground="?android:attr/selectableItemBackground"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/message_edit_text"
-                app:layout_constraintTop_toTopOf="@+id/message_edit_text" />
+                app:layout_constraintStart_toEndOf="@+id/send_message_edit_text"
+                app:layout_constraintTop_toTopOf="@+id/send_message_edit_text" />
         </LinearLayout>
 
         <View

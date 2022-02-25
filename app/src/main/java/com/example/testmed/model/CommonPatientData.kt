@@ -20,4 +20,8 @@ data class CommonPatientData(
     var message: String = "",
     val timestamp: Any = "",
     val type: String = "",
+
+    val fullName : String = "",
+    val time : String = "",
+    val idNotification: String = ""
 )

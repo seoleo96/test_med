@@ -235,7 +235,8 @@ class ChangePatientDataFragment :
             login,
             password,
             PHONE_NUMBER,
-            photoUrl)
+            photoUrl,
+        online)
         DB.reference.child("patients").child(id).setValue(patient)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {

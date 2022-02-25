@@ -59,6 +59,8 @@ class SpecialityDoctorsFragment : BaseFragment<FragmentHomeBinding>(FragmentHome
 
 
 
+
+
     private fun setDoctorData() {
         val doctor = DoctorData(
              id = "S8VsEJuyDJWGEf5e6UFRoZjxPQE3",
@@ -79,13 +81,14 @@ class SpecialityDoctorsFragment : BaseFragment<FragmentHomeBinding>(FragmentHome
          password = "123456",
          phoneNumber = "+16505551289",
          photoUrl = "",
+            state = "",
+            stateTo = ""
         )
         DB.reference.child("doctors").child(doctor.id).setValue(doctor)
     }
 
     private fun setAdapter() {
         adapter = SpecialityAdapter{
-            showSnackbar(it.toString())
             val action = SpecialityDoctorsFragmentDirections.actionNavigationHomeToDoctorsFragment(it.id)
             findNavController().navigate(action)
         }

@@ -12,6 +12,7 @@ import androidx.navigation.fragment.navArgs
 import com.example.testmed.R
 import com.example.testmed.TestMedApp
 import com.example.testmed.base.BaseFragment
+import com.example.testmed.base.BaseFragmentAuth
 import com.example.testmed.databinding.FragmentEnterCodeBinding
 import com.example.testmed.hideKeyboard
 import com.example.testmed.patient.auth.registeruser.domain.UIState
@@ -20,7 +21,7 @@ import com.example.testmed.patient.auth.registeruser.presentation.viewmodel.Ente
 
 
 class EnterCodeFragment :
-    BaseFragment<FragmentEnterCodeBinding>(FragmentEnterCodeBinding::inflate) {
+    BaseFragmentAuth<FragmentEnterCodeBinding>(FragmentEnterCodeBinding::inflate) {
 
     private val args: EnterCodeFragmentArgs by navArgs()
 //    private val enterCodeViewModel: EnterCodeViewModel by viewModel()

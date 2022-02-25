@@ -1,28 +1,31 @@
 package com.example.testmed.doctor.chatwithpatient
 
-import android.util.Log
+import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
+import com.example.testmed.R
 import com.example.testmed.UID
 import com.example.testmed.asDate
 import com.example.testmed.asTime
 import com.example.testmed.databinding.MessageItemBinding
 import com.example.testmed.model.MessageData
-import java.text.SimpleDateFormat
-import java.util.*
 
+class ChatAdapterForDoctor(private val adapterOnClick: (MessageData, View) -> Unit) :
+    RecyclerView.Adapter<ChatAdapterForDoctor.ChatHolder>() {
 
-
-
-class ChatAdapterForDoctor
-    : RecyclerView.Adapter<ChatAdapterForDoctor.ChatHolder>() {
     private val list = arrayListOf<MessageData>()
-    fun updateList(list: List<MessageData>) {
+    fun updateList(data: List<MessageData>) {
         this.list.clear()
-        this.list.addAll(list)
+        this.list.addAll(data)
         notifyDataSetChanged()
     }
 
@@ -30,7 +33,7 @@ class ChatAdapterForDoctor
         parent: ViewGroup,
         viewType: Int,
     ): ChatHolder {
-        return ChatHolder(makeView(parent))
+        return ChatHolder(makeView(parent), adapterOnClick)
     }
 
     private fun makeView(parent: ViewGroup) =
@@ -39,17 +42,12 @@ class ChatAdapterForDoctor
     override fun onBindViewHolder(holder: ChatHolder, position: Int) {
         val bind: MessageData = list[position]
         var bool = false
-        if (position > 0){
+        bool = if (position > 0) {
             val dateNow = bind.timestamp.toString().asDate()
-            val date1 = list[position-1].timestamp.toString().asDate()
-            if (dateNow==date1){
-                bool = true
-            }else{
-                bool = false
-            }
-        }else{
-            bool = false
-//            holder.bindMessagePatient(bind, false)
+            val date1 = list[position - 1].timestamp.toString().asDate()
+            dateNow == date1
+        } else {
+            false
         }
         if (list[position].idFrom == UID()) {
             holder.bindMessagePatient(bind, bool)
@@ -64,38 +62,149 @@ class ChatAdapterForDoctor
 
     class ChatHolder(
         private val binding: MessageItemBinding,
+        private val adapterOnClick: (MessageData, View) -> Unit,
     ) :
         RecyclerView.ViewHolder(binding.root) {
         fun bindMessagePatient(message: MessageData, b: Boolean) {
-            message.apply {
-                if (b) {
-                    binding.messagesDate.isGone = true
-                } else {
-                    binding.messagesDate.text = message.timestamp.toString().asDate()
-                    binding.messagesDate.isVisible = true
+            if (message.type == "message") {
+                message.apply {
+                    val date = message.timestamp.toString().asDate()
+                    if (b) {
+                        binding.messagesDate.isGone = true
+                    } else {
+                        binding.messagesDate.text = date
+                        binding.messagesDate.isVisible = true
+                    }
+                    if (seen == "0"){
+                        binding.chatUserMessageSeen.setBackgroundResource(R.drawable.ic_done_black_24)
+                    }else{
+                        binding.chatUserMessageSeen.setBackgroundResource(R.drawable.ic_double_check_black_24)
+                    }
+                    binding.blocUserMessage.isVisible = true
+                    binding.blocUserMessageImage.isGone = true
+                    binding.blocReceivedMessage.isGone = true
+                    binding.blocReceivedMessageImage.isGone = true
+                    binding.chatUserMessage.text = message.message
+                    binding.chatUserMessageTime.text = message.timestamp.toString().asTime()
+
                 }
-                binding.blocUserMessage.isVisible = true
-                binding.blocReceivedMessage.isVisible = false
-                binding.chatUserMessage.text = message.message
-                binding.chatUserMessageTime.text = message.timestamp.toString().asTime()
+            } else {
+                message.apply {
+                    val date = message.timestamp.toString().asDate()
+                    if (b) {
+                        binding.messagesDate.isGone = true
+                    } else {
+                        binding.messagesDate.text = date
+                        binding.messagesDate.isVisible = true
+                    }
+                    if (seen == "0"){
+                        binding.chatUserMessageImageSeen.setBackgroundResource(R.drawable.ic_done_black_24)
+                    }else{
+                        binding.chatUserMessageImageSeen.setBackgroundResource(R.drawable.ic_double_check_black_24)
+                    }
+                    binding.blocUserMessage.isGone = true
+                    binding.blocUserMessageImage.isVisible = true
+                    binding.blocReceivedMessage.isVisible = false
+                    binding.blocReceivedMessageImage.isGone = true
+                    binding.chatUserImageTime.text = message.timestamp.toString().asTime()
+                    binding.chatUserMessageImageProgress.isVisible = true
+                    Glide
+                        .with(binding.chatUserMessageImage.context)
+                        .load(message.message)
+                        .addListener(object : RequestListener<Drawable> {
+                            override fun onLoadFailed(
+                                e: GlideException?,
+                                model: Any?,
+                                target: Target<Drawable>?,
+                                isFirstResource: Boolean,
+                            ): Boolean {
+                                binding.chatUserMessageImageProgress.isGone = true
+                                return false
+                            }
+
+                            override fun onResourceReady(
+                                resource: Drawable?,
+                                model: Any?,
+                                target: Target<Drawable>?,
+                                dataSource: DataSource?,
+                                isFirstResource: Boolean,
+                            ): Boolean {
+                                binding.chatUserMessageImageProgress.isGone = true
+                                return false
+                            }
+                        })
+                        .centerCrop()
+                        .into(binding.chatUserMessageImage)
+                }
+                binding.chatUserMessageImage.setOnClickListener {
+                    adapterOnClick.invoke(message, it)
+                }
             }
         }
 
         fun bindMessageDoctor(message: MessageData, bool: Boolean) {
-            message.apply {
-                val date = message.timestamp.toString().asDate()
-//                val dateString = asDate(date)
-                Log.d("date", "$date")
-                if (bool) {
-                    binding.messagesDate.isVisible = false
-                } else {
-                    binding.messagesDate.text = date
-                    binding.messagesDate.isVisible = true
+            if (message.type == "message") {
+                message.apply {
+                    val date = message.timestamp.toString().asDate()
+                    if (bool) {
+                        binding.messagesDate.isGone = true
+                    } else {
+                        binding.messagesDate.text = date
+                        binding.messagesDate.isVisible = true
+                    }
+                    binding.blocUserMessageImage.isGone = true
+                    binding.blocUserMessage.isGone = true
+                    binding.blocReceivedMessage.isVisible = true
+                    binding.blocReceivedMessageImage.isGone = true
+                    binding.chatReceivedMessage.text = message.message
+                    binding.chatReceivedMessageTime.text = message.timestamp.toString().asTime()
                 }
-                binding.blocUserMessage.isVisible = false
-                binding.blocReceivedMessage.isVisible = true
-                binding.chatReceivedMessage.text = message.message
-                binding.chatReceivedMessageTime.text = message.timestamp.toString().asTime()
+            } else {
+                message.apply {
+                    val date = message.timestamp.toString().asDate()
+                    if (bool) {
+                        binding.messagesDate.isGone = true
+                    } else {
+                        binding.messagesDate.text = date
+                        binding.messagesDate.isVisible = true
+                    }
+                    binding.blocUserMessage.isGone = true
+                    binding.blocUserMessageImage.isGone = true
+                    binding.blocReceivedMessageImage.isVisible = true
+                    binding.blocReceivedMessage.isGone = true
+                    binding.chatReceivedImageTime.text = message.timestamp.toString().asTime()
+                    binding.chatReceivedMessageImageProgress.isVisible = true
+                    Glide
+                        .with(binding.chatReceivedMessageImage.context)
+                        .load(message.message)
+                        .addListener(object : RequestListener<Drawable> {
+                            override fun onLoadFailed(
+                                e: GlideException?,
+                                model: Any?,
+                                target: Target<Drawable>?,
+                                isFirstResource: Boolean,
+                            ): Boolean {
+                                binding.chatReceivedMessageImageProgress.isGone = true
+                                return false
+                            }
+
+                            override fun onResourceReady(
+                                resource: Drawable?,
+                                model: Any?,
+                                target: Target<Drawable>?,
+                                dataSource: DataSource?,
+                                isFirstResource: Boolean,
+                            ): Boolean {
+                                binding.chatReceivedMessageImageProgress.isGone = true
+                                return false
+                            }
+                        })
+                        .centerCrop()
+                        .into(binding.chatReceivedMessageImage)
+                }
+                binding.chatReceivedMessageImage.setOnClickListener {
+                    adapterOnClick.invoke(message, it)
+                }
             }
         }
     }

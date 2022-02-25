@@ -14,7 +14,6 @@ class ClinicDataViewModel(
     val clinicDataLiveData : LiveData<ClinicDataResult> = liveData(Dispatchers.IO) {
         emit(ClinicDataResult.Loading)
            iClinicDataRepository.fetchClinicData().collect {
-               kotlinx.coroutines.delay(500)
                emit(it)
            }
     }

@@ -18,9 +18,12 @@ data class DoctorData(
     val login: String,
     val password: String,
     val phoneNumber: String,
-    var photoUrl: String?,
+    val state: Any,
+    val stateTo: String = "",
+    var photoUrl: String ="",
+    val seen : String = "0"
 ) {
-    constructor() : this("","",
+    constructor() : this("","","", "",
         "", "", "","","",
         "", "", "",
         "", "", "", "",

@@ -7,13 +7,14 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.navigation.fragment.findNavController
 import com.example.testmed.*
 import com.example.testmed.base.BaseFragment
+import com.example.testmed.base.BaseFragmentAuth
 import com.example.testmed.databinding.FragmentRegisterBinding
 import com.example.testmed.patient.auth.registeruser.domain.usecase.UIValidationState
 import com.example.testmed.patient.auth.registeruser.presentation.PhoneTextFormatter
 import com.example.testmed.patient.auth.registeruser.presentation.viewmodel.RegisterViewModel
 
 
-class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterBinding::inflate) {
+class RegisterFragment : BaseFragmentAuth<FragmentRegisterBinding>(FragmentRegisterBinding::inflate) {
 
     private lateinit var phoneNumber: String
 //    private val registerViewModel: RegisterViewModel by viewModel()

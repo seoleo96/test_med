@@ -7,14 +7,15 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
-import com.example.testmed.base.BaseFragment
+import com.example.testmed.base.*
+import com.example.testmed.base.BaseFragmentDoctor
 import com.example.testmed.databinding.ChatsWithPatientFragmentBinding
 import com.example.testmed.doctor.home.PatientsAdapter
 import com.example.testmed.doctor.home.chats.data.ReceivingPatientsDataRepository
 import com.example.testmed.showSnackbar
 
 class PatientsFragment
-    : BaseFragment<ChatsWithPatientFragmentBinding>(ChatsWithPatientFragmentBinding::inflate) {
+    : BaseFragmentDoctor<ChatsWithPatientFragmentBinding>(ChatsWithPatientFragmentBinding::inflate) {
 
     private lateinit var adapter: PatientsAdapter
     private lateinit var viewModel: PatientViewModel

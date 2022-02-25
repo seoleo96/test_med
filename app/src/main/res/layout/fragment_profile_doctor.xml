@@ -435,25 +435,12 @@
                 android:layout_height="@dimen/button_height"
                 android:layout_marginTop="16dp"
                 android:backgroundTint="#2E58AB"
-                android:text="Редактировать"
+                android:text="Выход"
                 android:textAlignment="center"
                 app:cornerRadius="8dp"
                 app:layout_constraintEnd_toEndOf="@+id/constraint2"
                 app:layout_constraintStart_toStartOf="@+id/constraint2"
                 app:layout_constraintTop_toBottomOf="@+id/constraint2" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/sign_out_app"
-                android:layout_width="360dp"
-                android:layout_height="@dimen/button_height"
-                android:layout_marginBottom="16dp"
-                android:backgroundTint="#2E58AB"
-                android:text="Выход"
-                android:textAlignment="center"
-                app:cornerRadius="8dp"
-                app:layout_constraintEnd_toEndOf="@+id/change_data"
-                app:layout_constraintStart_toStartOf="@+id/change_data"
-                app:layout_constraintTop_toBottomOf="@+id/change_data" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

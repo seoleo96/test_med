@@ -7,6 +7,8 @@ data class MessageData(
     val message: String = "",
     val timestamp: Any = "",
     val type: String = "",
+    val seen: String = "0",
+    val idNotification: Int = 0,
 ) {
-    constructor() : this("", "", "", "", "", "")
+    constructor() : this("", "", "", "", "", "", "", 0)
 }

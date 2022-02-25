@@ -2,23 +2,41 @@ package com.example.testmed.doctor.login
 
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.testmed.*
 import com.example.testmed.base.BaseFragment
+import com.example.testmed.base.BaseFragmentDoctor
 import com.example.testmed.databinding.FragmentLoginDoctorBinding
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import java.util.*
 
-class LoginDoctorFragment :
-    BaseFragment<FragmentLoginDoctorBinding>(FragmentLoginDoctorBinding::inflate) {
+class LoginDoctorFragment : Fragment(R.layout.fragment_login_doctor) {
+
+    private var _binding: FragmentLoginDoctorBinding? = null
+    private val binding get() = _binding!!
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View {
+        _binding = FragmentLoginDoctorBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        binding.apply {
+            etLogin.setText("terapevt1@gmail.com")
+            etPassword.setText("123456")
+        }
         binding.sendUsersDataButton.setOnClickListener {
             requireView().hideKeyboard()
             binding.progressBar.isVisible = true

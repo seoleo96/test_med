@@ -6,6 +6,7 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.testmed.*
 import com.example.testmed.base.BaseFragment
+import com.example.testmed.base.BaseFragmentDoctor
 import com.example.testmed.databinding.FragmentProfileDoctorBinding
 import com.example.testmed.model.PatientData
 import com.google.firebase.database.DataSnapshot
@@ -14,7 +15,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 
 class ProfileDoctorFragment
-    : BaseFragment<FragmentProfileDoctorBinding>(FragmentProfileDoctorBinding::inflate) {
+    : BaseFragmentDoctor<FragmentProfileDoctorBinding>(FragmentProfileDoctorBinding::inflate) {
 
     private lateinit var valueEventListener: ValueEventListener
     private lateinit var rdbRef: DatabaseReference
@@ -26,7 +27,7 @@ class ProfileDoctorFragment
     }
 
     private fun signOut() {
-        binding.signOutApp.setOnClickListener {
+        binding.changeData.setOnClickListener {
             AUTH().signOut()
             PHONE_NUMBER = ""
             findNavController().apply {

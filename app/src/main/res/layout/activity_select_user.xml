@@ -25,4 +25,18 @@
         app:layout_constraintEnd_toEndOf="@+id/doctor"
         app:layout_constraintStart_toStartOf="@+id/doctor"
         app:layout_constraintTop_toBottomOf="@+id/doctor" />
+
+    <TextView
+        android:id="@+id/token"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="116dp"
+        android:textIsSelectable="true"
+        android:textSize="18sp"
+        android:textColor="@color/black"
+        android:text="ПАциеsdjkgsdhgkjsadgfkjdgkнт"
+        app:layout_constraintEnd_toEndOf="@+id/doctor"
+        app:layout_constraintHorizontal_bias="0.466"
+        app:layout_constraintStart_toStartOf="@+id/doctor"
+        app:layout_constraintTop_toBottomOf="@+id/doctor" />
 </androidx.constraintlayout.widget.ConstraintLayout>

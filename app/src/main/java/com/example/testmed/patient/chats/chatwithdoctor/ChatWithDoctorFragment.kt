@@ -3,36 +3,35 @@ package com.example.testmed.patient.chats.chatwithdoctor
 import android.app.Activity
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.View
+import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.view.isGone
-import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
+import androidx.core.widget.doOnTextChanged
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.testmed.*
 import com.example.testmed.base.BaseFragment
 import com.example.testmed.databinding.FragmentChatWithDoctorBinding
-import com.example.testmed.model.CommonPatientData
-import com.example.testmed.model.DoctorData
 import com.example.testmed.model.MessageData
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ServerValue
-import com.google.firebase.database.ValueEventListener
 import com.theartofdev.edmodo.cropper.CropImage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
 class ChatWithDoctorFragment :
     BaseFragment<FragmentChatWithDoctorBinding>(FragmentChatWithDoctorBinding::inflate) {
 
-    private val args: ChatWithDoctorFragmentArgs by navArgs()
+    private val argsNav: ChatWithDoctorFragmentArgs by navArgs()
+    private lateinit var idDoctor: String
+    private lateinit var idPatient: String
+    private var idNotification: Int = 0
     private lateinit var mAdapter: ChatAdapter
     private lateinit var mRecyclerView: RecyclerView
     private var mListMessages = mutableListOf<MessageData>()
@@ -40,10 +39,16 @@ class ChatWithDoctorFragment :
     private var doctorImageUrl = ""
     private var tempTimestamp = ""
     private var uri: Uri? = null
-
+    private var imageUriprofile: Uri? = null
+    private lateinit var chatWithDoctorViewModel: ChatWithDoctorViewModel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        chatWithDoctorViewModel = ViewModelProvider(this)[ChatWithDoctorViewModel::class.java]
+        idPatient = UID()
+        idDoctor =
+            if (argsNav.idDoctor == "0") arguments!![ID_DOCTOR].toString() else argsNav.idDoctor
+
         setAdapter()
         setToBackButton()
         setDoctorsData()
@@ -51,39 +56,82 @@ class ChatWithDoctorFragment :
         sendMessage()
         setMessages()
         sendImage()
+        updateToken()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        chatWithDoctorViewModel.seenMessages(idDoctor, idPatient)
+    }
+
+
+    private fun updateToken() {
+        chatWithDoctorViewModel.updateToken()
     }
 
     private fun setMessages() {
-        val ref = DB.reference
-            .child("message")
-            .child(UID())
-            .child(args.idDoctor)
-        ref.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                if (snapshot.exists()) {
-                    snapshot.children.forEach {
-                        val data = it.getValue(MessageData::class.java)
-                        Log.d("TAG", data.toString())
-                        if (data != null) {
-                            mListMessages.removeIf {
-                                it.idMessage == data.idMessage
-                            }
-                            tempTimestamp = data.timestamp.toString()
-                            mListMessages.add(data)
-                        }
-                    }
-                }
-                updateAdapter(mListMessages)
+        chatWithDoctorViewModel.getMessages(idDoctor)
+        chatWithDoctorViewModel.messLiveData.observe(viewLifecycleOwner) { data ->
+            mListMessages.removeIf {
+                it.idMessage == data.idMessage
             }
-
-            override fun onCancelled(error: DatabaseError) = Unit
-        })
+            tempTimestamp = data.timestamp.toString()
+            mListMessages.add(data)
+            updateAdapter(mListMessages)
+        }
     }
 
+//    private fun setMessages() {
+//        val ref = DB.reference
+//            .child("message")
+//            .child(UID())
+//            .child(args.idDoctor)
+//        ref.addValueEventListener(object : ValueEventListener {
+//            override fun onDataChange(snapshot: DataSnapshot) {
+//                if (snapshot.exists()) {
+//                    snapshot.children.forEach {
+//                        val data = it.getValue(MessageData::class.java)
+//                        if (data != null) {
+//                            mListMessages.removeIf {
+//                                it.idMessage == data.idMessage
+//                            }
+//                            tempTimestamp = data.timestamp.toString()
+//                            mListMessages.add(data)
+//                        }
+//                    }
+//                }
+//                updateAdapter(mListMessages)
+//            }
+//
+//            override fun onCancelled(error: DatabaseError) = Unit
+//        })
+//    }
+
     private fun setAdapter() {
-        mAdapter = ChatAdapter()
+        mAdapter = ChatAdapter { messageData, view ->
+            if (messageData.message.isNotEmpty()) {
+                setAnimationView(messageData, view)
+            }
+        }
         mRecyclerView = binding.recyclerChat
         mRecyclerView.adapter = mAdapter
+    }
+
+    private fun setAnimationView(messageData: MessageData, view: View) {
+        lifecycleScope.launch(Dispatchers.IO) {
+            val imageUri = super.getCachedPhotoURI(messageData.message)
+            withContext(Dispatchers.Main) {
+                super.zoomImageFromThumb(
+                    view,
+                    imageUri,
+                    binding.expandedImage,
+                    binding.container,
+                    binding.containerSen,
+                    binding.containerToolbar,
+                    binding.recyclerChat
+                )
+            }
+        }
     }
 
     private fun setEditTextListener() {
@@ -97,7 +145,22 @@ class ChatWithDoctorFragment :
                 }
             }
         }
+        binding.messageEditText.doOnTextChanged { text, start, before, count ->
+            if (start >= 1) {
+                chatWithDoctorViewModel.updateTyping(idDoctor)
+            }
+            if (start == 0) {
+                chatWithDoctorViewModel.updateStateTo("1")
+                super.updateStatePatient(online)
+            }
+        }
+    }
 
+    override fun onPause() {
+        super.onPause()
+        chatWithDoctorViewModel.updateStateTo("1")
+        chatWithDoctorViewModel.removeListener()
+        chatWithDoctorViewModel.removeListenerMess()
     }
 
     private fun sendButtonNotEditable() {
@@ -118,7 +181,7 @@ class ChatWithDoctorFragment :
         binding.addMedia.setOnClickListener {
             val intent = CropImage.activity()
                 .setAspectRatio(1, 1)
-                .setRequestedSize(900, 900)
+                .setRequestedSize(400, 400)
                 .getIntent(activity as MainActivity)
             launchSomeActivity.launch(intent)
         }
@@ -131,37 +194,28 @@ class ChatWithDoctorFragment :
 
     private fun savePhoto() {
         lifecycleScope.launch(Dispatchers.IO) {
-            val key = DB.reference.child("message").child(UID()).push().key.toString()
+            val key = DB.reference.child("message").child(idPatient).push().key.toString()
+            val path = REF_STORAGE_ROOT.child("message_images").child(key)
             val timestamp = ServerValue.TIMESTAMP
-            val data = MessageData(
-                message = "Фото отправляется...",
-                idMessage = key,
-                timestamp = tempTimestamp
-            )
-            withContext(Dispatchers.Main){
+            val data = MessageData(idMessage = key,
+                timestamp = "1645637136528",
+                idFrom = idPatient,
+                message = "Отправляется...",
+                type = "message")
+            withContext(Dispatchers.Main) {
                 mListMessages.add(data)
                 updateAdapter(mListMessages)
             }
-            val path = REF_STORAGE_ROOT
-                    .child("message_images")
-                    .child(key)
-            path.putFile(uri!!)
-                .addOnCompleteListener { task1 ->
-                    if (task1.isSuccessful) {
-                        path.downloadUrl.addOnCompleteListener { task2 ->
-                            if (task2.isSuccessful) {
-                                val photoUrl = task2.result.toString()
-                                sendToDB(key, photoUrl, "image", timestamp)
-                            }
-                        }
-                    }
-                }
+            val photoUrl = path.putFile(uri!!).await().storage.downloadUrl.await().toString()
+            sendToDB(key, photoUrl, "image", timestamp)
         }
-
     }
 
     private fun sendMessage() {
         binding.sendButton.setOnClickListener {
+            lifecycleScope.launch(Dispatchers.IO) {
+                super.updateStatePatient(online)
+            }
             val text = binding.messageEditText.text.toString()
             binding.messageEditText.setText("")
             val idMess = DB.reference.push().key.toString()
@@ -170,96 +224,50 @@ class ChatWithDoctorFragment :
         }
     }
 
-    private fun sendToDB(
-        idMess: String,
-        text: String,
-        type: String,
-        timestamp: Any,
-    ) {
-        lifecycleScope.launch(Dispatchers.IO) {
-            val message = MessageData(
-                idMessage = idMess,
-                idFrom = args.idPatient,
-                idTo = args.idDoctor,
-                message = text,
-                timestamp = timestamp,
-                type = type
-            )
-            var refPatient = ""
-            var refDoctor = ""
-            refPatient = "message/${UID()}/${args.idDoctor}"
-            refDoctor = "message/${args.idDoctor}/${UID()}"
+    private fun sendToDB(idMess: String, text: String, type: String, timestamp: Any) {
+        chatWithDoctorViewModel.sendNotificationData(idDoctor, idPatient, text, idNotification)
+        chatWithDoctorViewModel.sendMessage(idMess, text, type, timestamp, idDoctor, idNotification)
+        chatWithDoctorViewModel.saveMainList(text, timestamp, type, idDoctor, doctorImageUrl)
 
-            DB.reference.child(refPatient).child(idMess).setValue(message)
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        DB.reference.child(refDoctor)
-                            .child(idMess)
-                            .setValue(message)
-                            .addOnCompleteListener { task ->
-                                if (task.isSuccessful) {
-                                    saveMainList(text, timestamp, type)
-                                }
-                            }
-                    } else {
-                        lifecycleScope.launch {
-                            showSnackbar("Попробуйте еще раз.")
-                        }
-                    }
-                }
-        }
-    }
-
-    private fun saveMainList(text: String, timestamp: Any, type: String) {
-        lifecycleScope.launch(Dispatchers.IO) {
-            var refPatient = ""
-            var refDoctor = ""
-            refPatient = "main_list/${UID()}/${args.idDoctor}"
-            refDoctor = "main_list/${args.idDoctor}/${UID()}"
-            val childPatient = CommonPatientData(
-                id = args.idDoctor,
-                photoUrl = doctorImageUrl,
-                message = text,
-                timestamp = timestamp,
-                type = type
-            )
-            val childDoctor = CommonPatientData(
-                id = UID(),
-                photoUrl = doctorImageUrl,
-                message = text,
-                timestamp = timestamp,
-                type = type
-            )
-
-            DB.reference.child(refPatient).setValue(childPatient)
-            DB.reference.child(refDoctor).setValue(childDoctor)
-        }
     }
 
     private fun setDoctorsData() {
-        lifecycleScope.launch {
-            DB.reference
-                .child("doctors").child(args.idDoctor)
-                .addValueEventListener(object : ValueEventListener {
-                    override fun onDataChange(snapshot: DataSnapshot) {
-                        if (snapshot.exists()) {
-                            snapshot.getValue(DoctorData::class.java)?.apply {
-                                binding.fio.text = "${name} ${patronymic}"
-                                doctorName = "$name $patronymic $surname"
-                                doctorImageUrl = photoUrl ?: ""
-                                if (photoUrl?.isNotEmpty()!!) {
-                                    Glide
-                                        .with(requireContext())
-                                        .load(photoUrl)
-                                        .centerCrop()
-                                        .into(binding.profileImage)
-                                }
-                            }
-                        }
+        chatWithDoctorViewModel.getDoctorsData(idDoctor)
+        chatWithDoctorViewModel.livedata.observe(viewLifecycleOwner) {
+            it?.apply {
+                view?.findViewById<TextView>(R.id.fio)?.text = "${name} ${patronymic}"
+                doctorName = "$name $patronymic $surname"
+                if (stateTo == idPatient) {
+                    binding.experience.text = state.toString()
+                } else {
+                    try {
+                        binding.experience.text = state.toString().asTimeStatus()
+                    } catch (e: Exception) {
+                        binding.experience.text = state.toString()
                     }
-
-                    override fun onCancelled(error: DatabaseError) = Unit
-                })
+                }
+                doctorImageUrl = photoUrl
+                idNotification = (iin.toLong() - 999900000000).toInt()
+                if (photoUrl.isNotEmpty()) {
+                    super.setImage(photoUrl, binding.profileImage)
+                    lifecycleScope.launch(Dispatchers.IO) {
+                        imageUriprofile = super.getCachedPhotoURI(photoUrl)
+                    }
+                }
+            }
+        }
+        binding.profileImage.setOnClickListener {
+            if (imageUriprofile != null) {
+                super.zoomImageFromThumb(
+                    it,
+                    imageUriprofile!!,
+                    binding.expandedImage,
+                    binding.container,
+                    binding.containerSen,
+                    binding.containerToolbar,
+                    binding.recyclerChat
+                )
+            }
         }
     }
 
@@ -268,5 +276,4 @@ class ChatWithDoctorFragment :
             findNavController().popBackStack()
         }
     }
-
 }

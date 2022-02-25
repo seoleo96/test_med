@@ -12,9 +12,12 @@ data class PatientData(
     val login: String,
     val password: String,
     val phoneNumber: String,
-    val photoUrl: String?,
+    val photoUrl: String ="",
+    val state: Any,
+    val stateTo: String = "1",
+    val token: String = "",
 ) {
-    constructor() : this("",
+    constructor() : this("", "", "", "",
         "", "", "",
         "", "", "", "",
         "", "", "", "")

@@ -3,13 +3,18 @@ package com.example.testmed.doctor
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.example.testmed.R
+import com.example.testmed.*
 import com.example.testmed.databinding.ActivityMainDoctorBinding
+import com.google.firebase.database.ServerValue
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
 class MainActivityDoctor : AppCompatActivity() {
 
@@ -33,6 +38,29 @@ class MainActivityDoctor : AppCompatActivity() {
         navView.setupWithNavController(navController)
         hideActionBarOnDestinationChange()
     }
+
+    private fun updateStatePatientOffline(time: Any) {
+        val refState = DB.reference.child("doctors").child(UID()).child("state")
+        lifecycleScope.launch(Dispatchers.IO) {
+            val data: String? = refState.get().await().getValue(String::class.java)
+            if (data != null) {
+                refState.setValue(time)
+            }
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        val data = ServerValue.TIMESTAMP
+        updateStatePatientOffline(data)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        val data = ServerValue.TIMESTAMP
+        updateStatePatientOffline(data)
+    }
+
 
     private fun hideActionBarOnDestinationChange() {
         navController.addOnDestinationChangedListener { _, destination, _ ->

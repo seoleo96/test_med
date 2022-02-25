@@ -3,6 +3,7 @@ package com.example.testmed.patient.profile.profilepatient.presentation
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.testmed.*
@@ -10,6 +11,10 @@ import com.example.testmed.base.BaseFragment
 import com.example.testmed.databinding.FragmentProfileBinding
 import com.example.testmed.patient.profile.profilepatient.PatientDataResult
 import com.example.testmed.patient.profile.profilepatient.data.ProfileDataRepository
+import com.google.firebase.database.ServerValue
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
 class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBinding::inflate) {
 
@@ -26,6 +31,8 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
 
     private fun signOut() {
         binding.signOutApp.setOnClickListener {
+            val data = ServerValue.TIMESTAMP
+            setStatusOffline(data)
             profileDataViewModel.signOut()
             PHONE_NUMBER = ""
             findNavController().apply {
@@ -39,6 +46,23 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
         }
     }
 
+    private fun setStatusOffline(date: Any) {
+        val refState = DB.reference.child("patients").child(UID()).child("state")
+        lifecycleScope.launch(Dispatchers.IO) {
+            val data: String? = refState.get().await().getValue(String::class.java)
+            if (data != null) {
+                refState.setValue(date)
+                    .addOnCompleteListener {
+                        lifecycleScope.launch(Dispatchers.IO){
+                            val data = refState.get().await().getValue(Any::class.java)
+                            val date = data.toString().asDate()
+                            PATIENT_STATUS = date
+                        }
+                    }
+            }
+        }
+    }
+
     private fun setChangeData() {
         binding.changeData.setOnClickListener {
             findNavController().navigate(R.id.navigation_change_patient_data)
@@ -48,7 +72,6 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
     private fun setProfileData() {
         profileDataViewModel.patientDataLiveData.observe(viewLifecycleOwner, { data ->
             when (data) {
-
                 is PatientDataResult.Loading -> {
                     binding.apply {
                         progressBar.isVisible = true

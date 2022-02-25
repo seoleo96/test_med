@@ -2,6 +2,7 @@ package com.example.testmed
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.JsonToken
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.testmed.databinding.ActivitySelectUserBinding
@@ -24,6 +25,7 @@ class SelectUserActivity : AppCompatActivity(R.layout.activity_select_user) {
                 val intent = Intent(this@SelectUserActivity, MainActivityDoctor::class.java)
                 startActivity(intent)
             }
+
         }
 
         val timestamp: MutableMap<String, String> = TIMESTAMP
