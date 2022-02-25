@@ -15,5 +15,6 @@
     <color name="background_root">#EDFCFF</color>
     <color name="button_color">#2E58AB</color>
     <color name="color_kul">#616161</color>
+    <color name="color_schedule">#12317DF7</color>
 
 </resources>

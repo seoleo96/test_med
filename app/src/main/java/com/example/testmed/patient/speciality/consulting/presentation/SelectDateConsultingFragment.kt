@@ -1,8 +1,12 @@
 package com.example.testmed.patient.speciality.consulting.presentation
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.testmed.DB
 import com.example.testmed.UID
 import com.example.testmed.base.BaseFragment
@@ -13,10 +17,14 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 import java.util.*
 
-class SelectDateConsultingFragment
-    :
+
+class SelectDateConsultingFragment :
     BaseFragment<SelectDateConsultingFragmentBinding>(SelectDateConsultingFragmentBinding::inflate),
     DatePickerDialog.OnDateSetListener {
 
@@ -30,12 +38,16 @@ class SelectDateConsultingFragment
     private lateinit var time: String
     private lateinit var idNotification: String
     private lateinit var dateToDB: String
+    private lateinit var adapter: ScheduleAdapter
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setPatientData()
         setIdDoctor()
+        setAdapter()
         setDatePicker()
+        createList()
         binding.textRegister.setOnClickListener {
             DB.reference
                 .child("consulting")
@@ -94,12 +106,20 @@ class SelectDateConsultingFragment
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if (snapshot.exists()) {
                         snapshot.getValue(CommonPatientData::class.java)
-                            .also { commonPatientData = it!! }
+                            .also {it->
+                                commonPatientData = it!!
+                                fullName =
+                                    "${commonPatientData.name} ${commonPatientData.surname} ${commonPatientData.patronymic}"
+                                idNotification =
+                                    ((it.iin.toLong() - 999900000000).toInt()).toString()
+                                idPatient = it.id
+                            }
                     }
                 }
 
                 override fun onCancelled(error: DatabaseError) = Unit
             })
+
     }
 
 
@@ -116,23 +136,39 @@ class SelectDateConsultingFragment
                 if (snapshot.exists()) {
                     checkValueDoctor()
                 } else {
-                    refDB.setValue("consulting")
+                    val consultingData = ConsultingData(
+                        fullName = "Ali Alixanov Batrbek",
+                        idPatient = "182736178238172689",
+                        idNotification = "128712367",
+                        time = "09-00"
+                    )
+                    refDB
+                        .child("1234567890")
+                        .child("01-01-2022")
+                        .child("09:00")
+                        .setValue(consultingData)
                 }
             }
 
             override fun onCancelled(error: DatabaseError) = Unit
         })
-
     }
 
+    data class ConsultingData(
+        val time: String,
+        val fullName: String,
+        val idNotification: String,
+        val idPatient: String,
+    )
+
     private fun checkValueDoctor() {
-        val refConsulting = DB.reference.child("consulting")
-        refConsulting.child(idDoctor).addValueEventListener(object : ValueEventListener {
+        val refConsulting = DB.reference.child("consulting").child(idDoctor)
+        refConsulting.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
                     checkValueDate()
                 } else {
-                    refConsulting.setValue(idDoctor)
+                    createConsulting()
                 }
             }
 
@@ -141,35 +177,90 @@ class SelectDateConsultingFragment
     }
 
     private fun checkValueDate() {
-        val refConsulting = DB.reference.child("consulting").child(idDoctor)
-        refConsulting.child(dateToDB).addValueEventListener(object : ValueEventListener {
+        val refConsultingDate = DB.reference.child("consulting").child(idDoctor).child(dateToDB)
+        refConsultingDate.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
-                    checkValueTime()
+                    showSnackbar("in DB has this date")
+                    lifecycleScope.launch(Dispatchers.IO) {
+                        snapshot.children.forEach { time ->
+                            mutableList.removeIf { it == time.key.toString() }
+                        }
+                        withContext(Dispatchers.Main) {
+                            adapter.updateList(mutableList)
+                            binding.recyclerSchedule.isVisible = true
+                        }
+                        mutableList.forEach {
+                            Log.d("TIMES", it.toString())
+                        }
+                    }
                 } else {
-                    refConsulting.setValue(dateToDB)
+                    createConsulting()
                 }
             }
 
             override fun onCancelled(error: DatabaseError) = Unit
         })
     }
+
+    val mutableList = mutableListOf<String>()
 
     private fun checkValueTime() {
-        val refConsulting =
-            DB.reference.child("consulting").child(idDoctor).child(dateToDB)
-        refConsulting.child("09-00").addValueEventListener(object : ValueEventListener {
+        val refConsultingDate = DB.reference.child("consulting").child(idDoctor).child(dateToDB)
+        refConsultingDate.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                if (snapshot.exists()) {
-                    showSnackbar("yes time reference")
-                } else {
-                    showSnackbar("no time reference")
+                snapshot.children.forEach {
+                    val time = it.key.toString()
+                    mutableList.removeIf { it == time }
+                    adapter.updateList(mutableList)
                 }
+                binding.recyclerSchedule.isVisible = true
             }
 
             override fun onCancelled(error: DatabaseError) = Unit
         })
     }
+
+    private fun createConsulting() {
+        binding.recyclerSchedule.isVisible = true
+        adapter.updateList(mutableList)
+    }
+
+
+    private fun setAdapter() {
+        adapter = ScheduleAdapter {
+            showSnackbar(it)
+            createConsultingData(it)
+        }
+        binding.recyclerSchedule.layoutManager = GridLayoutManager(requireContext(), 2)
+        binding.recyclerSchedule.adapter = adapter
+
+    }
+
+    private fun createConsultingData(time: String) {
+        val refConsulting =
+            DB.reference.child("consulting").child(idDoctor).child(dateToDB).child(time)
+        val patientInfo = ConsultingData(time, fullName, idNotification, idPatient)
+        val bool = refConsulting.setValue(patientInfo)
+        if (bool.isSuccessful) {
+            showSnackbar("Вы записаны в консультацию")
+        } else {
+            showSnackbar("Вы уже записаны в консультацию")
+        }
+    }
+
+
+    private fun createList() {
+        mutableList.add("09-00")
+        mutableList.add("10-00")
+        mutableList.add("11-00")
+        mutableList.add("12-00")
+        mutableList.add("14-00")
+        mutableList.add("15-00")
+        mutableList.add("16-00")
+        mutableList.add("17-00")
+    }
+
 
     private fun getReadyDates(date: Int) =
         if (date.toString().length == 1) "0$date" else date.toString()
