@@ -104,45 +104,44 @@ class ChatWithPatientFragment
         }
     }
 
-    private fun setMessages() {
-        viewModel.getMessages(idDoctor, patientId)
-        viewModel.messLiveData.observe(viewLifecycleOwner) { data ->
-            listMessages.removeIf { listData ->
-                listData.idMessage == data.idMessage
-            }
-            tempTimestamp = data.timestamp.toString()
-            listMessages.add(data)
-            updateAdapter(listMessages)
-        }
-    }
-
-    //    private fun setMessages() {
-//        val ref = DB.reference
-//            .child("message")
-//            .child(idDoctor)
-//            .child(patientId)
-//        ref.addValueEventListener(object : ValueEventListener {
-//            override fun onDataChange(snapshot: DataSnapshot) {
-//                if (snapshot.exists()) {
-//                    snapshot.children.forEach { messages ->
-//                        val data = messages.getValue(MessageData::class.java)
-//                        if (data != null) {
-//                            listMessages.removeIf { listData ->
-//                                listData.idMessage == data.idMessage
-//                            }
-//                            tempTimestamp = data.timestamp.toString()
-//                            listMessages.add(data)
-//
-//                        }
-//
-//                    }
-//                }
-//                updateAdapter(listMessages)
+//    private fun setMessages() {
+//        viewModel.getMessages(idDoctor, patientId)
+//        viewModel.messLiveData.observe(viewLifecycleOwner) { data ->
+//            listMessages.removeIf { listData ->
+//                listData.idMessage == data.idMessage
 //            }
-//
-//            override fun onCancelled(error: DatabaseError) = Unit
-//        })
+//            tempTimestamp = data.timestamp.toString()
+//            listMessages.add(data)
+//            updateAdapter(listMessages)
+//        }
 //    }
+
+    private fun setMessages() {
+        val ref = DB.reference
+            .child("message")
+            .child(idDoctor)
+            .child(patientId)
+        ref.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    snapshot.children.forEach { messages ->
+                        val data = messages.getValue(MessageData::class.java)
+                        if (data != null) {
+                            listMessages.removeIf { listData ->
+                                listData.idMessage == data.idMessage
+                            }
+                            tempTimestamp = data.timestamp.toString()
+                            listMessages.add(data)
+                            updateAdapter(listMessages)
+                        }
+                    }
+                }
+
+            }
+
+            override fun onCancelled(error: DatabaseError) = Unit
+        })
+    }
 
     private fun setEditTextListener() {
         sendButtonNotEditable()
@@ -174,11 +173,8 @@ class ChatWithPatientFragment
     private fun updateStateDoctorTyping(idDoctor: String) {
         val refState = DB.reference.child("doctors").child(idDoctor).child("state")
         lifecycleScope.launch(Dispatchers.IO) {
-            val data: String? = refState.get().await().getValue(String::class.java)
-            if (data != null) {
-                refState.setValue(typing)
-                updateStateTo(idDoctor, idDoctor)
-            }
+            refState.setValue(typing)
+            updateStateTo(idDoctor, patientId)
         }
     }
 
@@ -186,7 +182,7 @@ class ChatWithPatientFragment
         super.onPause()
         updateStateTo(idDoctor, "1")
         viewModel.removeListener()
-        viewModel.removeListenerMess()
+//        viewModel.removeListenerMess()
     }
 
     private fun sendButtonNotEditable() {
@@ -225,7 +221,7 @@ class ChatWithPatientFragment
             val data = MessageData(
                 message = "Фото отправляется...",
                 idMessage = key,
-                timestamp = "1645637136528",
+                timestamp = tempTimestamp,
                 idFrom = idDoctor,
                 type = "message"
             )

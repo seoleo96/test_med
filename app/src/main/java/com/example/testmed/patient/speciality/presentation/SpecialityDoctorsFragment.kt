@@ -82,7 +82,8 @@ class SpecialityDoctorsFragment : BaseFragment<FragmentHomeBinding>(FragmentHome
          phoneNumber = "+16505551289",
          photoUrl = "",
             state = "",
-            stateTo = ""
+            stateTo = "",
+            token = ""
         )
         DB.reference.child("doctors").child(doctor.id).setValue(doctor)
     }

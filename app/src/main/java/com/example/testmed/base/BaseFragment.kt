@@ -86,17 +86,7 @@ abstract class BaseFragment<VB : ViewBinding>(
 
     fun updateStatePatient(online: String) {
         lifecycleScope.launch(Dispatchers.IO) {
-            val data = refState.get().await().getValue(Any::class.java)
-            Log.d("STARTON", data.toString())
-            if (data != null) {
-                if (data.toString() != online) {
-                    refState.setValue(online)
-                        .addOnCompleteListener {
-                            PATIENT_STATUS = online
-                            Log.d("PATIENT_STATUS", PATIENT_STATUS)
-                        }
-                }
-            }
+            refState.setValue(online)
         }
     }
 

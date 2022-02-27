@@ -162,6 +162,25 @@
         <argument
             android:name="idDoctor"
             app:argType="string" />
+        <action
+            android:id="@+id/action_selectDateConsultingFragment_to_confirmConsultingDateFragment"
+            app:destination="@id/confirmConsultingDateFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/confirmConsultingDateFragment"
+        android:name="com.example.testmed.ConfirmConsultingDateFragment"
+        android:label="confirm_consulting_date_fragment"
+        tools:layout="@layout/confirm_consulting_date_fragment" >
+        <argument
+            android:name="fullNamePatient"
+            app:argType="string" />
+        <argument android:name="fullNameDoctor" />
+        <argument
+            android:name="dateConsulting"
+            app:argType="string" />
+        <argument
+            android:name="timeConsulting"
+            app:argType="string" />
     </fragment>
 
 

@@ -42,10 +42,7 @@ class MainActivityDoctor : AppCompatActivity() {
     private fun updateStatePatientOffline(time: Any) {
         val refState = DB.reference.child("doctors").child(UID()).child("state")
         lifecycleScope.launch(Dispatchers.IO) {
-            val data: String? = refState.get().await().getValue(String::class.java)
-            if (data != null) {
-                refState.setValue(time)
-            }
+            refState.setValue(time)
         }
     }
 

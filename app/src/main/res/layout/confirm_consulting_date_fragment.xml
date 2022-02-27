@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_color"
+    tools:context=".ConfirmConsultingDateFragment"
+    >
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="300dp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <ScrollView
+        android:id="@+id/content_all_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraint_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            >
+
+            <TextView
+                android:id="@+id/text_register"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="18dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="18dp"
+                android:fontFamily="monospace"
+                android:text="@string/tv_register"
+                style="@style/MaterialAlertDialog.MaterialComponents.Title.Panel"
+                android:textAlignment="center"
+                android:textColor="#27214D"
+                android:textIsSelectable="true"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraint2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/round_fone_recycler"
+                android:paddingBottom="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_register"
+                >
+
+                <TextView
+                    android:id="@+id/textViewPatient"
+                    style="@style/MaterialAlertDialog.MaterialComponents.Title.Panel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.Compat.Notification.Title"
+                    android:textAlignment="center"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Вы хотите записать Алимов С. Х. в онлайн консультацию к врачу"
+                    />
+
+
+                <View
+                    android:id="@+id/line0"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="16dp"
+                    android:background="#c0c0c0"
+                    app:layout_constraintEnd_toEndOf="@id/textViewPatient"
+                    app:layout_constraintStart_toStartOf="@+id/textViewPatient"
+                    app:layout_constraintTop_toBottomOf="@id/textViewPatient"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_iin"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="22dp"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/tv_iin"
+                    android:textColor="#616161"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/line0"
+                    />
+
+                <TextView
+                    android:id="@+id/iin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginEnd="16dp"
+                    android:maxWidth="300dp"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:paddingBottom="8dp"
+                    android:text=""
+                    android:textColor="@color/black"
+                    android:textIsSelectable="true"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="@+id/tv_iin"
+                    app:layout_constraintStart_toStartOf="@+id/tv_iin"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_iin"
+                    />
+
+
+                <View
+                    android:id="@+id/line1"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="4dp"
+                    android:background="#c0c0c0"
+                    app:layout_constraintEnd_toEndOf="@id/iin"
+                    app:layout_constraintStart_toStartOf="@+id/iin"
+                    app:layout_constraintTop_toBottomOf="@id/iin"
+                    />
+
+
+                <TextView
+                    android:id="@+id/tv_full_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/tv_fio"
+                    android:textColor="#616161"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="@+id/line1"
+                    app:layout_constraintStart_toStartOf="@+id/tv_iin"
+                    app:layout_constraintTop_toBottomOf="@+id/line1"
+                    />
+
+                <TextView
+                    android:id="@+id/full_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginEnd="16dp"
+                    android:maxWidth="300dp"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:paddingBottom="8dp"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="@+id/tv_full_name"
+                    app:layout_constraintStart_toStartOf="@+id/tv_full_name"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_full_name"
+                    tools:textIsSelectable="true"
+                    />
+
+                <View
+                    android:id="@+id/line2"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="4dp"
+                    android:background="#c0c0c0"
+                    app:layout_constraintEnd_toEndOf="@id/full_name"
+                    app:layout_constraintStart_toStartOf="@+id/full_name"
+                    app:layout_constraintTop_toBottomOf="@id/full_name"
+                    />
+
+
+                <TextView
+                    android:id="@+id/tv_birthday"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="Дата рождения"
+                    android:textColor="#616161"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="@+id/line2"
+                    app:layout_constraintStart_toStartOf="@+id/tv_iin"
+                    app:layout_constraintTop_toBottomOf="@+id/line2"
+                    />
+
+                <TextView
+                    android:id="@+id/birthday"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginEnd="16dp"
+                    android:maxWidth="300dp"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:paddingBottom="8dp"
+                    android:text=""
+                    android:textColor="@color/black"
+                    android:textIsSelectable="true"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="@+id/tv_birthday"
+                    app:layout_constraintStart_toStartOf="@+id/tv_birthday"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_birthday"
+                    />
+
+                <View
+                    android:id="@+id/line3"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="4dp"
+                    android:background="#c0c0c0"
+                    app:layout_constraintEnd_toEndOf="@id/birthday"
+                    app:layout_constraintStart_toStartOf="@+id/birthday"
+                    app:layout_constraintTop_toBottomOf="@id/birthday"
+                    />
+
+
+                <TextView
+                    android:id="@+id/tv_gender"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="Пол"
+                    android:textColor="#616161"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="@+id/line3"
+                    app:layout_constraintStart_toStartOf="@+id/tv_iin"
+                    app:layout_constraintTop_toBottomOf="@+id/line3"
+                    />
+
+                <TextView
+                    android:id="@+id/gender"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginEnd="16dp"
+                    android:maxWidth="300dp"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:paddingBottom="8dp"
+                    android:text=""
+                    android:textColor="@color/black"
+                    android:textIsSelectable="true"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="@+id/tv_gender"
+                    app:layout_constraintStart_toStartOf="@+id/tv_gender"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_gender"
+                    />
+
+                <View
+                    android:id="@+id/line4"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="4dp"
+                    android:background="#c0c0c0"
+                    app:layout_constraintEnd_toEndOf="@id/gender"
+                    app:layout_constraintStart_toStartOf="@+id/gender"
+                    app:layout_constraintTop_toBottomOf="@id/gender"
+                    />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/change_data"
+                android:layout_width="360dp"
+                android:layout_height="@dimen/button_height"
+                android:layout_marginTop="16dp"
+                android:backgroundTint="#2E58AB"
+                android:text="@string/tv_go_to_pay"
+                android:textAlignment="center"
+                app:cornerRadius="8dp"
+                app:layout_constraintEnd_toEndOf="@+id/constraint2"
+                app:layout_constraintStart_toStartOf="@+id/constraint2"
+                app:layout_constraintTop_toBottomOf="@+id/constraint2"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

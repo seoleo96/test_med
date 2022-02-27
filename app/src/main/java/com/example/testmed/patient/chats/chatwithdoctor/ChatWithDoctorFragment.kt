@@ -3,6 +3,7 @@ package com.example.testmed.patient.chats.chatwithdoctor
 import android.app.Activity
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
@@ -18,7 +19,10 @@ import com.example.testmed.*
 import com.example.testmed.base.BaseFragment
 import com.example.testmed.databinding.FragmentChatWithDoctorBinding
 import com.example.testmed.model.MessageData
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ServerValue
+import com.google.firebase.database.ValueEventListener
 import com.theartofdev.edmodo.cropper.CropImage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -69,43 +73,46 @@ class ChatWithDoctorFragment :
         chatWithDoctorViewModel.updateToken()
     }
 
-    private fun setMessages() {
-        chatWithDoctorViewModel.getMessages(idDoctor)
-        chatWithDoctorViewModel.messLiveData.observe(viewLifecycleOwner) { data ->
-            mListMessages.removeIf {
-                it.idMessage == data.idMessage
-            }
-            tempTimestamp = data.timestamp.toString()
-            mListMessages.add(data)
-            updateAdapter(mListMessages)
-        }
-    }
-
 //    private fun setMessages() {
-//        val ref = DB.reference
-//            .child("message")
-//            .child(UID())
-//            .child(args.idDoctor)
-//        ref.addValueEventListener(object : ValueEventListener {
-//            override fun onDataChange(snapshot: DataSnapshot) {
-//                if (snapshot.exists()) {
-//                    snapshot.children.forEach {
-//                        val data = it.getValue(MessageData::class.java)
-//                        if (data != null) {
-//                            mListMessages.removeIf {
-//                                it.idMessage == data.idMessage
-//                            }
-//                            tempTimestamp = data.timestamp.toString()
-//                            mListMessages.add(data)
-//                        }
-//                    }
-//                }
-//                updateAdapter(mListMessages)
+//        chatWithDoctorViewModel.getMessages(idDoctor)
+//        chatWithDoctorViewModel.messLiveData.observe(viewLifecycleOwner) { data ->
+//            mListMessages.removeIf {
+//                it.idMessage == data.idMessage
 //            }
-//
-//            override fun onCancelled(error: DatabaseError) = Unit
-//        })
+//            tempTimestamp = data.timestamp.toString()
+//            mListMessages.add(data)
+//            updateAdapter(mListMessages)
+//        }
 //    }
+
+    private fun setMessages() {
+        val ref = DB.reference
+            .child("message")
+            .child(idPatient)
+            .child(idDoctor)
+        ref.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+
+                if (snapshot.exists()) {
+                    snapshot.children.forEach {
+                        Log.d("TAG", it.toString())
+
+                        val data = it.getValue(MessageData::class.java)
+                        if (data != null) {
+                            mListMessages.removeIf {
+                                it.idMessage == data.idMessage
+                            }
+                            tempTimestamp = data.timestamp.toString()
+                            mListMessages.add(data)
+                        }
+                    }
+                }
+                updateAdapter(mListMessages)
+            }
+
+            override fun onCancelled(error: DatabaseError) = Unit
+        })
+    }
 
     private fun setAdapter() {
         mAdapter = ChatAdapter { messageData, view ->
@@ -138,20 +145,16 @@ class ChatWithDoctorFragment :
         sendButtonNotEditable()
         binding.messageEditText.doAfterTextChanged {
             if (it?.length == 0 || it?.trim()!!.isEmpty()) {
+                chatWithDoctorViewModel.updateStateTo("1")
+                updateStatePatient(online)
                 sendButtonNotEditable()
             } else {
+                if (it.isNotEmpty()){
+                    chatWithDoctorViewModel.updateTyping(idDoctor)
+                }
                 binding.apply {
                     sendButton.isEnabled = true
                 }
-            }
-        }
-        binding.messageEditText.doOnTextChanged { text, start, before, count ->
-            if (start >= 1) {
-                chatWithDoctorViewModel.updateTyping(idDoctor)
-            }
-            if (start == 0) {
-                chatWithDoctorViewModel.updateStateTo("1")
-                super.updateStatePatient(online)
             }
         }
     }
@@ -160,7 +163,7 @@ class ChatWithDoctorFragment :
         super.onPause()
         chatWithDoctorViewModel.updateStateTo("1")
         chatWithDoctorViewModel.removeListener()
-        chatWithDoctorViewModel.removeListenerMess()
+//        chatWithDoctorViewModel.removeListenerMess()
     }
 
     private fun sendButtonNotEditable() {
@@ -198,7 +201,7 @@ class ChatWithDoctorFragment :
             val path = REF_STORAGE_ROOT.child("message_images").child(key)
             val timestamp = ServerValue.TIMESTAMP
             val data = MessageData(idMessage = key,
-                timestamp = "1645637136528",
+                timestamp = tempTimestamp,
                 idFrom = idPatient,
                 message = "Отправляется...",
                 type = "message")

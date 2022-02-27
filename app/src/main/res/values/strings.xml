@@ -95,4 +95,9 @@
         "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
         "when a user tries to pick up one of cards.\n\n"
     </string>
+    <string name="tv_passvord">Пароль</string>
+    <string name="tv_register">Регистрация</string>
+    <string name="tv_fio">ФИО</string>
+    <string name="tv_iin">ИИН</string>
+    <string name="tv_go_to_pay">Перейти к оплате</string>
 </resources>
