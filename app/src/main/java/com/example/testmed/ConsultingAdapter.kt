@@ -1,41 +1,33 @@
-package com.example.testmed.patient.chats
+package com.example.testmed
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.testmed.R
-import com.example.testmed.databinding.PatientItemLayoutBinding
+import com.example.testmed.databinding.ConsultingItemLayoutBinding
 import com.example.testmed.model.CommonPatientData
-
-class DoctorsAdapter(private val adapterOnClick: (CommonPatientData) -> Unit) :
-    RecyclerView.Adapter<DoctorsAdapter.DoctorsViewHolder>() {
+//private val adapterOnClick: (CommonPatientData) -> Unit
+class ConsultingAdapter(private val adapterOnClick: (CommonPatientData) -> Unit) :
+    RecyclerView.Adapter<ConsultingAdapter.ConsultingViewHolder>() {
 
     private val list = mutableListOf<CommonPatientData>()
     fun updateList(data: List<CommonPatientData>) {
-        clearList()
-        this.list.addAll(data)
-        this.list.sortByDescending { it.time.toString().toLong() }
-        notifyDataSetChanged()
-    }
-
-    fun clearList() {
         this.list.clear()
+        this.list.addAll(data)
         notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int,
-    ): DoctorsViewHolder {
-        return DoctorsViewHolder(makeView(parent), adapterOnClick)
+    ): ConsultingViewHolder {
+        return ConsultingViewHolder(makeView(parent), adapterOnClick)
     }
 
     private fun makeView(parent: ViewGroup) =
-        PatientItemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        ConsultingItemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
 
-    override fun onBindViewHolder(holder: DoctorsViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ConsultingViewHolder, position: Int) {
         val bind: CommonPatientData = list[position]
         if (position == list.size-1)
             holder.bind(bind, true)
@@ -47,24 +39,21 @@ class DoctorsAdapter(private val adapterOnClick: (CommonPatientData) -> Unit) :
         return list.size
     }
 
-    class DoctorsViewHolder(
-        private val binding: PatientItemLayoutBinding,
+    class ConsultingViewHolder(
+        private val binding: ConsultingItemLayoutBinding,
         private val adapterOnClick: (CommonPatientData) -> Unit,
     ) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(data: CommonPatientData, hideLine: Boolean) {
-            if(data.sizeNotReadingMessages != "0"){
-                binding.sizeNotReadingMessages.isVisible = true
-                binding.sizeNotReadingMessages.text = data.sizeNotReadingMessages
-            }else{
-                binding.sizeNotReadingMessages.isVisible = false
-            }
             data.apply {
                 if (hideLine){
                     binding.line4.setBackgroundResource(R.drawable.round_fone_recycler)
                 }
-                binding.patientName.text = "$name $surname"
-                binding.lastMessage.text = message
+                binding.apply {
+                    speciality.text = data.speciality
+                    fullNameDoctor.text = data.fullNameDoctor
+                    dateTime.text = "${data.date} ${data.time}"
+                }
                 if (photoUrl != null) {
                     if (photoUrl.isNotEmpty()) {
                         Glide
@@ -77,7 +66,8 @@ class DoctorsAdapter(private val adapterOnClick: (CommonPatientData) -> Unit) :
                     }
                 }
             }
-            binding.itemRoot.setOnClickListener { adapterOnClick.invoke(data) }
+            binding.cancelConsulting.setOnClickListener { adapterOnClick.invoke(data) }
+            binding.profileImage.setOnClickListener { adapterOnClick.invoke(data) }
         }
     }
 }

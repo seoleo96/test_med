@@ -8,7 +8,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.testmed.DB
+import com.example.testmed.R
 import com.example.testmed.UID
 import com.example.testmed.base.BaseFragment
 import com.example.testmed.databinding.SelectDateConsultingFragmentBinding
@@ -17,6 +19,7 @@ import com.example.testmed.model.DoctorData
 import com.example.testmed.showSnackbar
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog
 import kotlinx.coroutines.Dispatchers
@@ -39,20 +42,34 @@ class SelectDateConsultingFragment :
     private lateinit var fullNamePatient: String
     private lateinit var fullNameDoctor: String
     private lateinit var tokenDoctor: String
+    private lateinit var costOfConsulting: String
     private lateinit var timeConsulting: String
+    private lateinit var phoneNumberDoctor: String
+    private lateinit var phoneNumberPatient: String
+    private lateinit var photoUrl: String
+    private lateinit var photoUrlPatient: String
     private lateinit var idNotification: String
+    private lateinit var speciality: String
     private lateinit var dateToDB: String
     private lateinit var adapter: ScheduleAdapter
+    private lateinit var refDoctorData: DatabaseReference
+    private lateinit var refPatientsData: DatabaseReference
+    private lateinit var refConsulting: DatabaseReference
+    private lateinit var refConsultingDocId: DatabaseReference
+    private lateinit var refSetConsultingDate: DatabaseReference
+    private lateinit var valueEventListener: ValueEventListener
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setDatabaseRefs()
         setPatientData()
         setIdDoctor()
         setDoctorData()
         setAdapter()
         setDatePicker()
         createList()
+
         binding.textRegister.setOnClickListener {
             DB.reference
                 .child("consulting")
@@ -68,39 +85,57 @@ class SelectDateConsultingFragment :
         }
     }
 
+    private fun setDatabaseRefs() {
+        refConsulting = DB.reference.child("consulting")
+    }
+
     private fun toConfirmConsultingDate() {
         val action = SelectDateConsultingFragmentDirections
             .actionSelectDateConsultingFragmentToConfirmConsultingDateFragment(
                 fullNamePatient,
                 fullNameDoctor,
                 dateToDB,
-                timeConsulting
+                timeConsulting,
+                phoneNumberDoctor,
+                tokenDoctor,
+                idDoctor,
+                idPatient,
+                idNotification,
+                costOfConsulting,
+                speciality,
+                photoUrl,
+                phoneNumberPatient,
+                photoUrlPatient
             )
         findNavController().navigate(action)
     }
 
     private fun setDoctorData() {
-        DB.reference
+        refDoctorData = DB.reference
             .child("doctors")
             .child(idDoctor)
-            .addValueEventListener(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    if (snapshot.exists()) {
-                        snapshot.getValue(DoctorData::class.java)
-                            .also {it->
-                                if (it != null) {
-                                    fullNameDoctor =
-                                        "${it.name} ${it.surname} ${it.patronymic}"
-                                    tokenDoctor = it.token
-                                }
-                                Log.d("TAGDOC", fullNameDoctor)
-                                Log.d("TAGDOC", tokenDoctor)
+        valueEventListener = refDoctorData.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    snapshot.getValue(DoctorData::class.java)
+                        .also { it ->
+                            if (it != null) {
+                                fullNameDoctor =
+                                    "${it.name} ${it.surname} ${it.patronymic}"
+                                tokenDoctor = it.token
+                                costOfConsulting = it.costOfConsultation
+                                phoneNumberDoctor = it.phoneNumber
+                                speciality = it.speciality
+                                photoUrl = it.photoUrl
                             }
-                    }
+                            Log.d("TAGDOC", fullNameDoctor)
+                            Log.d("TAGDOC", tokenDoctor)
+                        }
                 }
+            }
 
-                override fun onCancelled(error: DatabaseError) = Unit
-            })
+            override fun onCancelled(error: DatabaseError) = Unit
+        })
 
     }
 
@@ -145,26 +180,28 @@ class SelectDateConsultingFragment :
     }
 
     private fun setPatientData() {
-        DB.reference
+        refPatientsData = DB.reference
             .child("patients")
             .child(UID())
-            .addValueEventListener(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    if (snapshot.exists()) {
-                        snapshot.getValue(CommonPatientData::class.java)
-                            .also {it->
-                                commonPatientData = it!!
-                                fullNamePatient =
-                                    "${commonPatientData.name} ${commonPatientData.surname} ${commonPatientData.patronymic}"
-                                idNotification =
-                                    ((it.iin.toLong() - 999900000000).toInt()).toString()
-                                idPatient = it.id
-                            }
-                    }
+        valueEventListener = refPatientsData.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    snapshot.getValue(CommonPatientData::class.java)
+                        .also { it ->
+                            commonPatientData = it!!
+                            fullNamePatient =
+                                "${commonPatientData.name} ${commonPatientData.surname} ${commonPatientData.patronymic}"
+                            idNotification =
+                                ((it.iin.toLong() - 999900000000).toInt()).toString()
+                            idPatient = it.id
+                            phoneNumberPatient = it.phoneNumber
+                            photoUrlPatient = it.photoUrl.toString()
+                        }
                 }
+            }
 
-                override fun onCancelled(error: DatabaseError) = Unit
-            })
+            override fun onCancelled(error: DatabaseError) = Unit
+        })
 
     }
 
@@ -176,9 +213,10 @@ class SelectDateConsultingFragment :
         val year = getReadyDates(year1)
         val date = "$day.${month}.$year"
         dateToDB = "$day-${month}-$year"
+        refSetConsultingDate = DB.reference.child("consulting").child(idDoctor)
         binding.etBirthday.setText(date)
-        val refDB = DB.reference.child("consulting")
-        refDB.addValueEventListener(object : ValueEventListener {
+
+        valueEventListener = refConsulting.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
                     checkValueDoctor()
@@ -187,9 +225,10 @@ class SelectDateConsultingFragment :
                         fullName = "Ali Alixanov Batrbek",
                         idPatient = "182736178238172689",
                         idNotification = "128712367",
-                        time = "09-00"
+                        time = "09-00",
+                        statusConsulting = "inactive"
                     )
-                    refDB
+                    refConsulting
                         .child("1234567890")
                         .child("01-01-2022")
                         .child("09:00")
@@ -206,11 +245,14 @@ class SelectDateConsultingFragment :
         val fullName: String,
         val idNotification: String,
         val idPatient: String,
-    )
+        val statusConsulting: String,
+    ){
+        constructor() : this("" ,"","","","")
+    }
 
     private fun checkValueDoctor() {
-        val refConsulting = DB.reference.child("consulting").child(idDoctor)
-        refConsulting.addValueEventListener(object : ValueEventListener {
+        refConsultingDocId = DB.reference.child("consulting").child(idDoctor)
+        valueEventListener = refConsultingDocId.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
                     checkValueDate()
@@ -223,18 +265,30 @@ class SelectDateConsultingFragment :
         })
     }
 
+    override fun onStop() {
+        super.onStop()
+        refConsulting.removeEventListener(valueEventListener)
+        refConsultingDocId.removeEventListener(valueEventListener)
+        refDoctorData.removeEventListener(valueEventListener)
+        refPatientsData.removeEventListener(valueEventListener)
+        refSetConsultingDate.removeEventListener(valueEventListener)
+    }
+
     private fun checkValueDate() {
-        val refConsultingDate = DB.reference.child("consulting").child(idDoctor).child(dateToDB)
-        refConsultingDate.addValueEventListener(object : ValueEventListener {
+        valueEventListener = refSetConsultingDate.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
                     lifecycleScope.launch(Dispatchers.IO) {
-                        snapshot.children.forEach { time ->
-                            mutableList.removeIf { it == time.key.toString() }
+                        snapshot.children.forEach { snap ->
+                            Log.d("CHILDREN", snap.toString())
+                            val data = snap.getValue(ConsultingData::class.java)
+                            mutableList.removeIf {
+                                it == data?.time && data.statusConsulting == "active"
+                            }
                         }
                         withContext(Dispatchers.Main) {
                             adapter.updateList(mutableList)
-                            binding.recyclerSchedule.isVisible = true
+                            view?.findViewById<RecyclerView>(R.id.recycler_schedule)?.isVisible = true
                         }
                     }
                 } else {
@@ -248,28 +302,11 @@ class SelectDateConsultingFragment :
 
     val mutableList = mutableListOf<String>()
 
-    private fun checkValueTime() {
-        val refConsultingDate = DB.reference.child("consulting").child(idDoctor).child(dateToDB)
-        refConsultingDate.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                snapshot.children.forEach {
-                    val time = it.key.toString()
-                    mutableList.removeIf { it == time }
-                    adapter.updateList(mutableList)
-                }
-                binding.recyclerSchedule.isVisible = true
-            }
-
-            override fun onCancelled(error: DatabaseError) = Unit
-        })
-    }
-
     private fun createConsulting() {
-        binding.recyclerSchedule.isVisible = true
+        view?.findViewById<RecyclerView>(R.id.recycler_schedule)?.isVisible = true
         createList()
         adapter.updateList(mutableList)
     }
-
 
     private fun setAdapter() {
         adapter = ScheduleAdapter {
@@ -279,18 +316,6 @@ class SelectDateConsultingFragment :
         binding.recyclerSchedule.layoutManager = GridLayoutManager(requireContext(), 2)
         binding.recyclerSchedule.adapter = adapter
 
-    }
-
-    private fun createConsultingData(time: String) {
-        val refConsulting =
-            DB.reference.child("consulting").child(idDoctor).child(dateToDB).child(time)
-        val patientInfo = ConsultingData(time, fullNamePatient, idNotification, idPatient)
-        val bool = refConsulting.setValue(patientInfo)
-        if (bool.isSuccessful) {
-            showSnackbar("Вы записаны в консультацию")
-        } else {
-            showSnackbar("Вы уже записаны в консультацию")
-        }
     }
 
 

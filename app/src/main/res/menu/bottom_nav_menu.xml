@@ -14,6 +14,12 @@
         android:title="@string/title_chats" />
 
     <item
+        android:id="@+id/consultationInfoFragment"
+        android:icon="@drawable/ic_vector"
+        android:menuCategory="secondary"
+        android:title="@string/title_consultation" />
+
+    <item
         android:id="@+id/navigation_profile"
         android:icon="@drawable/ic_profile"
         android:menuCategory="secondary"

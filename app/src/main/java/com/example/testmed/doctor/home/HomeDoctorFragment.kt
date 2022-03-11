@@ -4,8 +4,10 @@ import android.os.Bundle
 import android.view.View
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
+import com.example.testmed.ID_PATIENT
 import com.example.testmed.base.BaseFragmentDoctor
 import com.example.testmed.databinding.FragmentHomeDoctorBinding
+import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
 
@@ -17,12 +19,30 @@ class HomeDoctorFragment :
         super.onViewCreated(view, savedInstanceState)
         getDataFromChildFragment()
         setTablayout()
+        if (arguments?.get(ID_PATIENT) == "consulting"){
+            requireActivity().runOnUiThread {
+                val tab: TabLayout.Tab? = binding.tabLayout.getTabAt(1)
+                tab?.select()
+            }
+        }
     }
 
     private fun getDataFromChildFragment() {
         childFragmentManager.setFragmentResultListener("requestKey",
             viewLifecycleOwner) { key, bundle ->
             val result: String? = bundle.getString("bundleKey")
+            if (result != null) {
+                val action =
+                    HomeDoctorFragmentDirections
+                        .actionNavigationHomeDoctorToNavigationChatWithPatientFragment()
+                action.id = result
+                findNavController().navigate(action)
+            }
+        }
+
+        childFragmentManager.setFragmentResultListener("requestKeyConsulting",
+            viewLifecycleOwner) { key, bundle ->
+            val result: String? = bundle.getString("key")
             if (result != null) {
                 val action =
                     HomeDoctorFragmentDirections

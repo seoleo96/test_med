@@ -1,6 +1,10 @@
 package com.example.testmed.patient.chats.chatwithdoctor
 
+import android.app.Notification
+import android.app.NotificationManager
+import android.content.Context
 import android.util.Log
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -44,8 +48,8 @@ class ChatWithDoctorViewModel : ViewModel() {
 
     fun saveMainList(text: String, timestamp: Any, type: String, idDoc: String, docImUrl: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            var refPatient = "main_list/${UID()}/$idDoc"
-            var refDoctor = "main_list/$idDoc/${UID()}"
+            val refPatient = "main_list/${UID()}/$idDoc"
+            val refDoctor = "main_list/$idDoc/${UID()}"
             val childPatient = CommonPatientData(
                 id = idDoc,
                 photoUrl = docImUrl,
@@ -147,7 +151,10 @@ class ChatWithDoctorViewModel : ViewModel() {
         refPatientMEssages.removeEventListener(valueEventListener)
     }
 
-    fun seenMessages(idDoctor: String, idPatient: String) {
+    fun seenMessages(
+        idDoctor: String,
+        idPatient: String,
+    ) {
         refPatientMEssages = DB.reference.child("message").child(idPatient).child(idDoctor)
         val refDoc = DB.reference.child("message").child(idDoctor).child(idPatient)
         viewModelScope.launch(Dispatchers.IO) {
@@ -155,12 +162,13 @@ class ChatWithDoctorViewModel : ViewModel() {
                 refPatientMEssages.addValueEventListener(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         if (snapshot.exists()) {
-                            snapshot.children.forEach {
-                                val data = it.getValue(MessageData::class.java)!!
+                            snapshot.children.forEach { dataSnapshot ->
+                                val data = dataSnapshot.getValue(MessageData::class.java)!!
                                 if (data.idFrom == idDoctor) {
                                     refPatientMEssages.child(data.idMessage).child("seen")
                                         .setValue("1")
                                     refDoc.child(data.idMessage).child("seen").setValue("1")
+
                                 }
                             }
                         }

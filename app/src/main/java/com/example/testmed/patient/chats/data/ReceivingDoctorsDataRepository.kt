@@ -73,19 +73,27 @@ class ReceivingDoctorsDataRepository : IReceivingDoctorsRepository {
     private fun getPatients(patientData: CommonPatientData?, idPatient: String) {
         refMessages
             .child(idPatient)
-            .limitToLast(1)
+//            .limitToLast(1)
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if (snapshot.exists()){
-                        val messageData: List<MessageData?> =
-                            snapshot.children.map {
-                                it.getValue(MessageData::class.java)
+                        val messageData = mutableListOf<MessageData>()
+                        var notReadMessage = 0
+                        snapshot.children.forEach {
+                            val data = it.getValue(MessageData::class.java)!!
+                            messageData.add(data)
+                            if (data.seen == "0" && data.idFrom == idPatient) {
+                                notReadMessage++
                             }
+                        }
                         if (patientData != null && messageData.isNotEmpty()) {
                             patientData.message =
-                                messageData[0]?.message ?: ""
+                                messageData[messageData.size - 1].message ?: ""
                             patientData.idMessage =
-                                messageData[0]?.idMessage ?: ""
+                                messageData[messageData.size - 1].idMessage ?: ""
+                            patientData.sizeNotReadingMessages = notReadMessage.toString()
+                            patientData.timestamp = messageData[messageData.size - 1].timestamp
+                            notReadMessage = 0
                             readyList.removeIf {
                                 it.id == patientData.id
                             }
@@ -93,7 +101,7 @@ class ReceivingDoctorsDataRepository : IReceivingDoctorsRepository {
                         }
                         if (listSize == readyList.size) {
                             _flow.value = ReceivingUsersResult.Loading
-                            _flow.value = ReceivingUsersResult.Success(readyList)
+                            _flow.value = ReceivingUsersResult.SuccessList(readyList)
                         }
                     }else {
                         _flow.value = ReceivingUsersResult.Empty

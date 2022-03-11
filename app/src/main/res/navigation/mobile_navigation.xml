@@ -158,7 +158,7 @@
         android:id="@+id/selectDateConsultingFragment"
         android:name="com.example.testmed.patient.speciality.consulting.presentation.SelectDateConsultingFragment"
         android:label="select_date_consulting_fragment"
-        tools:layout="@layout/select_date_consulting_fragment" >
+        tools:layout="@layout/select_date_consulting_fragment">
         <argument
             android:name="idDoctor"
             app:argType="string" />
@@ -170,18 +170,105 @@
         android:id="@+id/confirmConsultingDateFragment"
         android:name="com.example.testmed.ConfirmConsultingDateFragment"
         android:label="confirm_consulting_date_fragment"
-        tools:layout="@layout/confirm_consulting_date_fragment" >
+        tools:layout="@layout/confirm_consulting_date_fragment">
         <argument
             android:name="fullNamePatient"
             app:argType="string" />
-        <argument android:name="fullNameDoctor" />
+        <argument
+            android:name="fullNameDoctor"
+            app:argType="string" />
         <argument
             android:name="dateConsulting"
             app:argType="string" />
         <argument
             android:name="timeConsulting"
             app:argType="string" />
+        <argument
+            android:name="phoneNumberDoctor"
+            app:argType="string" />
+        <argument
+            android:name="tokenDoctor"
+            app:argType="string" />
+        <argument
+            android:name="idDoctor"
+            app:argType="string" />
+        <argument
+            android:name="idPatient"
+            app:argType="string" />
+        <argument
+            android:name="idNotification"
+            app:argType="string" />
+        <argument
+            android:name="costOfConsulting"
+            app:argType="string" />
+        <argument
+            android:name="speciality"
+            app:argType="string" />
+        <argument
+            android:name="photoUrl"
+            app:argType="string" />
+        <argument
+            android:name="phoneNumber"
+            app:argType="string" />
+        <argument
+            android:name="photoUrlPatient"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_confirmConsultingDateFragment_to_paymentConsultingFragment"
+            app:destination="@id/paymentConsultingFragment" />
     </fragment>
-
+    <fragment
+        android:id="@+id/paymentConsultingFragment"
+        android:name="com.example.testmed.PaymentConsultingFragment"
+        android:label="payment_consulting_fragment"
+        tools:layout="@layout/payment_consulting_fragment">
+        <argument
+            android:name="fullNamePatient"
+            app:argType="string" />
+        <argument
+            android:name="fullNameDoctor"
+            app:argType="string" />
+        <argument
+            android:name="dateConsulting"
+            app:argType="string" />
+        <argument
+            android:name="timeConsulting"
+            app:argType="string" />
+        <argument
+            android:name="phoneNumberDoctor"
+            app:argType="string" />
+        <argument
+            android:name="tokenDoctor"
+            app:argType="string" />
+        <argument
+            android:name="idDoctor"
+            app:argType="string" />
+        <argument
+            android:name="idPatient"
+            app:argType="string" />
+        <argument
+            android:name="idNotification"
+            app:argType="string" />
+        <argument
+            android:name="costOfConsulting"
+            app:argType="string" />
+        <argument
+            android:name="speciality"
+            app:argType="string" />
+        <argument
+            android:name="photoUrl"
+            app:argType="string" />
+        <argument
+            android:name="phoneNumber"
+            app:argType="string" />
+        <argument
+            android:name="photoUrlPatient"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/consultationInfoFragment"
+        android:name="com.example.testmed.ConsultationInfoFragment"
+        android:label="consultation_info_fragment"
+        tools:layout="@layout/consultation_info_fragment" />
 
 </navigation>

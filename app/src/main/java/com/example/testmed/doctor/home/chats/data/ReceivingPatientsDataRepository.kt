@@ -1,15 +1,17 @@
 package com.example.testmed.doctor.home.chats.data
 
 import android.util.Log
+import androidx.lifecycle.lifecycleScope
+import com.example.testmed.UID
 import com.example.testmed.doctor.home.chats.ReceivingUsersResult
 import com.example.testmed.model.CommonPatientData
 import com.example.testmed.model.MessageData
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 
 class ReceivingPatientsDataRepository : IReceivingPatientsRepository {
 
@@ -21,6 +23,9 @@ class ReceivingPatientsDataRepository : IReceivingPatientsRepository {
     private var listPatients = listOf<String>()
     private var listSize = 0
     private var readyList = mutableListOf<CommonPatientData>()
+    private var finishList = mutableListOf<CommonPatientData>()
+
+    //    private var readyListMap = mutableMapOf<CommonPatientData, String>()
     val _flow = MutableStateFlow<ReceivingUsersResult>(ReceivingUsersResult.Loading)
 
     override suspend fun receivingPatientsData() {
@@ -28,9 +33,9 @@ class ReceivingPatientsDataRepository : IReceivingPatientsRepository {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
                     listPatients = snapshot.children.map { it.key.toString() }
-                    if (listPatients.isEmpty()){
+                    if (listPatients.isEmpty()) {
                         _flow.value = ReceivingUsersResult.Empty
-                    }else{
+                    } else {
                         listSize = listPatients.size
                         getPatientsData()
                     }
@@ -72,29 +77,40 @@ class ReceivingPatientsDataRepository : IReceivingPatientsRepository {
     private fun getPatients(patientData: CommonPatientData?, idPatient: String) {
         refMessages
             .child(idPatient)
-            .limitToLast(1)
+//            .limitToLast(1)
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    if (snapshot.exists()){
-                        val messageData: List<MessageData?> =
-                            snapshot.children.map {
-                                it.getValue(MessageData::class.java)
+                    if (snapshot.exists()) {
+                        val messageData = mutableListOf<MessageData>()
+                        var notReadMessage = 0
+                        snapshot.children.forEach {
+                            val data = it.getValue(MessageData::class.java)!!
+                            messageData.add(data)
+                            if (data.seen == "0" && data.idFrom == idPatient) {
+                                notReadMessage++
                             }
+                        }
                         if (patientData != null && messageData.isNotEmpty()) {
                             patientData.message =
-                                messageData[0]?.message ?: ""
+                                messageData[messageData.size - 1].message ?: ""
                             patientData.idMessage =
-                                messageData[0]?.idMessage ?: ""
+                                messageData[messageData.size - 1].idMessage ?: ""
+                            patientData.sizeNotReadingMessages = notReadMessage.toString()
+                            patientData.timestamp = messageData[messageData.size - 1].timestamp
+                            notReadMessage = 0
                             readyList.removeIf {
                                 it.id == patientData.id
                             }
                             readyList.add(patientData)
                         }
+
                         if (listSize == readyList.size) {
                             _flow.value = ReceivingUsersResult.Loading
-                            _flow.value = ReceivingUsersResult.Success(readyList)
+                            _flow.value = ReceivingUsersResult.SuccessList(readyList)
                         }
-                    }else {
+
+
+                    } else {
                         _flow.value = ReceivingUsersResult.Empty
                     }
                 }
@@ -105,4 +121,6 @@ class ReceivingPatientsDataRepository : IReceivingPatientsRepository {
                 }
             })
     }
+
+
 }

@@ -7,5 +7,6 @@ sealed class ReceivingUsersResult {
     object Empty : ReceivingUsersResult()
 
     data class Error(val errorMessage: String) : ReceivingUsersResult()
-    data class Success(val data: List<CommonPatientData>) : ReceivingUsersResult()
+    data class SuccessList(val data: List<CommonPatientData>) : ReceivingUsersResult()
+    data class Success(val data: Map<CommonPatientData, String>) : ReceivingUsersResult()
 }

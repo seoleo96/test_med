@@ -100,4 +100,15 @@
     <string name="tv_fio">ФИО</string>
     <string name="tv_iin">ИИН</string>
     <string name="tv_go_to_pay">Перейти к оплате</string>
+    <string name="text_full_name_doctor">Врач</string>
+    <string name="text_date_time">Дата и время</string>
+    <string name="tv_phone_number">Номер телефона</string>
+    <string name="tv_to_confirm">Подтвердите запись</string>
+    <string name="tv_confirm">Подтвердить</string>
+    <string name="explain_to_patient">Пожалуйста не отключайте в указанное время ваш телефон и инетрнет, врач сам с вами свяжется.</string>
+    <string name="title_payment_fragment">Оплата</string>
+    <string name="text_card_number">Номер карты</string>
+    <string name="text_to_pay">Оплатить</string>
+    <string name="title_consultation">Консультация</string>
+    <string name="tv_cancel_consulting">Отменить консультацию</string>
 </resources>

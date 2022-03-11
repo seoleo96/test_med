@@ -64,7 +64,7 @@ class ChatsFragment : BaseFragment<FragmentChatsBinding>(FragmentChatsBinding::i
                     }
                 }
 
-                is ReceivingUsersResult.Success -> {
+                is ReceivingUsersResult.SuccessList -> {
                     adapter.updateList(data.data)
                     binding.apply {
                         progressBar.isVisible = false

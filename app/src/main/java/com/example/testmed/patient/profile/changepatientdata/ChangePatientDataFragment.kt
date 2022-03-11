@@ -121,7 +121,7 @@ class ChangePatientDataFragment :
             binding.etPassword.text.toString(),
             binding.etPatronymic.text.toString(),
             binding.etSurname.text.toString())
-        viewModel.dataValidateLiveData.observe(viewLifecycleOwner, { userRegisterState ->
+        viewModel.dataValidateLiveData.observe(viewLifecycleOwner) { userRegisterState ->
             when (userRegisterState) {
                 is UserRegisterState.AllDataEmpty -> {
                     invisibleProgress(binding.progressBar)
@@ -187,7 +187,7 @@ class ChangePatientDataFragment :
                     }
                 }
             }
-        })
+        }
     }
 
     private fun updateUserData(login: String, password: String) {

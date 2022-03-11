@@ -43,30 +43,19 @@ class MainActivity : AppCompatActivity() {
         val appBarConfiguration = AppBarConfiguration(setOf(
             R.id.navigation_home,
             R.id.navigation_chats,
+            R.id.consultationInfoFragment,
             R.id.navigation_profile,
             R.id.navigation_clinic))
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
         hideActionBarOnDestinationChange()
-
-
     }
 
 
     private fun updateStatePatientOffline(time: Any) {
         val refState = DB.reference.child("patients").child(UID()).child("state")
         lifecycleScope.launch(Dispatchers.IO) {
-            val data: String? = refState.get().await().getValue(String::class.java)
-            if (data != null) {
-                refState.setValue(time)
-                    .addOnCompleteListener {
-                        lifecycleScope.launch(Dispatchers.IO){
-                            val data = refState.get().await().getValue(Any::class.java)
-                            val date = data.toString().asDate()
-                            PATIENT_STATUS = date
-                        }
-                    }
-            }
+            refState.setValue(time)
         }
     }
 
@@ -87,6 +76,9 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_login,
                 R.id.navigation_change_patient_data,
                 R.id.navigation_chat_with_doctor,
+                R.id.selectDateConsultingFragment,
+                R.id.confirmConsultingDateFragment,
+                R.id.paymentConsultingFragment,
                 -> {
                     supportActionBar?.hide()
                     navView.isVisible = false
@@ -98,6 +90,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_chats,
                 R.id.navigation_profile,
                 R.id.navigation_clinic,
+                R.id.consultationInfoFragment,
                 -> {
                     supportActionBar?.hide()
                     navView.isVisible = true

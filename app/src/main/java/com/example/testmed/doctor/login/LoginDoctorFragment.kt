@@ -33,9 +33,11 @@ class LoginDoctorFragment : Fragment(R.layout.fragment_login_doctor) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val testLogin = "terapevt1@gmail.com"
+        val testPassword = "123456"
         binding.apply {
-            etLogin.setText("terapevt1@gmail.com")
-            etPassword.setText("123456")
+            etLogin.setText(testLogin)
+            etPassword.setText(testPassword)
         }
         binding.sendUsersDataButton.setOnClickListener {
             requireView().hideKeyboard()

@@ -1,20 +1,20 @@
 package com.example.testmed.doctor.chatwithpatient.presentation
 
-import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.Notification
+import android.app.NotificationManager
+import android.content.Context
+import android.content.Intent
 
 import android.net.Uri
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.widget.doAfterTextChanged
-import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
@@ -23,7 +23,7 @@ import com.example.testmed.base.BaseFragmentDoctor
 import com.example.testmed.databinding.ChatWithPatientFragmentBinding
 import com.example.testmed.doctor.MainActivityDoctor
 import com.example.testmed.doctor.chatwithpatient.ChatAdapterForDoctor
-import com.example.testmed.model.CommonPatientData
+import com.example.testmed.doctor.chatwithpatient.calling.CallingToPatientActivity
 import com.example.testmed.model.MessageData
 import com.google.firebase.database.*
 import com.theartofdev.edmodo.cropper.CropImage
@@ -39,6 +39,7 @@ class ChatWithPatientFragment
     private lateinit var viewModel: ChatWithPatientViewModel
     private val argsNav: ChatWithPatientFragmentArgs by navArgs()
     private var idNotification: Int = 0
+    private var idNotificationPatient: Int = 0
     private lateinit var mAdapter: ChatAdapterForDoctor
     private lateinit var patientId: String
     private lateinit var idDoctor: String
@@ -53,6 +54,13 @@ class ChatWithPatientFragment
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this)[ChatWithPatientViewModel::class.java]
+        lifecycleScope.launch(Dispatchers.IO) {
+            val temp = DB.reference.child("doctors")
+                .child(UID())
+                .child("iin")
+                .get().await().getValue(String::class.java).toString()
+            idNotification = (temp.toLong() - 999900000000).toInt()
+        }
         setPatientId()
         setAdapter()
         setMessages()
@@ -61,12 +69,20 @@ class ChatWithPatientFragment
         setPatientsData()
         setToBackButton()
         sendImage()
+        setCallingActivity()
+    }
+
+    private fun setCallingActivity() {
+        binding.toConsulting.setOnClickListener {
+            val intent = Intent(requireActivity(), CallingToPatientActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun setPatientId() {
         idDoctor = UID()
         patientId = if (argsNav.id == "0") {
-            arguments!![ID_PATIENT].toString()
+            requireArguments()[ID_PATIENT].toString()
         } else {
             argsNav.id
         }
@@ -74,6 +90,17 @@ class ChatWithPatientFragment
 
     override fun onResume() {
         super.onResume()
+        Log.d("TEMPIDNOT", idNotificationPatient.toString())
+        lifecycleScope.launch {
+            val temp1: String? = DB.reference.child("patients")
+                .child(argsNav.id)
+                .child("iin")
+                .get().await().getValue(String::class.java)
+            if (temp1 != null) {
+                idNotificationPatient = (temp1.toLong() - 999900000000).toInt()
+                NotificationManagerCompat.from(requireContext()).cancel(idNotificationPatient);
+            }
+        }
         viewModel.seenMessages(idDoctor, patientId)
     }
 
@@ -270,7 +297,6 @@ class ChatWithPatientFragment
                     }
                 }
                 this@ChatWithPatientFragment.photoUrl = photoUrl ?: ""
-                idNotification = (iin.toLong() - 999900000000).toInt()
                 if (photoUrl.isNotEmpty()) {
                     super.setImage(photoUrl, binding.profileImage)
                     lifecycleScope.launch(Dispatchers.IO) {

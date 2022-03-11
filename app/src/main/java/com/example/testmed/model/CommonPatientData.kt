@@ -13,15 +13,31 @@ data class CommonPatientData(
     val password: String = "",
     val phoneNumber: String = "",
     val photoUrl: String? = "",
+    var sizeNotReadingMessages: String = "",
 
     var idMessage: String = "",
     val idPatient: String = "",
     val idDoctor: String = "",
     var message: String = "",
-    val timestamp: Any = "",
+    var timestamp: Any = "",
     val type: String = "",
+    val seen: String = "",
+    val idFrom: String = "",
+    val idTo: String = "",
 
     val fullName : String = "",
     val time : String = "",
-    val idNotification: String = ""
+    val idNotification: String = "",
+
+
+    val cardNumber: String ="",
+    val costOfConsultation: String = "",
+    val date: String = "",
+    val idTransaction: String = "",
+    val fullNamePatient: String = "",
+    val fullNameDoctor: String = "",
+    val speciality: String = "",
+    val recordingDate: String = "",
+    val statusConsulting : String = "",
+    val photoUrlPatient : String = "",
 )

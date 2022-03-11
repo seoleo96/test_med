@@ -1,14 +1,13 @@
 package com.example.testmed.doctor.chatwithpatient.presentation
 
+import android.app.Notification
+import android.app.NotificationManager
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import com.example.testmed.*
-import com.example.testmed.doctor.chatwithpatient.data.PatientDataResult
 import com.example.testmed.model.CommonPatientData
-import com.example.testmed.model.DoctorData
 import com.example.testmed.model.MessageData
 import com.example.testmed.model.PatientData
 import com.example.testmed.notification.NotifyData
@@ -18,7 +17,6 @@ import com.google.firebase.database.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
-import kotlinx.coroutines.withContext
 import java.lang.Exception
 
 class ChatWithPatientViewModel() : ViewModel() {
@@ -171,7 +169,7 @@ class ChatWithPatientViewModel() : ViewModel() {
         refDoctorMEssages.removeEventListener(valueEventListener)
     }
 
-    fun seenMessages(idDoctor: String, idPatient: String) {
+    fun seenMessages(idDoctor: String, idPatient: String,) {
         refDoctorMEssages = DB.reference.child("message").child(idDoctor).child(idPatient)
         val refDocSeen = DB.reference.child("message").child(idPatient).child(idDoctor)
         valueEventListener = refDoctorMEssages.addValueEventListener(object : ValueEventListener {

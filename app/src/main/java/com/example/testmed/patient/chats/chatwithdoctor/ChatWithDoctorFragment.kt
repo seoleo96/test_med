@@ -1,17 +1,20 @@
 package com.example.testmed.patient.chats.chatwithdoctor
 
 import android.app.Activity
+import android.app.NotificationManager
+import android.content.Context
+import android.content.ContextWrapper
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.widget.doAfterTextChanged
-import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
@@ -19,6 +22,7 @@ import com.example.testmed.*
 import com.example.testmed.base.BaseFragment
 import com.example.testmed.databinding.FragmentChatWithDoctorBinding
 import com.example.testmed.model.MessageData
+import com.example.testmed.notification.MyFirebaseIdService
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ServerValue
@@ -36,6 +40,7 @@ class ChatWithDoctorFragment :
     private lateinit var idDoctor: String
     private lateinit var idPatient: String
     private var idNotification: Int = 0
+    private var idNotificationDoctor: Int = 0
     private lateinit var mAdapter: ChatAdapter
     private lateinit var mRecyclerView: RecyclerView
     private var mListMessages = mutableListOf<MessageData>()
@@ -51,8 +56,14 @@ class ChatWithDoctorFragment :
         chatWithDoctorViewModel = ViewModelProvider(this)[ChatWithDoctorViewModel::class.java]
         idPatient = UID()
         idDoctor =
-            if (argsNav.idDoctor == "0") arguments!![ID_DOCTOR].toString() else argsNav.idDoctor
-
+            if (argsNav.idDoctor == "0") requireArguments()[ID_DOCTOR].toString() else argsNav.idDoctor
+        lifecycleScope.launch(Dispatchers.IO){
+            val temp = DB.reference.child("patients")
+                .child(idPatient)
+                .child("iin")
+                .get().await().getValue(String::class.java).toString()
+            idNotification = (temp.toLong() - 999900000000).toInt()
+        }
         setAdapter()
         setToBackButton()
         setDoctorsData()
@@ -65,6 +76,14 @@ class ChatWithDoctorFragment :
 
     override fun onResume() {
         super.onResume()
+        lifecycleScope.launch {
+            val temp1 = DB.reference.child("doctors")
+                .child(idDoctor)
+                .child("iin")
+                .get().await().getValue(String::class.java).toString()
+            idNotificationDoctor = (temp1.toLong() - 999900000000).toInt()
+            NotificationManagerCompat.from(requireContext()).cancel(idNotificationDoctor);
+        }
         chatWithDoctorViewModel.seenMessages(idDoctor, idPatient)
     }
 
@@ -250,7 +269,7 @@ class ChatWithDoctorFragment :
                     }
                 }
                 doctorImageUrl = photoUrl
-                idNotification = (iin.toLong() - 999900000000).toInt()
+
                 if (photoUrl.isNotEmpty()) {
                     super.setImage(photoUrl, binding.profileImage)
                     lifecycleScope.launch(Dispatchers.IO) {
