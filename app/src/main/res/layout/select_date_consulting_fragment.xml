@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/desfone"
     tools:context=".patient.speciality.consulting.presentation.SelectDateConsultingFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -20,13 +21,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="18dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="18dp"
-            android:fontFamily="monospace"
             android:text="Выберите дату и время"
             android:textColor="#27214D"
             android:textSize="20sp"
-            android:textStyle="bold"
+            style="@style/MaterialAlertDialog.MaterialComponents.Title.Text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -76,7 +76,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/next_button"
-            android:layout_width="380dp"
+            android:layout_width="300dp"
             android:layout_height="@dimen/button_height"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"

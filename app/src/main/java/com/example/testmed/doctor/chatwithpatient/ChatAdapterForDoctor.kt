@@ -1,6 +1,7 @@
 package com.example.testmed.doctor.chatwithpatient
 
 import android.graphics.drawable.Drawable
+import android.text.util.Linkify
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -80,11 +81,16 @@ class ChatAdapterForDoctor(private val adapterOnClick: (MessageData, View) -> Un
                     }else{
                         binding.chatUserMessageSeen.setBackgroundResource(R.drawable.ic_double_check_black_24)
                     }
+                    if (message.message.contains("https://meet.jit.si")){
+                        binding.chatUserMessage.text = message.message
+                        Linkify.addLinks(binding.chatUserMessage, Linkify.WEB_URLS)
+                    }else{
+                        binding.chatUserMessage.text = message.message
+                    }
                     binding.blocUserMessage.isVisible = true
                     binding.blocUserMessageImage.isGone = true
                     binding.blocReceivedMessage.isGone = true
                     binding.blocReceivedMessageImage.isGone = true
-                    binding.chatUserMessage.text = message.message
                     binding.chatUserMessageTime.text = message.timestamp.toString().asTime()
 
                 }
@@ -152,11 +158,16 @@ class ChatAdapterForDoctor(private val adapterOnClick: (MessageData, View) -> Un
                         binding.messagesDate.text = date
                         binding.messagesDate.isVisible = true
                     }
+                    if (message.message.contains("https://meet.jit.si")){
+                        binding.chatReceivedMessage.text = message.message
+                        Linkify.addLinks(binding.chatReceivedMessage, Linkify.WEB_URLS)
+                    }else{
+                        binding.chatReceivedMessage.text = message.message
+                    }
                     binding.blocUserMessageImage.isGone = true
                     binding.blocUserMessage.isGone = true
                     binding.blocReceivedMessage.isVisible = true
                     binding.blocReceivedMessageImage.isGone = true
-                    binding.chatReceivedMessage.text = message.message
                     binding.chatReceivedMessageTime.text = message.timestamp.toString().asTime()
                 }
             } else {

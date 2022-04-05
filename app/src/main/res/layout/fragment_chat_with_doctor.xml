@@ -1,202 +1,215 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/container"
-    android:background="@color/background_root"
+    android:id="@+id/hidebtmsheet"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".patient.chats.chatwithdoctor.ChatWithDoctorFragment">
 
-    <ImageView
-        android:id="@+id/expanded_image"
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/round_fone_icon"
-        android:clickable="true"
-        android:focusable="true"
-        android:foreground="?android:attr/selectableItemBackground"
-        android:padding="6dp"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/container_sen"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.876"
-        app:layout_constraintStart_toStartOf="@+id/recycler_chat"
-        android:visibility="gone"
-        app:layout_constraintTop_toTopOf="@+id/container_toolbar"
-        app:layout_constraintVertical_bias="0.856" />
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/container_toolbar"
-        android:layout_width="0dp"
-        android:layout_height="60dp"
-        android:background="@color/background_root"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:id="@+id/container"
+        android:background="@drawable/desfone"
+        >
 
         <ImageView
-            android:id="@+id/to_back_button"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:padding="6dp"
-            android:layout_marginStart="16dp"
+            android:id="@+id/expanded_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/round_fone_icon"
             android:clickable="true"
             android:focusable="true"
             android:foreground="?android:attr/selectableItemBackground"
-            android:background="@drawable/round_fone_icon"
-            android:src="@drawable/ic_back_vector"
+            android:padding="6dp"
+            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/profile_image"
-            android:layout_width="44dp"
-            android:layout_height="44dp"
-            app:civ_border_color="#A2A2A2"
-            app:civ_border_width="2dp"
-            android:clickable="true"
-            android:focusable="true"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:layout_marginStart="20dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/to_back_button"
-            app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/fio"
-            android:layout_width="160dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:maxWidth="170dp"
-            android:maxLines="1"
-            android:paddingEnd="8dp"
-            android:layout_marginTop="10dp"
-            android:text="Юнусов Тахир"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            app:layout_constraintStart_toEndOf="@+id/profile_image"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/experience"
-            android:layout_width="180dp"
-            android:layout_height="wrap_content"
-            android:textColor="@color/color_kul"
-            android:textSize="14sp"
-            android:maxWidth="100dp"
-            android:maxLines="2"
-            android:layout_marginBottom="16dp"
-            app:layout_constraintStart_toStartOf="@+id/fio"
-            app:layout_constraintTop_toBottomOf="@+id/fio"
-            android:text="был(-а) 12.12.22 20:12" />
-
-        <ImageView
-            android:id="@+id/to_consulting"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:background="@drawable/round_fone_icon"
-            android:padding="2dp"
-            android:layout_marginEnd="16dp"
-            android:clickable="true"
-            android:focusable="true"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:src="@drawable/ic_baseline_add_blue"
-            app:layout_constraintBottom_toBottomOf="@+id/to_back_button"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/to_back_button" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_chat"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="2dp"
-        android:paddingBottom="4dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toTopOf="@+id/container_sen"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/container_toolbar"
-        tools:listitem="@layout/message_item" />
-
-    <LinearLayout
-        android:id="@+id/container_sen"
-        android:layout_width="0dp"
-        android:layout_height="60dp"
-        android:background="#FFFFFF"
-        android:weightSum="4"
-        android:padding="4dp"
-        android:paddingStart="8dp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <LinearLayout
+        <ProgressBar
+            android:id="@+id/progressBar"
             android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            android:layout_weight="4"
-            android:paddingTop="3dp"
-            android:weightSum="40"
-            android:background="@drawable/round_send_edit_text"
-            android:paddingStart="16dp">
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/container_sen"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.876"
+            app:layout_constraintStart_toStartOf="@+id/recycler_chat"
+            android:visibility="gone"
+            app:layout_constraintTop_toTopOf="@+id/container_toolbar"
+            app:layout_constraintVertical_bias="0.856" />
 
-            <EditText
-                android:textIsSelectable="true"
-                android:id="@+id/message_edit_text"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:background="@color/white"
-                android:ems="10"
-                android:layout_weight="36"
-                android:inputType="text"
-                android:maxLines="4"
-                android:hint="Сообщение" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/container_toolbar"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:background="@drawable/desfone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <View
-                android:id="@+id/send_button"
+            <ImageView
+                android:id="@+id/to_back_button"
                 android:layout_width="36dp"
                 android:layout_height="36dp"
-                android:background="@drawable/ic__send_button"
+                android:padding="6dp"
+                android:layout_marginStart="16dp"
                 android:clickable="true"
                 android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:background="@drawable/round_fone_icon"
+                android:src="@drawable/ic_back_vector"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profile_image"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                app:civ_border_color="#A2A2A2"
+                app:civ_border_width="2dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:layout_marginStart="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/to_back_button"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/fio"
+                android:layout_width="160dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:maxWidth="170dp"
+                android:maxLines="1"
+                android:paddingEnd="8dp"
+                android:layout_marginTop="10dp"
+                android:text="Юнусов Тахир"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:layout_constraintStart_toEndOf="@+id/profile_image"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/experience"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_kul"
+                android:textSize="14sp"
+                android:maxWidth="100dp"
+                android:maxLines="2"
+                android:layout_marginBottom="16dp"
+                app:layout_constraintStart_toStartOf="@+id/fio"
+                app:layout_constraintTop_toBottomOf="@+id/fio"
+                android:text="был(-а) 12.12.22 20:12" />
+
+            <ImageView
+                android:id="@+id/to_consulting"
+                android:layout_width="36dp"
+                android:visibility="invisible"
+                android:layout_height="36dp"
+                android:background="@drawable/round_fone_icon"
+                android:padding="2dp"
+                android:layout_marginEnd="16dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:src="@drawable/ic_baseline_add_blue"
+                app:layout_constraintBottom_toBottomOf="@+id/to_back_button"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/to_back_button" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_chat"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="2dp"
+            android:paddingBottom="4dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toTopOf="@+id/container_sen"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/container_toolbar"
+            tools:listitem="@layout/message_item" />
+
+        <LinearLayout
+            android:id="@+id/container_sen"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:background="#FFFFFF"
+            android:weightSum="4"
+            android:padding="4dp"
+            android:paddingStart="8dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
                 android:layout_weight="4"
-                android:layout_marginTop="4dp"
+                android:paddingTop="3dp"
+                android:weightSum="40"
+                android:background="@drawable/round_send_edit_text"
+                android:paddingStart="16dp">
+
+                <EditText
+                    android:textIsSelectable="true"
+                    android:id="@+id/message_edit_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:background="@color/white"
+                    android:ems="10"
+                    android:layout_weight="36"
+                    android:inputType="text"
+                    android:maxLines="4"
+                    android:hint="Сообщение" />
+
+                <View
+                    android:id="@+id/send_button"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:background="@drawable/ic__send_button"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:layout_weight="4"
+                    android:layout_marginTop="4dp"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/message_edit_text"
+                    app:layout_constraintTop_toTopOf="@+id/message_edit_text" />
+            </LinearLayout>
+
+            <View
+                android:id="@+id/add_media"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:background="@drawable/ic_float_60px"
+                android:clickable="true"
+                android:focusable="true"
                 android:foreground="?android:attr/selectableItemBackground"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/message_edit_text"
-                app:layout_constraintTop_toTopOf="@+id/message_edit_text" />
+                app:layout_constraintTop_toTopOf="parent" />
+
+
         </LinearLayout>
 
-        <View
-            android:id="@+id/add_media"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_weight="1"
-            android:background="@drawable/ic_float_60px"
-            android:clickable="true"
-            android:focusable="true"
-            android:foreground="?android:attr/selectableItemBackground"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-    </LinearLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <include layout="@layout/chiose_upload"/>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

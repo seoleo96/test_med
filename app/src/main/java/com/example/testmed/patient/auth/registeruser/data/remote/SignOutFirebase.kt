@@ -1,5 +1,6 @@
 package com.example.testmed.patient.auth.registeruser.data.remote
 
+import android.util.Log
 import com.example.testmed.AUTH
 import com.example.testmed.MainActivity
 import com.google.firebase.FirebaseException
@@ -16,12 +17,16 @@ class SignOutFirebase : ISignOutFirebase {
 
     init {
         mCallback = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-            override fun onVerificationCompleted(credential: PhoneAuthCredential) {}
+
+            override fun onVerificationCompleted(credential: PhoneAuthCredential) {
+                Log.d("credential", credential.smsCode.toString())
+            }
             override fun onVerificationFailed(p0: FirebaseException) {}
             override fun onCodeSent(verificationId: String, token: PhoneAuthProvider.ForceResendingToken) {
                 if (verificationId.isEmpty()) {
                     _onCodeSentFlow.value = ""
                 } else {
+                    Log.d("credentialverificationId", verificationId)
                     _onCodeSentFlow.value = verificationId
                 }
             }
@@ -29,7 +34,7 @@ class SignOutFirebase : ISignOutFirebase {
     }
 
     override suspend fun authUser(phoneNumber: String, context: MainActivity) {
-        AUTH().firebaseAuthSettings.setAppVerificationDisabledForTesting(true)
+//        AUTH().firebaseAuthSettings.setAppVerificationDisabledForTesting(true)
         val options = PhoneAuthOptions.newBuilder(AUTH())
             .setPhoneNumber(phoneNumber)       // Phone number to verify
             .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit

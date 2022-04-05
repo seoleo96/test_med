@@ -5,7 +5,7 @@ data class ClinicData(
     val address: String = "",
     val email: String = "",
     val link: String = "",
-    val password: String = "",
+    val id: String = "",
     val phoneNumber: String = "",
 ) {
     constructor() : this("", "", "",

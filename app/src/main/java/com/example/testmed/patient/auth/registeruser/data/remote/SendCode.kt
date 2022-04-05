@@ -10,7 +10,6 @@ class SendCode : ISendCode {
     private val checkCodeFlow: MutableStateFlow<UIState> = MutableStateFlow(UIState.Loading)
     override fun sendCode(code: String, id: String): Flow<UIState> {
         val credential = PhoneAuthProvider.getCredential(id, code)
-//        AUTH.firebaseAuthSettings.setAppVerificationDisabledForTesting(true);
         AUTH().signInWithCredential(credential).addOnCompleteListener { task ->
             if (task.isSuccessful){
                 checkCodeFlow.value = UIState.Success("true")

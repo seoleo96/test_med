@@ -1,14 +1,10 @@
 package com.example.testmed.doctor.chatwithpatient.presentation
 
 import android.app.Activity
-import android.app.Notification
-import android.app.NotificationManager
-import android.content.Context
 import android.content.Intent
 
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.NotificationManagerCompat
@@ -24,6 +20,7 @@ import com.example.testmed.databinding.ChatWithPatientFragmentBinding
 import com.example.testmed.doctor.MainActivityDoctor
 import com.example.testmed.doctor.chatwithpatient.ChatAdapterForDoctor
 import com.example.testmed.doctor.chatwithpatient.calling.CallingToPatientActivity
+import com.example.testmed.model.ConsultingData
 import com.example.testmed.model.MessageData
 import com.google.firebase.database.*
 import com.theartofdev.edmodo.cropper.CropImage
@@ -70,12 +67,39 @@ class ChatWithPatientFragment
         setToBackButton()
         sendImage()
         setCallingActivity()
+        setConsulting()
+    }
+
+    private fun setConsulting() {
+
     }
 
     private fun setCallingActivity() {
         binding.toConsulting.setOnClickListener {
+            val consultingLinc = "https://meet.jit.si/$patientId"
+            val message = "$consultingLinc \n \n Если хотите зайти в консультацию на компютере перейдиете по этой ссылке "
+            val idMess = DB.reference.push().key.toString()
+            val timestamp: MutableMap<String, String> = ServerValue.TIMESTAMP
+            sendToDB(idMess, message, "message", timestamp)
+            sendConsultingData(idMess,consultingLinc)
             val intent = Intent(requireActivity(), CallingToPatientActivity::class.java)
+            intent.putExtra("consultingLinc", consultingLinc)
+            intent.putExtra("patientId", patientId)
             startActivity(intent)
+        }
+    }
+
+    private fun sendConsultingData(idMess: String, consultingLinc: String) {
+        lifecycleScope.launch(Dispatchers.IO) {
+            val message = ConsultingData(
+                idConsulting = idMess,
+                idFrom = UID(),
+                idTo = patientId,
+                link = consultingLinc,
+                status = "online"
+            )
+            val refConsulting = "online_consulting/${UID()}/${patientId}"
+            DB.reference.child(refConsulting).setValue(message)
         }
     }
 
@@ -90,7 +114,6 @@ class ChatWithPatientFragment
 
     override fun onResume() {
         super.onResume()
-        Log.d("TEMPIDNOT", idNotificationPatient.toString())
         lifecycleScope.launch {
             val temp1: String? = DB.reference.child("patients")
                 .child(argsNav.id)

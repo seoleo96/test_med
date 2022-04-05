@@ -1,27 +1,19 @@
 package com.example.testmed
 
-import android.content.Context
 import android.os.Bundle
-import android.util.Log
-import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.bumptech.glide.Glide
 import com.example.testmed.databinding.ActivityMainBinding
-import com.example.testmed.databinding.ActivityMainDoctorBinding
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.ServerValue
-import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
 
 class MainActivity : AppCompatActivity() {
 
@@ -38,6 +30,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         val appBarConfiguration = AppBarConfiguration(setOf(
@@ -45,17 +38,19 @@ class MainActivity : AppCompatActivity() {
             R.id.navigation_chats,
             R.id.consultationInfoFragment,
             R.id.navigation_profile,
-            R.id.navigation_clinic))
+            R.id.clinicsFragment))
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
         hideActionBarOnDestinationChange()
     }
 
-
     private fun updateStatePatientOffline(time: Any) {
-        val refState = DB.reference.child("patients").child(UID()).child("state")
-        lifecycleScope.launch(Dispatchers.IO) {
-            refState.setValue(time)
+        val uid = FirebaseAuth.getInstance().uid
+        if (uid != null) {
+            val refState = DB.reference.child("patients").child(uid).child("state")
+            lifecycleScope.launch(Dispatchers.IO) {
+                refState.setValue(time)
+            }
         }
     }
 
@@ -79,18 +74,23 @@ class MainActivity : AppCompatActivity() {
                 R.id.selectDateConsultingFragment,
                 R.id.confirmConsultingDateFragment,
                 R.id.paymentConsultingFragment,
+                R.id.commentsToDoctorFragment,
+                R.id.navigation_doctors_data_fragment,
+                R.id.navigation_clinic,
+                R.id.specialitiesFragment,
+                R.id.changePasswordFragment,
+                R.id.newPasswordFragment,
+                R.id.commentsClinicsFragment,
                 -> {
                     supportActionBar?.hide()
                     navView.isVisible = false
                 }
-
-                R.id.navigation_doctors_data_fragment,
                 R.id.navigation_doctors_fragment,
                 R.id.navigation_home,
                 R.id.navigation_chats,
                 R.id.navigation_profile,
-                R.id.navigation_clinic,
                 R.id.consultationInfoFragment,
+                R.id.clinicsFragment,
                 -> {
                     supportActionBar?.hide()
                     navView.isVisible = true

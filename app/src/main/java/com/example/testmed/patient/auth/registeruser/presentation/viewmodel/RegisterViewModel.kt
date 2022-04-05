@@ -43,6 +43,11 @@ class RegisterViewModel(
             }
         }
     }
+    fun setNull() {
+        viewModelScope.launch {
+            _onCodeSent.value = ""
+        }
+    }
 
     fun authUser(phoneNumber: String, context: MainActivity) {
         viewModelScope.launch {

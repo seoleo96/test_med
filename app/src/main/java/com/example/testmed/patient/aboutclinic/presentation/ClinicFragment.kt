@@ -1,8 +1,12 @@
 package com.example.testmed.patient.aboutclinic.presentation
 
 import android.os.Bundle
+import android.text.util.Linkify
 import android.view.View
 import androidx.core.view.isVisible
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
+import com.bumptech.glide.Glide
 import com.example.testmed.R
 import com.example.testmed.patient.aboutclinic.ClinicDataResult
 import com.example.testmed.patient.aboutclinic.data.ClinicDataRepository
@@ -14,20 +18,24 @@ import com.google.firebase.database.ValueEventListener
 class ClinicFragment : BaseFragment<FragmentClinicBinding>(FragmentClinicBinding::inflate) {
 
     private lateinit var viewModel: ClinicDataViewModel
+    private val navArgs : ClinicFragmentArgs by navArgs()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        var imgs = listOf<Int>(R.drawable.c2, R.drawable.c4, R.drawable.c5, R.drawable.c6)
         val clinicDataRepository = ClinicDataRepository()
         viewModel = ClinicDataViewModel(clinicDataRepository)
-        var adapter: ViewPagerAdapter = ViewPagerAdapter()
-        adapter.setList(imgs)
-        binding.viewPager.adapter = adapter
         setUpData()
+
+        binding.comments.setOnClickListener {
+            val action = ClinicFragmentDirections.actionNavigationClinicToCommentsClinicsFragment(navArgs.idClinic)
+            findNavController().navigate(action)
+        }
+
     }
 
     private fun setUpData() {
-        viewModel.clinicDataLiveData.observe(viewLifecycleOwner, { data ->
+        viewModel.getClinicDate(navArgs.idClinic)
+        viewModel.clinicDataLiveData.observe(viewLifecycleOwner) { data ->
             when (data) {
                 is ClinicDataResult.Loading -> {
                     binding.apply {
@@ -45,12 +53,29 @@ class ClinicFragment : BaseFragment<FragmentClinicBinding>(FragmentClinicBinding
                         binding.clinicName.text = name
                         binding.email.text = email
                         binding.link.text = link
+                        Linkify.addLinks(binding.link, Linkify.WEB_URLS)
                         binding.phoneNumber.text = phoneNumber
                         binding.address.text = address
+                        binding.startEndTime.text = startEndTime
+                        binding.bank.text = bank
+                        binding.bik.text = bik
+                        binding.bin.text = bin
+                        binding.iik.text = iik
+                        Glide
+                            .with(binding.viewPager.context)
+                            .load(imageUrl)
+                            .fitCenter()
+                            .into(binding.viewPager)
+                    }
+
+                    binding.sendUsersDataButton.setOnClickListener {
+                        val action = ClinicFragmentDirections.actionNavigationClinicToSpecialitiesFragment()
+                        action.idClinic = data.data.id
+                            findNavController().navigate(action)
                     }
                 }
             }
-        })
+        }
     }
 
     private fun visibleContent() {

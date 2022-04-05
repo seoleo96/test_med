@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/desfone"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".doctor.login.LoginDoctorFragment">
 
@@ -22,7 +23,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/vector"
-                android:layout_width="360dp"
+                android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="100dp"
                 android:background="@drawable/round_fone"
@@ -121,8 +122,8 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/send_users_data_button"
-                android:layout_width="360dp"
-                android:layout_height="wrap_content"
+                android:layout_width="300dp"
+                android:layout_height="@dimen/button_height"
                 android:layout_marginTop="8dp"
                 android:backgroundTint="#2E58AB"
                 android:text="Войти"

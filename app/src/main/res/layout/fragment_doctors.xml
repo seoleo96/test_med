@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_root"
+    android:background="@drawable/desfone"
     android:padding="16dp"
     tools:context=".patient.speciality.doctors.DoctorsFragment">
 
@@ -23,27 +23,42 @@
         android:id="@+id/text_register"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:text="Врачи"
+        style="@style/MaterialAlertDialog.MaterialComponents.Title.Text"
         android:textAlignment="center"
         android:textColor="#27214D"
         android:textSize="20sp"
-        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <SearchView
+        android:id="@+id/searchView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/round_fone_recycler"
+        android:iconifiedByDefault="false"
+        android:queryBackground="@android:color/transparent"
+        android:queryHint="Поиск врача"
+        app:layout_constraintEnd_toEndOf="@+id/text_register"
+        app:layout_constraintStart_toStartOf="@+id/text_register"
+        app:layout_constraintTop_toBottomOf="@+id/text_register"
+        />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="8dp"
         android:background="@drawable/round_fone_recycler"
         android:paddingStart="8dp"
         android:paddingTop="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_register">
+        app:layout_constraintTop_toBottomOf="@+id/searchView">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"

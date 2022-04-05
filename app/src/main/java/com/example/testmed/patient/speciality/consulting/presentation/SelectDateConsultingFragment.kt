@@ -50,13 +50,14 @@ class SelectDateConsultingFragment :
     private lateinit var photoUrlPatient: String
     private lateinit var idNotification: String
     private lateinit var speciality: String
+    private lateinit var idClinic: String
     private lateinit var dateToDB: String
     private lateinit var adapter: ScheduleAdapter
     private lateinit var refDoctorData: DatabaseReference
     private lateinit var refPatientsData: DatabaseReference
     private lateinit var refConsulting: DatabaseReference
-    private lateinit var refConsultingDocId: DatabaseReference
-    private lateinit var refSetConsultingDate: DatabaseReference
+    private var refConsultingDocId =DB.reference.child("consulting")
+    private var refSetConsultingDate =DB.reference.child("consulting")
     private lateinit var valueEventListener: ValueEventListener
 
 
@@ -69,7 +70,7 @@ class SelectDateConsultingFragment :
         setAdapter()
         setDatePicker()
         createList()
-
+        Log.d("newpasswordIDCLINIC", args.idClinic)
         binding.textRegister.setOnClickListener {
             DB.reference
                 .child("consulting")
@@ -105,7 +106,8 @@ class SelectDateConsultingFragment :
                 speciality,
                 photoUrl,
                 phoneNumberPatient,
-                photoUrlPatient
+                photoUrlPatient,
+                if (args.idClinic == "0") idClinic else args.idClinic
             )
         findNavController().navigate(action)
     }
@@ -127,9 +129,8 @@ class SelectDateConsultingFragment :
                                 phoneNumberDoctor = it.phoneNumber
                                 speciality = it.speciality
                                 photoUrl = it.photoUrl
+                                idClinic = it.idClinic
                             }
-                            Log.d("TAGDOC", fullNameDoctor)
-                            Log.d("TAGDOC", tokenDoctor)
                         }
                 }
             }
@@ -205,15 +206,15 @@ class SelectDateConsultingFragment :
 
     }
 
-
     override fun onDateSet(view: DatePickerDialog?, year1: Int, monthOfYear: Int, dayOfMonth: Int) {
+        createList()
         binding.nextButton.isEnabled = false
         val day = getReadyDates(dayOfMonth)
         val month = getReadyDates(1 + monthOfYear)
         val year = getReadyDates(year1)
         val date = "$day.${month}.$year"
         dateToDB = "$day-${month}-$year"
-        refSetConsultingDate = DB.reference.child("consulting").child(idDoctor)
+        refSetConsultingDate = refSetConsultingDate.child(idDoctor)
         binding.etBirthday.setText(date)
 
         valueEventListener = refConsulting.addValueEventListener(object : ValueEventListener {
@@ -251,8 +252,7 @@ class SelectDateConsultingFragment :
     }
 
     private fun checkValueDoctor() {
-        refConsultingDocId = DB.reference.child("consulting").child(idDoctor)
-        valueEventListener = refConsultingDocId.addValueEventListener(object : ValueEventListener {
+        valueEventListener = refConsultingDocId.child(idDoctor).addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
                     checkValueDate()
@@ -280,10 +280,11 @@ class SelectDateConsultingFragment :
                 if (snapshot.exists()) {
                     lifecycleScope.launch(Dispatchers.IO) {
                         snapshot.children.forEach { snap ->
-                            Log.d("CHILDREN", snap.toString())
                             val data = snap.getValue(ConsultingData::class.java)
                             mutableList.removeIf {
-                                it == data?.time && data.statusConsulting == "active"
+                                // TODO: проверка
+                                val tempTime = "$dateToDB ${data?.time}"
+                                it == data?.time && data.statusConsulting == "active" && snap.key.toString() == tempTime
                             }
                         }
                         withContext(Dispatchers.Main) {

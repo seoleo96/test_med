@@ -7,25 +7,17 @@ import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.Observer
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.viewModelScope
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
-import com.example.testmed.DB
 import com.example.testmed.UID
 import com.example.testmed.base.*
-import com.example.testmed.base.BaseFragmentDoctor
 import com.example.testmed.databinding.ChatsWithPatientFragmentBinding
 import com.example.testmed.doctor.home.PatientsAdapter
 import com.example.testmed.doctor.home.chats.data.ReceivingPatientsDataRepository
 import com.example.testmed.model.CommonPatientData
-import com.example.testmed.model.MessageData
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+
 
 class PatientsFragment
     :
@@ -40,6 +32,7 @@ class PatientsFragment
         super.onViewCreated(view, savedInstanceState)
         val repo = ReceivingPatientsDataRepository()
         viewModel = PatientViewModel(repo)
+        Log.d("uid", UID())
         setAdapter()
         setPatients()
     }
@@ -131,5 +124,7 @@ class PatientsFragment
         }
         mRecyclerView = binding.recyclerView
         mRecyclerView.adapter = adapter
+        mRecyclerView.addItemDecoration(DividerItemDecoration(mRecyclerView.context,
+            DividerItemDecoration.VERTICAL))
     }
 }

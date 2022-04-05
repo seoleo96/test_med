@@ -15,7 +15,6 @@
         android:layout_width="148dp"
         android:layout_height="wrap_content"
         android:focusable="true"
-        app:cardBackgroundColor="@color/color_schedule"
         app:cardCornerRadius="16dp"
         app:cardElevation="4dp"
         app:cardMaxElevation="4dp"

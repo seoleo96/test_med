@@ -2,33 +2,28 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/navigation_home"
+        android:id="@+id/clinicsFragment"
         android:icon="@drawable/ic_home"
-        android:menuCategory="secondary"
+        android:title="Клиники" />
+
+    <item
+        android:id="@+id/navigation_home"
+        android:icon="@drawable/ic_vector__1_"
         android:title="@string/title_home" />
 
     <item
         android:id="@+id/navigation_chats"
         android:icon="@drawable/ic_chats"
-        android:menuCategory="secondary"
         android:title="@string/title_chats" />
 
     <item
         android:id="@+id/consultationInfoFragment"
         android:icon="@drawable/ic_vector"
-        android:menuCategory="secondary"
         android:title="@string/title_consultation" />
 
     <item
         android:id="@+id/navigation_profile"
         android:icon="@drawable/ic_profile"
-        android:menuCategory="secondary"
         android:title="@string/title_profile" />
-
-    <item
-        android:id="@+id/navigation_clinic"
-        android:menuCategory="secondary"
-        android:icon="@drawable/ic_about_clinic"
-        android:title="@string/title_about_clinic" />
 
 </menu>

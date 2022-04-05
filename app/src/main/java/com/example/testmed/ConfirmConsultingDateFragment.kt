@@ -40,7 +40,8 @@ class ConfirmConsultingDateFragment :
                     navArgs.speciality,
                     navArgs.photoUrl,
                     navArgs.phoneNumber,
-                    navArgs.photoUrlPatient
+                    navArgs.photoUrlPatient,
+                    navArgs.idClinic
                 )
             findNavController().navigate(action)
         }

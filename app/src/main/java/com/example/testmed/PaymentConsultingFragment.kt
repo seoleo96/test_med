@@ -11,15 +11,16 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.testmed.base.BaseFragment
 import com.example.testmed.databinding.PaymentConsultingFragmentBinding
-import com.example.testmed.model.CommonPatientData
-import com.example.testmed.model.TransactionData
+import com.example.testmed.model.*
 import com.example.testmed.notification.NotifyData
 import com.example.testmed.notification.RetrofitClient
 import com.example.testmed.notification.Sender
 import com.example.testmed.patient.speciality.consulting.presentation.SelectDateConsultingFragment
+import com.google.firebase.database.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import java.lang.Exception
 import java.text.SimpleDateFormat
@@ -29,10 +30,43 @@ class PaymentConsultingFragment :
     BaseFragment<PaymentConsultingFragmentBinding>(PaymentConsultingFragmentBinding::inflate) {
 
     private val navArgs: PaymentConsultingFragmentArgs by navArgs()
-
+    private var alldata = AllClinicData()
+    private lateinit var bank: String
+    private lateinit var bin: String
+    private lateinit var bik: String
+    private lateinit var iik: String
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setDoctorData()
         toPayButton()
+
+        val textInfoPayment = "К оплате ${navArgs.costOfConsulting}"
+        binding.infoPayment.text = textInfoPayment
+
+    }
+
+    private lateinit var valueEventListener: ValueEventListener
+    private lateinit var refDoctorData: DatabaseReference
+    private fun setDoctorData() {
+        refDoctorData = DB.reference.child("clinics").child(navArgs.idClinic)
+        valueEventListener = refDoctorData.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    snapshot.getValue(AllClinicData::class.java)
+                        .also { it ->
+                            if (it != null) {
+                                bank = it.bank
+                                bik = it.bik
+                                iik = it.iik
+                                bin = it.bin
+                            }
+                        }
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) = Unit
+        })
+
     }
 
     private fun toPayButton() {
@@ -80,7 +114,13 @@ class PaymentConsultingFragment :
             time = navArgs.timeConsulting,
             idTransaction = idTransaction,
             recordingDate = asDate(),
-            statusConsulting = "active"
+            statusConsulting = "active",
+            bank = bank,
+            bin = bin,
+            bik = bik,
+            iik = iik,
+            idClinic = navArgs.idClinic,
+            confirmation = "0"
         )
 
         val commonPatientData = CommonPatientData(
@@ -98,7 +138,9 @@ class PaymentConsultingFragment :
             recordingDate = asDate(),
             statusConsulting = "active",
             phoneNumber = navArgs.phoneNumber,
-            photoUrlPatient = navArgs.photoUrlPatient
+            photoUrlPatient = navArgs.photoUrlPatient,
+            timestamp = ServerValue.TIMESTAMP,
+            confirmation = "0",
         )
         val dateTime = "${navArgs.dateConsulting} ${navArgs.timeConsulting}"
         val ref = DB.reference.child("cost_of_consulting").child(idTransaction)

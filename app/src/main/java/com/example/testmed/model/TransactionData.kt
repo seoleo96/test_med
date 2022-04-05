@@ -10,6 +10,12 @@ data class TransactionData(
     val idTransaction: String = "",
     val recordingDate: String = "",
     val statusConsulting: String = "",
+    val bank: String = "",
+    val bin: String = "",
+    val bik: String = "",
+    val iik: String = "",
+    val idClinic: String = "",
+    val confirmation: String = "",
 ) {
     constructor() : this("", "", "","","",
         "", "")

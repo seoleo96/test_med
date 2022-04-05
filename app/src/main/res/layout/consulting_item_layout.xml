@@ -23,10 +23,10 @@
 
     <TextView
         android:id="@+id/full_name_doctor"
-        android:layout_width="wrap_content"
+        android:layout_width="260dp"
         android:layout_height="wrap_content"
         android:maxWidth="260dp"
-        android:paddingStart="16dp"
+        android:paddingStart="24dp"
         android:paddingEnd="8dp"
         android:textColor="@color/black"
         android:textSize="16sp"
@@ -40,7 +40,7 @@
         android:layout_height="wrap_content"
         android:maxWidth="160dp"
         android:maxLines="2"
-        android:paddingStart="16dp"
+        android:paddingStart="24dp"
         android:textColor="#616161"
         android:textSize="14sp"
         app:layout_constraintStart_toStartOf="@+id/full_name_doctor"
@@ -52,15 +52,29 @@
         android:id="@+id/cancel_consulting"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="#2E58AB"
-        android:text="@string/tv_cancel_consulting"
-        android:textAlignment="center"
-        app:cornerRadius="8dp"
-        android:textSize="12sp"
         android:layout_marginTop="12dp"
+        android:backgroundTint="@color/red"
+        android:text="Отменить"
+        android:textAlignment="center"
+        android:textSize="12sp"
+        app:cornerRadius="8dp"
+        app:layout_constraintStart_toEndOf="@+id/profile_image"
         app:layout_constraintTop_toBottomOf="@+id/date_time"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/confirm_consulting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:backgroundTint="#2E58AB"
+        android:text="Получиль"
+        android:textAlignment="center"
+        android:textSize="12sp"
+        app:cornerRadius="8dp"
+        app:layout_constraintEnd_toEndOf="@+id/speciality"
+        app:layout_constraintStart_toEndOf="@+id/cancel_consulting"
+        app:layout_constraintTop_toBottomOf="@+id/date_time"
         />
 
     <TextView
@@ -69,21 +83,21 @@
         android:layout_height="wrap_content"
         android:textAlignment="center"
         android:textColor="#2E58AB"
-        android:paddingStart="16dp"
+        android:paddingStart="24dp"
         android:textSize="12sp"
         app:layout_constraintStart_toStartOf="@+id/speciality"
         app:layout_constraintTop_toBottomOf="@+id/speciality"
         tools:text="20.20.2222 11-00"
         />
 
-    <View
-        android:id="@+id/line4"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="8dp"
-        android:background="#c0c0c0"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cancel_consulting" />
+<!--    <View-->
+<!--        android:id="@+id/line4"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="1dp"-->
+<!--        android:layout_marginTop="8dp"-->
+<!--        android:background="#c0c0c0"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/cancel_consulting" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

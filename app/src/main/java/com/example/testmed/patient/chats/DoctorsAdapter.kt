@@ -1,5 +1,6 @@
 package com.example.testmed.patient.chats
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
@@ -16,7 +17,13 @@ class DoctorsAdapter(private val adapterOnClick: (CommonPatientData) -> Unit) :
     fun updateList(data: List<CommonPatientData>) {
         clearList()
         this.list.addAll(data)
-        this.list.sortByDescending { it.time.toString().toLong() }
+        this.list.forEach{
+            Log.d("ADAPTERLIST", it.toString())
+        }
+        this.list.sortByDescending {
+            Log.d("ADAPTER", it.timestamp.toString())
+            it.timestamp.toString().toLong()
+        }
         notifyDataSetChanged()
     }
 
@@ -60,9 +67,9 @@ class DoctorsAdapter(private val adapterOnClick: (CommonPatientData) -> Unit) :
                 binding.sizeNotReadingMessages.isVisible = false
             }
             data.apply {
-                if (hideLine){
-                    binding.line4.setBackgroundResource(R.drawable.round_fone_recycler)
-                }
+//                if (hideLine){
+//                    binding.line4.setBackgroundResource(R.drawable.round_fone_recycler)
+//                }
                 binding.patientName.text = "$name $surname"
                 binding.lastMessage.text = message
                 if (photoUrl != null) {

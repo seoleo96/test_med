@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.testmed.*
@@ -11,6 +12,7 @@ import com.example.testmed.base.BaseFragment
 import com.example.testmed.databinding.FragmentHomeBinding
 import com.example.testmed.model.DoctorData
 import com.example.testmed.model.SpecialityData
+import com.example.testmed.patient.speciality.doctors.DoctorsFragmentArgs
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -18,6 +20,7 @@ import com.google.firebase.database.ValueEventListener
 
 class SpecialityDoctorsFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate) {
 
+    private val args: SpecialityDoctorsFragmentArgs by navArgs()
     private lateinit var specialityDoctorsViewModel: SpecialityDoctorsViewModel
     private lateinit var valueEventListener: ValueEventListener
     private lateinit var rdbRef: DatabaseReference
@@ -28,6 +31,11 @@ class SpecialityDoctorsFragment : BaseFragment<FragmentHomeBinding>(FragmentHome
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setAdapter()
+        setSpeciality()
+//        setDoctorData()
+    }
+
+    private fun setSpeciality() {
         rdbRef = DB.reference
             .child("speciality")
         valueEventListener = rdbRef.addValueEventListener(object : ValueEventListener {
@@ -54,33 +62,29 @@ class SpecialityDoctorsFragment : BaseFragment<FragmentHomeBinding>(FragmentHome
             override fun onCancelled(error: DatabaseError) {
             }
         })
-//        setDoctorData()
     }
-
-
-
 
 
     private fun setDoctorData() {
         val doctor = DoctorData(
-             id = "S8VsEJuyDJWGEf5e6UFRoZjxPQE3",
-         idSpeciality = "-Mw5CaxfdS6zKHVevpeg",
-         iin = "123456789088",
-         name = "Ахмед",
-         surname = "Адимов",
-         patronymic = "Талгатович",
-         speciality= "Терапевт",
-         specialization = "Мы практикуем диагностику и лечение целого комплекса заболеваний внутренних органов. Специализация включает лечение установленного набора заболеваний. К ним в первую очередь относятся простуды и респираторно-вирусные инфекции (грипп, ОРЗ, насморк, другие заболевания)." ,
-         experience =  "15 лет",
-         costOfConsultation = "3000",
-         education = "В 2009 году окончил Московский государственный медико-стоматологический университет. В 2010 году - обучение в клинической интернатуре по специальности «Стоматология общей практики» на базе Института повышения квалификации МО РФ. В 2010 - 2012 г. – ординатура на кафедре ЧЛХ «НМХЦ им. Н.И. Пирогова».",
+             id = "O6H2YhHQwZcUheh4v7eEvnCoeqo2",
+         idSpeciality = "-Mw5Fr-9v0c3wn_towEM",
+         iin = "13218956789088",
+         name = "Арай",
+         surname = "Султанова",
+         patronymic = "Аяз",
+         speciality= "Психолог",
+         specialization = "Гештальтерапия, символдрама, интегративная психотерапия и прочее — для коллег и любителей рационализаций психологических состояний.",
+         experience =  "10 лет",
+         costOfConsultation = "4000тг",
+         education = "Медицинский университет Астана, город Нурсултан",
          address = "ул Попова 25",
-         birthday = "12.12.1979",
-         gender = "Мужской",
-         login = "terapevt2@gmail.com",
+         birthday = "12.12.1982",
+         gender = "Женской",
+         login = "psixolog1@gmail.com",
          password = "123456",
-         phoneNumber = "+16505551289",
-         photoUrl = "",
+         phoneNumber = "+1650555128765",
+         photoUrl = "https://img.freepik.com/free-photo/beautiful-doctor-pointing-fingers_1258-16474.jpg?size=626&ext=jpg&ga=GA1.2.1450975410.1639094400",
             state = "",
             stateTo = "",
             token = ""

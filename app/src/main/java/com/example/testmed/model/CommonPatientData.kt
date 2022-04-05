@@ -40,4 +40,6 @@ data class CommonPatientData(
     val recordingDate: String = "",
     val statusConsulting : String = "",
     val photoUrlPatient : String = "",
+
+    val confirmation : String = "",
 )

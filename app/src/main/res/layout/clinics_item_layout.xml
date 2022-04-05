@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item_root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true"
+    android:layout_marginTop="12dp"
+    >
+
+    <ImageView
+        android:id="@+id/profile_image"
+        android:layout_width="86dp"
+        android:layout_height="66dp"
+        app:civ_border_color="#A2A2A2"
+        app:civ_border_width="2dp"
+        android:scaleType="centerInside"
+        tools:src="@drawable/logo_dobromed"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/speciality"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxWidth="260dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="8dp"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@+id/profile_image"
+        app:layout_constraintTop_toTopOf="@+id/profile_image"
+        tools:text="Гинеколог" />
+
+    <TextView
+        android:id="@+id/purpose"
+        android:layout_width="240dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:maxWidth="160dp"
+        android:maxLines="5"
+        android:paddingStart="16dp"
+        android:textColor="#616161"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@+id/speciality"
+        app:layout_constraintTop_toBottomOf="@+id/speciality"
+        tools:text="Республика Казахстан, Северо-Казахстанская область,  г.Петропавловск Ул. М.Жумабаева, 109 (здание Треста), 7 этаж" />
+
+    <View
+        android:id="@+id/line4"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#c0c0c0"
+        android:layout_marginTop="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/purpose"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

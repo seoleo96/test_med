@@ -6,7 +6,7 @@ data class MessageData(
     val idTo: String = "",
     val message: String = "",
     val timestamp: Any = "",
-    val type: String = "",
+    var type: String = "",
     val seen: String = "0",
     val idNotification: Int = 0,
 ) {

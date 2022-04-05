@@ -47,7 +47,7 @@ class ScheduleAdapter(private val adapterOnClick: (String) -> Unit) :
         holder.cardView.setOnClickListener { view ->
             cardViewList.forEach {
                 it.setCardBackgroundColor(ContextCompat.getColor(it.context,
-                    R.color.color_schedule))
+                    R.color.white))
             }
             holder.cardView.setCardBackgroundColor(ContextCompat.getColor(view.context,
                 R.color.button_color))

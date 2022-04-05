@@ -165,7 +165,7 @@ class UserDataSignOutFragment :
             binding.etPassword.text.toString(),
             binding.etPatronymic.text.toString(),
             binding.etSurname.text.toString())
-        viewModel.dataValidateLiveData.observe(viewLifecycleOwner, { userRegisterState ->
+        viewModel.dataValidateLiveData.observe(viewLifecycleOwner) { userRegisterState ->
             when (userRegisterState) {
                 is UserRegisterState.AllDataEmpty -> {
                     invisibleProgress(binding.progressBar)
@@ -234,7 +234,7 @@ class UserDataSignOutFragment :
                     }
                 }
             }
-        })
+        }
     }
 
     private fun createPatientWithEmail(login: String, password: String) {

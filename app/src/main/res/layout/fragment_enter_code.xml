@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#EDFCFF"
+    android:background="@drawable/desfone"
     tools:context=".patient.auth.registeruser.presentation.fragment.EnterCodeFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/content"
-        android:layout_width="360dp"
+        android:layout_width="300dp"
         android:layout_height="396dp"
-        android:layout_marginTop="130dp"
+        android:layout_marginTop="100dp"
         android:background="@drawable/round_fone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -72,29 +72,29 @@ c кодом. Введите его в поле"
             app:layout_constraintTop_toBottomOf="@+id/text_sms">
 
             <LinearLayout
-                android:layout_width="44dp"
-                android:layout_height="44dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:background="@drawable/otp_cede_fone1">
 
                 <EditText
                     android:id="@+id/otp_1"
-                    android:layout_width="44dp"
-                    android:layout_height="44dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:layout_gravity="center"
                     android:background="@null"
                     android:ems="1"
                     android:inputType="number"
                     android:maxLength="1"
-                    android:padding="10dp"
+                    android:padding="4dp"
                     android:textAlignment="center"
                     app:layout_constraintStart_toStartOf="@+id/text_sms"
                     app:layout_constraintTop_toBottomOf="@+id/text_sms" />
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="44dp"
-                android:layout_height="44dp"
-                android:layout_marginStart="16dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="8dp"
                 android:background="@drawable/otp_cede_fone1">
 
                 <EditText
@@ -113,9 +113,9 @@ c кодом. Введите его в поле"
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="44dp"
-                android:layout_height="44dp"
-                android:layout_marginStart="16dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="8dp"
                 android:background="@drawable/otp_cede_fone1">
 
                 <EditText
@@ -134,9 +134,9 @@ c кодом. Введите его в поле"
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="44dp"
-                android:layout_height="44dp"
-                android:layout_marginStart="16dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="8dp"
                 android:background="@drawable/otp_cede_fone1">
 
                 <EditText
@@ -155,9 +155,9 @@ c кодом. Введите его в поле"
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="44dp"
-                android:layout_height="44dp"
-                android:layout_marginStart="16dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="8dp"
                 android:background="@drawable/otp_cede_fone1">
 
                 <EditText
@@ -176,9 +176,9 @@ c кодом. Введите его в поле"
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="44dp"
-                android:layout_height="44dp"
-                android:layout_marginStart="16dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="8dp"
                 android:background="@drawable/otp_cede_fone1">
 
                 <EditText
@@ -218,15 +218,27 @@ c кодом. Введите его в поле"
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/button_send"
-        android:layout_width="360dp"
-        android:layout_height="wrap_content"
+        android:layout_width="300dp"
+        android:layout_height="@dimen/button_height"
         android:layout_marginTop="24dp"
         android:backgroundTint="#2E58AB"
-        android:text="Отправить повторно · 0:15"
+        android:text="Отправить"
         app:cornerRadius="8dp"
         app:layout_constraintEnd_toEndOf="@+id/content"
         app:layout_constraintStart_toStartOf="@+id/content"
         app:layout_constraintTop_toBottomOf="@+id/content" />
+
+<!--    <com.google.android.material.button.MaterialButton-->
+<!--        android:id="@+id/button_exit"-->
+<!--        android:layout_width="300dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="4dp"-->
+<!--        android:backgroundTint="#2E58AB"-->
+<!--        android:text="Заного спросить"-->
+<!--        app:cornerRadius="8dp"-->
+<!--        app:layout_constraintEnd_toEndOf="@+id/button_send"-->
+<!--        app:layout_constraintStart_toStartOf="@+id/button_send"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/button_send" />-->
 
     <ProgressBar
         android:id="@+id/progressBar"

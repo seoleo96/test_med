@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_root"
+    android:background="@drawable/desfone"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".patient.profile.changepatientdata.ChangePatientDataFragment">
 
@@ -54,12 +54,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="18dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="16dp"
                 android:text="Данные о пациенте"
+                style="@style/MaterialAlertDialog.MaterialComponents.Title.Text"
                 android:textAlignment="center"
                 android:textColor="#27214D"
                 android:textSize="20sp"
-                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -365,7 +365,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/save_users_data"
-                android:layout_width="380dp"
+                android:layout_width="300dp"
                 android:layout_height="@dimen/button_height"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"

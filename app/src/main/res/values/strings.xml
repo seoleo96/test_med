@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">test med</string>
+    <string name="app_name">Consulting App</string>
     <string name="title_home">Врачи</string>
     <string name="title_chats">Чаты</string>
     <string name="title_profile">Профиль</string>
@@ -111,4 +111,5 @@
     <string name="text_to_pay">Оплатить</string>
     <string name="title_consultation">Консультация</string>
     <string name="tv_cancel_consulting">Отменить консультацию</string>
+    <string name="link"><a href="https://www.google.pl/">Google</a></string>
 </resources>

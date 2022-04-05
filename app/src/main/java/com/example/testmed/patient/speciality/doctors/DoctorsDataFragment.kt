@@ -36,15 +36,25 @@ class DoctorsDataFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         toConsulting()
+        toComments()
         toChat()
         setDoctorsData()
+    }
+
+    private fun toComments() {
+        binding.toComments.setOnClickListener {
+            val action =
+                DoctorsDataFragmentDirections.actionNavigationDoctorsDataFragmentToCommentsToDoctorFragment(
+                    args.idDoctor)
+            findNavController().navigate(action)
+        }
     }
 
     private fun toConsulting() {
         binding.toConsulting.setOnClickListener {
             val action =
                 DoctorsDataFragmentDirections.actionNavigationDoctorsDataFragmentToSelectDateConsultingFragment(
-                    args.idDoctor)
+                    args.idDoctor, args.idClinic)
             findNavController().navigate(action)
         }
     }
@@ -76,7 +86,7 @@ class DoctorsDataFragment :
                             Glide
                                 .with(requireContext())
                                 .load(photoUrl)
-                                .centerCrop()
+                                .fitCenter()
                                 .into(binding.imageView)
                         }
                     }

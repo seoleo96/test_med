@@ -24,12 +24,7 @@ class EnterCodeFragment :
     BaseFragmentAuth<FragmentEnterCodeBinding>(FragmentEnterCodeBinding::inflate) {
 
     private val args: EnterCodeFragmentArgs by navArgs()
-//    private val enterCodeViewModel: EnterCodeViewModel by viewModel()
     private lateinit var enterCodeViewModel: EnterCodeViewModel
-    private var START_MILLI_SECONDS = 60000L
-    private lateinit var countdown_timer: CountDownTimer
-    private var isRunning: Boolean = false;
-    private var time_in_milli_seconds = 0L
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -37,6 +32,7 @@ class EnterCodeFragment :
         setButtonOptions()
         editTexts()
         sendButtonClick()
+
     }
 
     private fun sendButtonClick() {
@@ -71,38 +67,6 @@ class EnterCodeFragment :
         binding.buttonSend.isClickable = false
         binding.buttonSend.isEnabled = false
         binding.buttonSend.background.setTint(Color.parseColor("#F3F2F6"))
-        timer()
-    }
-
-    private fun timer() {
-        countdown_timer = object : CountDownTimer(START_MILLI_SECONDS, 1000) {
-            override fun onFinish() {
-                updateButtonOptions()
-            }
-
-            override fun onTick(p0: Long) {
-                time_in_milli_seconds = p0
-                if (isRunning) {
-                    updateTextUI()
-                }
-            }
-        }
-        countdown_timer.start()
-        isRunning = true
-    }
-
-    private fun updateButtonOptions() {
-        binding.buttonSend.isClickable = true
-        binding.buttonSend.isEnabled = true
-        binding.buttonSend.background.setTint(Color.parseColor("#FF2E58AB"))
-        binding.buttonSend.text = "Отправить повторно"
-    }
-
-    private fun updateTextUI() {
-        val minute = (time_in_milli_seconds / 1000) / 60
-        val seconds = (time_in_milli_seconds / 1000) % 60
-
-        binding.buttonSend.text = "Отправить повторно · $minute:$seconds"
     }
 
     private fun editTexts() {
@@ -148,7 +112,6 @@ class EnterCodeFragment :
                         binding.buttonSend.isEnabled = true
                         binding.buttonSend.background.setTint(Color.parseColor("#FF2E58AB"))
                         binding.buttonSend.text = "Отправить"
-                        pauseTimer()
                     } else {
                         binding.buttonSend.isClickable = false
                         binding.buttonSend.isEnabled = false
@@ -156,11 +119,6 @@ class EnterCodeFragment :
                 }
             }
         }
-    }
-
-    private fun pauseTimer() {
-        countdown_timer.cancel()
-        isRunning = false
     }
 
     private fun lengthCode(): String {
@@ -192,10 +150,14 @@ class EnterCodeFragment :
                 }
 
                 else -> {
-                    pauseTimer()
                     hideContent()
-                    val action =
+                    if (args.type == "change"){
+                        val action = EnterCodeFragmentDirections.actionNavigationEnterToNewPasswordFragment(args.phoneNumber)
+                        findNavController().navigate(action)
+                    }
+                    if (args.type == "register"){
                         findNavController().navigate(R.id.navigation_userDataSignOutFragment)
+                    }
                 }
             }
         }
@@ -226,10 +188,5 @@ class EnterCodeFragment :
     private fun hideContent() {
         binding.progressBar.isVisible = false
         binding.content.isVisible = false
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        pauseTimer()
     }
 }

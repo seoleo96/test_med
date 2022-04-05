@@ -27,6 +27,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.bumptech.glide.Glide
 import com.example.testmed.*
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.Dispatchers
@@ -68,25 +69,32 @@ abstract class BaseFragment<VB : ViewBinding>(
     }
 
     private fun updateToken() {
-        val ref = DB.reference.child("patients").child(UID()).child("token")
+        val ref = DB.reference.child("patients")
         FirebaseMessaging.getInstance().token
             .addOnCompleteListener { task ->
                 if (!task.isSuccessful) {
                     Log.w("TAG", "Fetching FCM registration token failed", task.exception)
                     return@addOnCompleteListener
                 }
-                val token = task.result
-                ref.setValue(token)
-                Log.d("TOKENCHORTFRAGMENT", token!!)
+                val user = FirebaseAuth.getInstance().currentUser
+                if (user != null){
+                    val uid = user.uid
+                    val token = task.result
+                    ref.child(uid).child("token").setValue(token)
+                }
             }
     }
 
 
-    private val refState = DB.reference.child("patients").child(UID()).child("state")
+    private val refState = DB.reference.child("patients")
 
     fun updateStatePatient(online: String) {
-        lifecycleScope.launch(Dispatchers.IO) {
-            refState.setValue(online)
+        val user = FirebaseAuth.getInstance().currentUser
+        if (user != null){
+            val uid = user.uid
+            lifecycleScope.launch(Dispatchers.IO) {
+                refState.child(uid).child("state").setValue(online)
+            }
         }
     }
 
@@ -201,8 +209,12 @@ abstract class BaseFragment<VB : ViewBinding>(
         }
     }
 
-    fun setImage(url:String, imageView: ImageView){
-        Glide.with(requireContext()).load(url).into(imageView)
+    fun setImage(url:String, imageView: ImageView, type : String = ""){
+        if(type == ""){
+            Glide.with(imageView.context).load(url).into(imageView)
+        }else{
+            Glide.with(imageView.context).load(url).fitCenter().into(imageView)
+        }
     }
 
     fun getCachedPhotoURI(urlPhoto: String): Uri {

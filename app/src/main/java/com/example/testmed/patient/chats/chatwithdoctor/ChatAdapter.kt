@@ -1,6 +1,7 @@
 package com.example.testmed.patient.chats.chatwithdoctor
 
 import android.graphics.drawable.Drawable
+import android.text.util.Linkify
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,10 +19,8 @@ import com.example.testmed.asDate
 import com.example.testmed.asTime
 import com.example.testmed.databinding.MessageItemBinding
 import com.example.testmed.model.MessageData
-import com.google.android.material.snackbar.Snackbar
 
-//
-class ChatAdapter(private val adapterOnClick: (MessageData, View) -> Unit)
+class ChatAdapter(private val adapterOnClick: (MessageData, View,String) -> Unit )
     : RecyclerView.Adapter<ChatAdapter.ChatHolder>() {
     private val list = arrayListOf<MessageData>()
     fun updateList(data: List<MessageData>) {
@@ -64,7 +63,7 @@ class ChatAdapter(private val adapterOnClick: (MessageData, View) -> Unit)
 
     class ChatHolder(
         private val binding: MessageItemBinding,
-        private val adapterOnClick: (MessageData, View) -> Unit,
+        private val adapterOnClick: (MessageData, View, String) -> Unit,
     ) :
         RecyclerView.ViewHolder(binding.root) {
         fun bindMessagePatient(message: MessageData, b: Boolean) {
@@ -82,14 +81,20 @@ class ChatAdapter(private val adapterOnClick: (MessageData, View) -> Unit)
                     }else{
                         binding.chatUserMessageSeen.setBackgroundResource(R.drawable.ic_double_check_black_24)
                     }
+                    if (message.message.contains("https://meet.jit.si")){
+                        binding.chatUserMessage.text = message.message
+                        Linkify.addLinks(binding.chatUserMessage, Linkify.WEB_URLS)
+                    }else{
+                        binding.chatUserMessage.text = message.message
+                    }
                     binding.blocUserMessage.isVisible = true
                     binding.blocUserMessageImage.isGone = true
                     binding.blocReceivedMessage.isGone = true
+//                    binding.blocUserMessageFile.isGone = true
                     binding.blocReceivedMessageImage.isGone = true
-                    binding.chatUserMessage.text = message.message
                     binding.chatUserMessageTime.text = message.timestamp.toString().asTime()
                 }
-            }else{
+            }else {
                 message.apply {
                     val date = message.timestamp.toString().asDate()
                     if (b){
@@ -108,6 +113,7 @@ class ChatAdapter(private val adapterOnClick: (MessageData, View) -> Unit)
                     binding.blocUserMessageImage.isVisible = true
                     binding.blocReceivedMessage.isVisible = false
                     binding.blocReceivedMessageImage.isGone = true
+//                    binding.blocUserMessageFile.isGone = true
                     binding.chatUserImageTime.text = message.timestamp.toString().asTime()
                     binding.chatUserMessageImageProgress.isVisible = true
                     Glide
@@ -139,10 +145,38 @@ class ChatAdapter(private val adapterOnClick: (MessageData, View) -> Unit)
                         .into(binding.chatUserMessageImage)
                 }
                 binding.chatUserMessageImage.setOnClickListener {
-                    adapterOnClick.invoke(message, it)
+                    adapterOnClick.invoke(message, it, "image")
                 }
             }
-        }
+//            else{
+//                message.apply {
+//                    val date = message.timestamp.toString().asDate()
+//                    if (b){
+//                        binding.messagesDate.isGone = true
+//                    }else{
+//                        binding.messagesDate.text = date
+//                        binding.messagesDate.isVisible = true
+//                    }
+//                    if (seen == "0"){
+//                        binding.chatUserMessageImageSeen.setBackgroundResource(R.drawable.ic_done_black_24)
+//                    }else{
+//                        binding.chatUserMessageImageSeen.setBackgroundResource(R.drawable.ic_double_check_black_24)
+//                    }
+//                    binding.fileNameSend.text = message.type
+//                    binding.blocUserMessageFile.isVisible = true
+//
+//                    binding.blocUserMessage.isGone = true
+//                    binding.blocUserMessageImage.isGone = true
+//                    binding.blocReceivedMessage.isGone = true
+//                    binding.blocReceivedMessageImage.isGone = true
+//                    binding.chatUserImageTime.text = message.timestamp.toString().asTime()
+//
+//                }
+//                binding.chatUserMessageFile.setOnClickListener {
+//                    adapterOnClick.invoke(message, it, "file")
+//                }
+            }
+//        }
 
         fun bindMessageDoctor(message: MessageData, bool: Boolean) {
             if (message.type == "message"){
@@ -154,11 +188,17 @@ class ChatAdapter(private val adapterOnClick: (MessageData, View) -> Unit)
                         binding.messagesDate.text = date
                         binding.messagesDate.isVisible = true
                     }
+                    if (message.message.contains("https://meet.jit.si")){
+                        binding.chatReceivedMessage.text = message.message
+                        Linkify.addLinks(binding.chatReceivedMessage, Linkify.WEB_URLS)
+                    }else{
+                        binding.chatReceivedMessage.text = message.message
+                    }
                     binding.blocUserMessageImage.isGone = true
                     binding.blocUserMessage.isGone = true
                     binding.blocReceivedMessage.isVisible = true
+//                    binding.blocUserMessageFile.isGone = true
                     binding.blocReceivedMessageImage.isGone = true
-                    binding.chatReceivedMessage.text = message.message
                     binding.chatReceivedMessageTime.text = message.timestamp.toString().asTime()
                 }
             }else{
@@ -174,6 +214,7 @@ class ChatAdapter(private val adapterOnClick: (MessageData, View) -> Unit)
                     binding.blocUserMessageImage.isGone = true
                     binding.blocReceivedMessageImage.isVisible = true
                     binding.blocReceivedMessage.isGone = true
+//                    binding.blocUserMessageFile.isGone = true
                     binding.chatReceivedImageTime.text = message.timestamp.toString().asTime()
                     binding.chatReceivedMessageImageProgress.isVisible = true
                     Glide
@@ -205,7 +246,7 @@ class ChatAdapter(private val adapterOnClick: (MessageData, View) -> Unit)
                         .into(binding.chatReceivedMessageImage)
                 }
                 binding.chatReceivedMessageImage.setOnClickListener {
-                    adapterOnClick.invoke(message, it)
+                    adapterOnClick.invoke(message, it, "image")
                 }
             }
         }

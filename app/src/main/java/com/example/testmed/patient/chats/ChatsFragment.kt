@@ -7,6 +7,7 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.example.testmed.DB
 import com.example.testmed.UID
@@ -91,6 +92,8 @@ class ChatsFragment : BaseFragment<FragmentChatsBinding>(FragmentChatsBinding::i
         }
         mRecyclerView = binding.recyclerView
         mRecyclerView.adapter = adapter
+        mRecyclerView.addItemDecoration(DividerItemDecoration(mRecyclerView.context,
+            DividerItemDecoration.VERTICAL))
     }
 
     private fun setSpeciality() {

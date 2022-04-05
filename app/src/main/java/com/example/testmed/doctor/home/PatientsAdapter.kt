@@ -41,11 +41,13 @@ class PatientsAdapter(private val adapterOnClick: (CommonPatientData) -> Unit) :
 
     override fun onBindViewHolder(holder: PatientsViewHolder, position: Int) {
         val bind: CommonPatientData = list[position]
-        if (position == list.size-1){
-            holder.bind(bind, true)
-        }else{
-            holder.bind(bind, false)
-        }
+        holder.bind(bind, true)
+
+//        if (position == list.size-1){
+//            holder.bind(bind, true)
+//        }else{
+//            holder.bind(bind, false)
+//        }
     }
 
     override fun getItemCount(): Int {

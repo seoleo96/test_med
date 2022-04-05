@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_root"
+    android:background="@drawable/desfone"
     tools:context=".doctor.home.chats.PatientsFragment">
 
     <ProgressBar
@@ -23,15 +23,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Пациенты"
-        android:textIsSelectable="true"
+        style="@style/MaterialAlertDialog.MaterialComponents.Title.Text"
+  android:textIsSelectable="true"
         android:layout_marginStart="18dp"
-        android:layout_marginTop="24dp"
         android:layout_marginEnd="18dp"
+        android:layout_marginTop="16dp"
         android:fontFamily="monospace"
         android:textAlignment="center"
         android:textColor="#27214D"
         android:textSize="20sp"
-        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

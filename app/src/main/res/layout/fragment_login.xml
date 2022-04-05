@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#EDFCFF"
+    android:background="@drawable/desfone"
     tools:context=".patient.auth.login.presentation.LoginFragment">
 
     <ScrollView
@@ -23,9 +23,9 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/vector"
-                android:layout_width="360dp"
+                android:layout_width="300dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="100dp"
+                android:layout_marginTop="80dp"
                 android:background="@drawable/round_fone"
                 android:paddingBottom="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -85,6 +85,8 @@
                     app:layout_constraintStart_toStartOf="@+id/text_phone_number"
                     app:layout_constraintTop_toBottomOf="@+id/text_phone_number" />
 
+
+
                 <EditText
                     android:textIsSelectable="true"
                     android:id="@+id/et_password"
@@ -97,7 +99,7 @@
                     android:maxLength="20"
                     android:textAlignment="center"
                     android:hint="******"
-                    android:inputType="textVisiblePassword"
+                    android:inputType="textPassword"
                     android:padding="16dp"
                     app:layout_constraintEnd_toEndOf="@+id/et_login"
                     app:layout_constraintStart_toStartOf="@+id/et_login"
@@ -132,17 +134,29 @@
                 app:layout_constraintStart_toStartOf="@+id/vector"
                 app:layout_constraintTop_toBottomOf="@+id/vector" />
 
+            <TextView
+                android:id="@+id/tv_change_password"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:textSize="16dp"
+                android:textColor="#2E58AB"
+                android:text="Забыли пароль"
+                app:layout_constraintEnd_toEndOf="@+id/tv_to_register"
+                app:layout_constraintStart_toStartOf="@+id/tv_to_register"
+                app:layout_constraintTop_toBottomOf="@+id/tv_to_register" />
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/send_users_data_button"
-                android:layout_width="360dp"
-                android:layout_height="wrap_content"
+                android:layout_width="300dp"
+                android:layout_height="@dimen/button_height"
                 android:layout_marginTop="8dp"
                 android:backgroundTint="#2E58AB"
                 android:text="Войти"
                 app:cornerRadius="8dp"
-                app:layout_constraintEnd_toEndOf="@+id/tv_to_register"
-                app:layout_constraintStart_toStartOf="@+id/tv_to_register"
-                app:layout_constraintTop_toBottomOf="@+id/tv_to_register" />
+                app:layout_constraintEnd_toEndOf="@+id/tv_change_password"
+                app:layout_constraintStart_toStartOf="@+id/tv_change_password"
+                app:layout_constraintTop_toBottomOf="@+id/tv_change_password" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

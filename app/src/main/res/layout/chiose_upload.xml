@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="70dp"
+    android:orientation="horizontal"
+    app:behavior_hideable="true"
+    app:behavior_peekHeight="0dp"
+    android:background="@drawable/desfone"
+    android:id="@+id/bottom_sheet_choice"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+    <ImageView
+        android:id="@+id/btn_attach_image"
+        android:layout_width="36dp"
+        android:layout_height="match_parent"
+        android:src="@drawable/ic_baseline_image_24"
+        android:layout_margin="16dp"/>
+
+    <ImageView
+        android:id="@+id/btn_attach_file"
+        android:layout_width="36dp"
+        android:layout_height="match_parent"
+        android:src="@drawable/ic_baseline_insert_drive_file_24"
+        android:layout_margin="16dp"/>
+
+
+</LinearLayout>

@@ -67,6 +67,15 @@ class MyFirebaseIdService : FirebaseMessagingService() {
         Log.d("NOTINT", notificationId.toString())
 
         val pendingIntent: PendingIntent = when {
+            notifyData.body.contains("https://meet.jit.si/") -> {
+                CONSULTING = "CONSULTING"
+                NavDeepLinkBuilder(this)
+                    .setComponentName(MainActivity::class.java)
+                    .setGraph(R.navigation.mobile_navigation)
+                    .setDestination(R.id.navigation_chat_with_doctor)
+                    .setArguments(bundleOf(ID_DOCTOR to notifyData.fromId, CONSULTING to "CONSULTING"))
+                    .createPendingIntent()
+            }
             notifyData.fromWho == "0" && notifyData.icon == 1 -> {
                 NavDeepLinkBuilder(this)
                     .setComponentName(MainActivityDoctor::class.java)
@@ -92,6 +101,7 @@ class MyFirebaseIdService : FirebaseMessagingService() {
                     .setArguments(bundleOf(ID_DOCTOR to notifyData.fromId))
                     .createPendingIntent()
             }
+
             else -> {
                 NavDeepLinkBuilder(this)
                     .createPendingIntent()

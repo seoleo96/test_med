@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_color"
+    android:background="@drawable/desfone"
     tools:context=".ConfirmConsultingDateFragment"
     >
 
@@ -35,19 +35,18 @@
 
         <TextView
             android:id="@+id/text_register"
-            style="@style/MaterialAlertDialog.MaterialComponents.Title.Panel"
+            style="@style/MaterialAlertDialog.MaterialComponents.Title.Text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="18dp"
-            android:layout_marginTop="16dp"
             android:layout_marginEnd="18dp"
+            android:layout_marginTop="16dp"
             android:fontFamily="monospace"
             android:text="@string/tv_to_confirm"
             android:textAlignment="center"
             android:textColor="#27214D"
             android:textIsSelectable="true"
             android:textSize="20sp"
-            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -72,8 +71,8 @@
                 android:layout_height="wrap_content"
                 android:text="Вы хотите записать Алимов С. Х. в онлайн консультацию к врачу"
                 android:textAlignment="center"
-                android:textSize="16sp"
                 android:textAppearance="@style/TextAppearance.Compat.Notification.Title"
+                android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -183,16 +182,16 @@
                 android:id="@+id/tv_explain_consulting"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAlignment="center"
                 android:layout_marginTop="24dp"
                 android:paddingStart="24dp"
                 android:paddingEnd="24dp"
+                android:text="@string/explain_to_patient"
+                android:textAlignment="center"
                 android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Subtitle"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/date_time"
-                android:text="@string/explain_to_patient"
                 />
 
 
@@ -200,7 +199,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/to_confirm"
-            android:layout_width="360dp"
+            android:layout_width="300dp"
             android:layout_height="@dimen/button_height"
             android:backgroundTint="#2E58AB"
             android:text="@string/tv_confirm"

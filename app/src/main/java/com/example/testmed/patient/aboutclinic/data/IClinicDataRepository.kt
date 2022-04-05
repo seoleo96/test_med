@@ -4,5 +4,5 @@ import com.example.testmed.patient.aboutclinic.ClinicDataResult
 import kotlinx.coroutines.flow.Flow
 
 interface IClinicDataRepository {
-    fun fetchClinicData() : Flow<ClinicDataResult>
+    fun fetchClinicData(idClinic : String) : Flow<ClinicDataResult>
 }

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#EDFCFF"
+    android:background="@drawable/desfone"
     tools:context=".patient.auth.registeruser.presentation.fragment.RegisterFragment">
 
     <ScrollView
@@ -22,7 +22,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/vector"
-                android:layout_width="360dp"
+                android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="100dp"
                 android:paddingBottom="16dp"
@@ -103,29 +103,29 @@
                     app:layout_constraintTop_toBottomOf="@+id/editTextPhone" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <TextView
-                android:id="@+id/tv_to_register_email"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:textSize="16dp"
-                android:textColor="#2E58AB"
-                android:text="Регистрация через почты"
-                app:layout_constraintEnd_toEndOf="@+id/vector"
-                app:layout_constraintStart_toStartOf="@+id/vector"
-                app:layout_constraintTop_toBottomOf="@+id/vector" />
+<!--            <TextView-->
+<!--                android:id="@+id/tv_to_register_email"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_margin="16dp"-->
+<!--                android:textSize="16dp"-->
+<!--                android:textColor="#2E58AB"-->
+<!--                android:text="Регистрация через почты"-->
+<!--                app:layout_constraintEnd_toEndOf="@+id/vector"-->
+<!--                app:layout_constraintStart_toStartOf="@+id/vector"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/vector" />-->
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/send_users_data_button"
-                android:layout_width="360dp"
-                android:layout_height="wrap_content"
+                android:layout_width="300dp"
+                android:layout_height="@dimen/button_height"
                 app:cornerRadius="8dp"
                 android:backgroundTint="#2E58AB"
                 android:text="Отправить"
                 android:layout_marginTop="16dp"
-                app:layout_constraintEnd_toEndOf="@+id/tv_to_register_email"
-                app:layout_constraintStart_toStartOf="@+id/tv_to_register_email"
-                app:layout_constraintTop_toBottomOf="@+id/tv_to_register_email" />
+                app:layout_constraintEnd_toEndOf="@+id/vector"
+                app:layout_constraintStart_toStartOf="@+id/vector"
+                app:layout_constraintTop_toBottomOf="@+id/vector" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

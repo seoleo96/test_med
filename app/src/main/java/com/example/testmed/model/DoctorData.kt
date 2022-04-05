@@ -22,7 +22,8 @@ data class DoctorData(
     val stateTo: String = "",
     var photoUrl: String ="",
     val seen : String = "0",
-    val token :  String
+    val token :  String,
+    val idClinic :  String = "",
 ) {
     constructor() : this("","","", "","", "",
         "", "", "","","",

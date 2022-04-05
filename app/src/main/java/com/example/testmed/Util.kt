@@ -39,6 +39,13 @@ inline fun Fragment.showSnackbar(msg: String) {
         Snackbar.LENGTH_SHORT).show()
 }
 
+inline fun Fragment.showSnackbarLong(msg: String) {
+    Snackbar.make(requireView(),
+        msg,
+        Snackbar.LENGTH_LONG).show()
+
+}
+
 
 fun AUTH(): FirebaseAuth {
     return FirebaseAuth.getInstance()
@@ -60,6 +67,7 @@ const val SERVER_KEY = "AAAAiApd1PA:APA91bG0aTplmaQeeDA1R2o0eG6TfL0nozI8VgVXulHL
 const val CONTENT_TYPE = "application/json"
 const val ID_PATIENT = "ID_PATIENT"
 const val ID_DOCTOR = "ID_DOCTOR"
+var CONSULTING = "CONSULTING"
 
 val REF_STORAGE_ROOT: StorageReference by lazy {
     FirebaseStorage.getInstance().reference

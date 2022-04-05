@@ -1,17 +1,28 @@
 package com.example.testmed.patient.chats.chatwithdoctor
 
+import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
-import android.app.NotificationManager
-import android.content.Context
-import android.content.ContextWrapper
+import android.app.DownloadManager
+import android.content.Context.DOWNLOAD_SERVICE
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.os.Environment
+import android.provider.DocumentsContract
+import android.provider.OpenableColumns
 import android.util.Log
 import android.view.View
+import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.NotificationManagerCompat
-import androidx.core.content.ContextCompat.getSystemService
+import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
+import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -21,8 +32,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.testmed.*
 import com.example.testmed.base.BaseFragment
 import com.example.testmed.databinding.FragmentChatWithDoctorBinding
+import com.example.testmed.doctor.chatwithpatient.calling.CallingToPatientActivity
 import com.example.testmed.model.MessageData
-import com.example.testmed.notification.MyFirebaseIdService
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ServerValue
@@ -32,6 +44,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
+import java.io.File
+
 
 class ChatWithDoctorFragment :
     BaseFragment<FragmentChatWithDoctorBinding>(FragmentChatWithDoctorBinding::inflate) {
@@ -48,8 +62,10 @@ class ChatWithDoctorFragment :
     private var doctorImageUrl = ""
     private var tempTimestamp = ""
     private var uri: Uri? = null
+    private var pdfFile: Uri? = null
     private var imageUriprofile: Uri? = null
     private lateinit var chatWithDoctorViewModel: ChatWithDoctorViewModel
+    private lateinit var mBottomSheetBehavior: BottomSheetBehavior<*>
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -57,13 +73,16 @@ class ChatWithDoctorFragment :
         idPatient = UID()
         idDoctor =
             if (argsNav.idDoctor == "0") requireArguments()[ID_DOCTOR].toString() else argsNav.idDoctor
-        lifecycleScope.launch(Dispatchers.IO){
+        lifecycleScope.launch(Dispatchers.IO) {
             val temp = DB.reference.child("patients")
                 .child(idPatient)
                 .child("iin")
                 .get().await().getValue(String::class.java).toString()
             idNotification = (temp.toLong() - 999900000000).toInt()
         }
+        val viewBottomSheetBehavior = view.findViewById<LinearLayout>(R.id.bottom_sheet_choice)
+        mBottomSheetBehavior = BottomSheetBehavior.from(viewBottomSheetBehavior)
+        mBottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         setAdapter()
         setToBackButton()
         setDoctorsData()
@@ -72,6 +91,42 @@ class ChatWithDoctorFragment :
         setMessages()
         sendImage()
         updateToken()
+        setConsultingData()
+        setToConsulting()
+    }
+
+    private fun setToConsulting() {
+        binding.toConsulting.setOnClickListener {
+            val consultingLinc = "https://meet.jit.si/${UID()}"
+            val intent = Intent(requireActivity(), CallingToPatientActivity::class.java)
+            intent.putExtra("consultingLinc", consultingLinc)
+            startActivity(intent)
+        }
+    }
+
+    private fun setConsultingData() {
+        val ref = "online_consulting/${idDoctor}/${UID()}/status"
+        DB.reference.child(ref).addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    val data = snapshot.getValue(String::class.java)
+                    if (data != null) {
+                        if (data == "online") {
+                            try {
+                                binding.toConsulting.isVisible = true
+                                showSnackbarLong("Консультация началась. Нажмите на кнопку (+) в углу.")
+                            } catch (e: Exception) {
+                            }
+                        } else {
+                            binding.toConsulting.isVisible = false
+                        }
+                    }
+
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) = Unit
+        })
     }
 
     override fun onResume() {
@@ -85,6 +140,14 @@ class ChatWithDoctorFragment :
             NotificationManagerCompat.from(requireContext()).cancel(idNotificationDoctor);
         }
         chatWithDoctorViewModel.seenMessages(idDoctor, idPatient)
+
+        if (requireArguments()[CONSULTING].toString() == "CONSULTING") {
+            Log.d(CONSULTING, "CONSULTING")
+            val consultingLinc = "https://meet.jit.si/${UID()}"
+            val intent = Intent(requireActivity(), CallingToPatientActivity::class.java)
+            intent.putExtra("consultingLinc", consultingLinc)
+            startActivity(intent)
+        }
     }
 
 
@@ -133,10 +196,46 @@ class ChatWithDoctorFragment :
         })
     }
 
+    private fun downloadfile(data: MessageData) {
+        val file = File(Environment.getExternalStorageDirectory(), "mypdffile.pdf")
+        val downloadManager =
+            requireActivity().getSystemService(DOWNLOAD_SERVICE) as DownloadManager?
+        val request = DownloadManager.Request(data.message.toUri())
+            .setTitle(data.type)
+            .setDescription("This is file download demo")
+            .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE)
+            .setDestinationUri(Uri.fromFile(file))
+        downloadManager!!.enqueue(request)
+        val sendIntent: Intent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_TEXT, "This is my text to send.")
+            type = "text/pdf"
+        }
+
+        val shareIntent = Intent.createChooser(sendIntent, null)
+        startActivity(shareIntent)
+    }
+
+    private fun getPermissions() {
+        val externalReadPermission = Manifest.permission.READ_EXTERNAL_STORAGE
+        val externalWritePermission = Manifest.permission.WRITE_EXTERNAL_STORAGE
+        if (ContextCompat.checkSelfPermission(requireContext(),
+                externalReadPermission) != PackageManager.PERMISSION_GRANTED
+            && ContextCompat.checkSelfPermission(requireContext(),
+                externalWritePermission) != PackageManager.PERMISSION_GRANTED
+        ) {
+            requestPermissions(arrayOf(externalReadPermission, externalWritePermission),
+                100)
+        }
+    }
+
     private fun setAdapter() {
-        mAdapter = ChatAdapter { messageData, view ->
-            if (messageData.message.isNotEmpty()) {
+        mAdapter = ChatAdapter { messageData, view, type ->
+            if (messageData.message.isNotEmpty() && type == "image") {
                 setAnimationView(messageData, view)
+            } else {
+//                getPermissions()
+//                downloadfile(messageData)
             }
         }
         mRecyclerView = binding.recyclerChat
@@ -168,7 +267,7 @@ class ChatWithDoctorFragment :
                 updateStatePatient(online)
                 sendButtonNotEditable()
             } else {
-                if (it.isNotEmpty()){
+                if (it.isNotEmpty()) {
                     chatWithDoctorViewModel.updateTyping(idDoctor)
                 }
                 binding.apply {
@@ -191,22 +290,97 @@ class ChatWithDoctorFragment :
         }
     }
 
-    private var launchSomeActivity =
+    private
+    var launchSomeActivity =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK && result.data != null) {
                 uri = CropImage.getActivityResult(result.data).uri
                 savePhoto()
+                mBottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
             }
         }
 
+    private
+    var pdfUploadActivity =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK && result.data != null) {
+                pdfFile = result.data!!.data
+                savePdf()
+                mBottomSheetBehavior.state =
+                    BottomSheetBehavior.STATE_HIDDEN
+            }
+        }
+
+    private fun savePdf() {
+        lifecycleScope.launch(Dispatchers.IO) {
+            val key = DB.reference.child("message").child(idPatient)
+                .push().key.toString()
+            val path =
+                REF_STORAGE_ROOT.child("message_files").child(key)
+            val timestamp = ServerValue.TIMESTAMP
+            val data = MessageData(idMessage = key,
+                timestamp = tempTimestamp,
+                idFrom = idPatient,
+                message = "Отправляется...",
+                type = "message")
+            withContext(Dispatchers.Main) {
+                mListMessages.add(data)
+                updateAdapter(mListMessages)
+            }
+            val fileUrl = path.putFile(pdfFile!!)
+                .await().storage.downloadUrl.await().toString()
+            val fileName = getFilenameFromUri(pdfFile!!)
+            sendToDB(key, fileUrl, fileName, timestamp)
+        }
+    }
+
+    @SuppressLint("Range")
+    fun getFilenameFromUri(uri: Uri): String {
+        var result = ""
+        val cursor = requireActivity().contentResolver.query(uri, null, null, null, null)
+        try {
+            if (cursor != null && cursor.moveToFirst()) {
+                result =
+                    cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME))
+            }
+        } catch (e: Exception) {
+            showSnackbar(e.toString())
+        } finally {
+            cursor?.close()
+            return result
+        }
+    }
+
     private fun sendImage() {
         binding.addMedia.setOnClickListener {
-            val intent = CropImage.activity()
-                .setAspectRatio(1, 1)
-                .setRequestedSize(400, 400)
-                .getIntent(activity as MainActivity)
-            launchSomeActivity.launch(intent)
+            mBottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+            view?.findViewById<ImageView>(R.id.btn_attach_file)?.setOnClickListener {
+//                attachFile()
+            }
+            view?.findViewById<ImageView>(R.id.btn_attach_image)
+                ?.setOnClickListener { attachImage() }
         }
+
+        binding.hidebtmsheet.setOnClickListener {
+            mBottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+        }
+        binding.recyclerChat.setOnClickListener {
+            mBottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+        }
+    }
+
+    private fun attachFile() {
+        val intent = Intent(Intent.ACTION_GET_CONTENT)
+        intent.type = "*/*"
+        pdfUploadActivity.launch(intent)
+    }
+
+    private fun attachImage() {
+        val intent = CropImage.activity()
+            .setAspectRatio(1, 1)
+            .setRequestedSize(400, 400)
+            .getIntent(activity as MainActivity)
+        launchSomeActivity.launch(intent)
     }
 
     private fun updateAdapter(mListMessages: MutableList<MessageData>) {
@@ -228,7 +402,8 @@ class ChatWithDoctorFragment :
                 mListMessages.add(data)
                 updateAdapter(mListMessages)
             }
-            val photoUrl = path.putFile(uri!!).await().storage.downloadUrl.await().toString()
+            val photoUrl =
+                path.putFile(uri!!).await().storage.downloadUrl.await().toString()
             sendToDB(key, photoUrl, "image", timestamp)
         }
     }
@@ -246,11 +421,27 @@ class ChatWithDoctorFragment :
         }
     }
 
-    private fun sendToDB(idMess: String, text: String, type: String, timestamp: Any) {
-        chatWithDoctorViewModel.sendNotificationData(idDoctor, idPatient, text, idNotification)
-        chatWithDoctorViewModel.sendMessage(idMess, text, type, timestamp, idDoctor, idNotification)
-        chatWithDoctorViewModel.saveMainList(text, timestamp, type, idDoctor, doctorImageUrl)
-
+    private fun sendToDB(
+        idMess: String,
+        text: String,
+        type: String,
+        timestamp: Any,
+    ) {
+        chatWithDoctorViewModel.sendNotificationData(idDoctor,
+            idPatient,
+            text,
+            idNotification)
+        chatWithDoctorViewModel.sendMessage(idMess,
+            text,
+            type,
+            timestamp,
+            idDoctor,
+            idNotification)
+        chatWithDoctorViewModel.saveMainList(text,
+            timestamp,
+            type,
+            idDoctor,
+            doctorImageUrl)
     }
 
     private fun setDoctorsData() {
@@ -271,7 +462,7 @@ class ChatWithDoctorFragment :
                 doctorImageUrl = photoUrl
 
                 if (photoUrl.isNotEmpty()) {
-                    super.setImage(photoUrl, binding.profileImage)
+                    setImage(photoUrl, binding.profileImage)
                     lifecycleScope.launch(Dispatchers.IO) {
                         imageUriprofile = super.getCachedPhotoURI(photoUrl)
                     }
