@@ -15,7 +15,10 @@ data class AllClinicData(
     val rnn: String = "",
     val startEndTime: String = "",
     val imageUrl: String = "",
+    val city: String = "",
+    var lat: String = "",
+    var lon: String = "",
 ) {
-    constructor() : this("", "", "", "", "",
+    constructor() : this("", "", "","", "", "", "", "",
         "", "", "","", "", "","", "",  "")
 }

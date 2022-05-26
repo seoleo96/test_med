@@ -190,7 +190,7 @@ abstract class BaseFragment<VB : ViewBinding>(
                         containerSen.isVisible = true
                         containerToolbar.isVisible = true
                         recyclerChat.isVisible = true
-                        container.setBackgroundResource(R.color.background_root)
+                        container.setBackgroundResource(R.drawable.desfone)
                         currentAnimator = null
                     }
 
@@ -200,7 +200,7 @@ abstract class BaseFragment<VB : ViewBinding>(
                         recyclerChat.isVisible = true
                         thumbView.alpha = 1f
                         expandedImageView.isGone = true
-                        container.setBackgroundResource(R.color.background_root)
+                        container.setBackgroundResource(R.drawable.desfone)
                         currentAnimator = null
                     }
                 })

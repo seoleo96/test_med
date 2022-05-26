@@ -146,7 +146,7 @@ class ConsultingFragment :
 
     private fun setAdapter() {
         adapter = ConsultingDoctorAdapter {
-            setFragmentResult("requestKeyConsulting", bundleOf("key" to it.idPatient))
+            setFragmentResult("toRecommendation", bundleOf("idPatient" to it.idPatient))
         }
         mRecyclerView = binding.recyclerView
         mRecyclerView.adapter = adapter

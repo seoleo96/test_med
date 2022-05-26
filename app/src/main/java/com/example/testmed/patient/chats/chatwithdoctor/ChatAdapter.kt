@@ -90,11 +90,12 @@ class ChatAdapter(private val adapterOnClick: (MessageData, View,String) -> Unit
                     binding.blocUserMessage.isVisible = true
                     binding.blocUserMessageImage.isGone = true
                     binding.blocReceivedMessage.isGone = true
-//                    binding.blocUserMessageFile.isGone = true
+                    binding.blocUserMessageFile.isGone = true
+                    binding.blocReceivedMessageFile.isGone = true
                     binding.blocReceivedMessageImage.isGone = true
                     binding.chatUserMessageTime.text = message.timestamp.toString().asTime()
                 }
-            }else {
+            }else if (message.type == "image"){
                 message.apply {
                     val date = message.timestamp.toString().asDate()
                     if (b){
@@ -113,7 +114,8 @@ class ChatAdapter(private val adapterOnClick: (MessageData, View,String) -> Unit
                     binding.blocUserMessageImage.isVisible = true
                     binding.blocReceivedMessage.isVisible = false
                     binding.blocReceivedMessageImage.isGone = true
-//                    binding.blocUserMessageFile.isGone = true
+                    binding.blocUserMessageFile.isGone = true
+                    binding.blocReceivedMessageFile.isGone = true
                     binding.chatUserImageTime.text = message.timestamp.toString().asTime()
                     binding.chatUserMessageImageProgress.isVisible = true
                     Glide
@@ -147,36 +149,34 @@ class ChatAdapter(private val adapterOnClick: (MessageData, View,String) -> Unit
                 binding.chatUserMessageImage.setOnClickListener {
                     adapterOnClick.invoke(message, it, "image")
                 }
+            }else{
+                message.apply {
+                    val date = message.timestamp.toString().asDate()
+                    if (b){
+                        binding.messagesDate.isGone = true
+                    }else{
+                        binding.messagesDate.text = date
+                        binding.messagesDate.isVisible = true
+                    }
+                    if (seen == "0"){
+                        binding.chatUserMessageFileSeen.setBackgroundResource(R.drawable.ic_done_black_24)
+                    }else{
+                        binding.chatUserMessageFileSeen.setBackgroundResource(R.drawable.ic_double_check_black_24)
+                    }
+                    binding.fileNameSend.text = message.type
+                    binding.blocUserMessageFile.isVisible = true
+                    binding.blocUserMessage.isGone = true
+                    binding.blocUserMessageImage.isGone = true
+                    binding.blocReceivedMessage.isGone = true
+                    binding.blocReceivedMessageFile.isGone = true
+                    binding.blocReceivedMessageImage.isGone = true
+                    binding.chatUserFileTime.text = message.timestamp.toString().asTime()
+                }
+                binding.chatUserMessageFile.setOnClickListener {
+                    adapterOnClick.invoke(message, it, "file")
+                }
             }
-//            else{
-//                message.apply {
-//                    val date = message.timestamp.toString().asDate()
-//                    if (b){
-//                        binding.messagesDate.isGone = true
-//                    }else{
-//                        binding.messagesDate.text = date
-//                        binding.messagesDate.isVisible = true
-//                    }
-//                    if (seen == "0"){
-//                        binding.chatUserMessageImageSeen.setBackgroundResource(R.drawable.ic_done_black_24)
-//                    }else{
-//                        binding.chatUserMessageImageSeen.setBackgroundResource(R.drawable.ic_double_check_black_24)
-//                    }
-//                    binding.fileNameSend.text = message.type
-//                    binding.blocUserMessageFile.isVisible = true
-//
-//                    binding.blocUserMessage.isGone = true
-//                    binding.blocUserMessageImage.isGone = true
-//                    binding.blocReceivedMessage.isGone = true
-//                    binding.blocReceivedMessageImage.isGone = true
-//                    binding.chatUserImageTime.text = message.timestamp.toString().asTime()
-//
-//                }
-//                binding.chatUserMessageFile.setOnClickListener {
-//                    adapterOnClick.invoke(message, it, "file")
-//                }
-            }
-//        }
+        }
 
         fun bindMessageDoctor(message: MessageData, bool: Boolean) {
             if (message.type == "message"){
@@ -197,11 +197,13 @@ class ChatAdapter(private val adapterOnClick: (MessageData, View,String) -> Unit
                     binding.blocUserMessageImage.isGone = true
                     binding.blocUserMessage.isGone = true
                     binding.blocReceivedMessage.isVisible = true
-//                    binding.blocUserMessageFile.isGone = true
+                    binding.blocReceivedMessageFile.isGone = true
+                    binding.blocUserMessageFile.isGone = true
                     binding.blocReceivedMessageImage.isGone = true
                     binding.chatReceivedMessageTime.text = message.timestamp.toString().asTime()
+                    //
                 }
-            }else{
+            }else if(message.type == "image"){
                 message.apply {
                     val date = message.timestamp.toString().asDate()
                     if (bool){
@@ -214,7 +216,8 @@ class ChatAdapter(private val adapterOnClick: (MessageData, View,String) -> Unit
                     binding.blocUserMessageImage.isGone = true
                     binding.blocReceivedMessageImage.isVisible = true
                     binding.blocReceivedMessage.isGone = true
-//                    binding.blocUserMessageFile.isGone = true
+                    binding.blocUserMessageFile.isGone = true
+                    binding.blocReceivedMessageFile.isGone = true
                     binding.chatReceivedImageTime.text = message.timestamp.toString().asTime()
                     binding.chatReceivedMessageImageProgress.isVisible = true
                     Glide
@@ -247,6 +250,28 @@ class ChatAdapter(private val adapterOnClick: (MessageData, View,String) -> Unit
                 }
                 binding.chatReceivedMessageImage.setOnClickListener {
                     adapterOnClick.invoke(message, it, "image")
+                }
+            }else{
+                message.apply {
+                    val date = message.timestamp.toString().asDate()
+                    if (bool){
+                        binding.messagesDate.isGone = true
+                    }else{
+                        binding.messagesDate.text = date
+                        binding.messagesDate.isVisible = true
+                    }
+                    binding.fileReceivedSend.text = message.type
+                    binding.blocReceivedMessageFile.isVisible = true
+
+                    binding.blocUserMessage.isGone = true
+                    binding.blocUserMessageImage.isGone = true
+                    binding.blocReceivedMessage.isGone = true
+                    binding.blocReceivedMessageImage.isGone = true
+                    binding.blocUserMessageFile.isGone = true
+                    binding.chatReceivedFileTime.text = message.timestamp.toString().asTime()
+                }
+                binding.chatReceivedMessageFile.setOnClickListener {
+                    adapterOnClick.invoke(message, it, "file")
                 }
             }
         }

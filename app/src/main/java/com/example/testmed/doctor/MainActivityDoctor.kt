@@ -11,6 +11,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.testmed.*
 import com.example.testmed.databinding.ActivityMainDoctorBinding
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.ServerValue
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -40,9 +41,12 @@ class MainActivityDoctor : AppCompatActivity() {
     }
 
     private fun updateStatePatientOffline(time: Any) {
-        val refState = DB.reference.child("doctors").child(UID()).child("state")
-        lifecycleScope.launch(Dispatchers.IO) {
-            refState.setValue(time)
+        val uid = FirebaseAuth.getInstance().uid
+        if (uid != null) {
+            val refState = DB.reference.child("doctors").child(uid).child("state")
+            lifecycleScope.launch(Dispatchers.IO) {
+                refState.setValue(time)
+            }
         }
     }
 
@@ -64,6 +68,11 @@ class MainActivityDoctor : AppCompatActivity() {
             when (destination.id) {
                 R.id.navigation_login_doctor,
                 R.id.navigation_chat_with_patient_fragment,
+                R.id.changePasswordDoctorFragment,
+                R.id.recommendationFragment,
+                R.id.patientProfileFragment,
+                R.id.patientRecFragment,
+                R.id.commentsToDoctorFragment2,
                 -> {
                     supportActionBar?.hide()
                     navView.isVisible = false

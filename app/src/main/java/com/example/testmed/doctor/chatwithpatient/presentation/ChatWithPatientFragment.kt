@@ -1,11 +1,15 @@
 package com.example.testmed.doctor.chatwithpatient.presentation
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 
 import android.net.Uri
 import android.os.Bundle
+import android.provider.OpenableColumns
 import android.view.View
+import android.widget.ImageView
+import android.widget.LinearLayout
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.widget.doAfterTextChanged
@@ -15,13 +19,16 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
 import com.example.testmed.*
+import com.example.testmed.R
 import com.example.testmed.base.BaseFragmentDoctor
 import com.example.testmed.databinding.ChatWithPatientFragmentBinding
 import com.example.testmed.doctor.MainActivityDoctor
 import com.example.testmed.doctor.chatwithpatient.ChatAdapterForDoctor
 import com.example.testmed.doctor.chatwithpatient.calling.CallingToPatientActivity
 import com.example.testmed.model.ConsultingData
+import com.example.testmed.model.DoctorData
 import com.example.testmed.model.MessageData
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.firebase.database.*
 import com.theartofdev.edmodo.cropper.CropImage
 import kotlinx.coroutines.Dispatchers
@@ -38,50 +45,201 @@ class ChatWithPatientFragment
     private var idNotification: Int = 0
     private var idNotificationPatient: Int = 0
     private lateinit var mAdapter: ChatAdapterForDoctor
-    private lateinit var patientId: String
-    private lateinit var idDoctor: String
     private lateinit var mRecyclerView: RecyclerView
     private var listMessages = mutableListOf<MessageData>()
+    private lateinit var patientId: String
+    private lateinit var idDoctor: String
+    private lateinit var patientFio: String
+    private lateinit var patientAddress: String
+    private lateinit var patientBirthday: String
+    private lateinit var doctorFio: String
+    private lateinit var specialityDoc: String
+    private lateinit var idClinicDoc: String
     private var photoUrl = ""
     private var uri: Uri? = null
     private var imageUriprofile: Uri? = null
     private var tempTimestamp = ""
+    private lateinit var mBottomSheetBehavior: BottomSheetBehavior<*>
+    private var pdfFile: Uri? = null
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this)[ChatWithPatientViewModel::class.java]
-        lifecycleScope.launch(Dispatchers.IO) {
-            val temp = DB.reference.child("doctors")
-                .child(UID())
-                .child("iin")
-                .get().await().getValue(String::class.java).toString()
-            idNotification = (temp.toLong() - 999900000000).toInt()
+        try {
+            lifecycleScope.launch(Dispatchers.IO) {
+                val temp = DB.reference.child("doctors")
+                    .child(UID())
+                    .child("iin")
+                    .get().await().getValue(String::class.java).toString()
+                idNotification = (temp.toLong() - 999900000000).toInt()
+            }
+        } catch (e: Exception) {
+
         }
+        val viewBottomSheetBehavior = view.findViewById<LinearLayout>(R.id.bottom_sheet_choice)
+        mBottomSheetBehavior = BottomSheetBehavior.from(viewBottomSheetBehavior)
+        mBottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         setPatientId()
         setAdapter()
         setMessages()
         setEditTextListener()
         sendMessage()
         setPatientsData()
+        getDoctorData()
         setToBackButton()
         sendImage()
         setCallingActivity()
-        setConsulting()
+        toRecommendation()
+        toPatientProfile()
     }
 
-    private fun setConsulting() {
+    private fun toPatientProfile() {
+        binding.fio.setOnClickListener {
+            val action =
+                ChatWithPatientFragmentDirections.actionNavigationChatWithPatientFragmentToPatientProfileFragment(patientId)
+            findNavController().navigate(action)
+        }
+    }
+
+    fun getDoctorData() {
+        lifecycleScope.launch(Dispatchers.IO) {
+            DB.reference
+                .child("doctors").child(idDoctor)
+                .addValueEventListener(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        if (snapshot.exists()) {
+                            val data = snapshot.getValue(DoctorData::class.java)
+                            data?.apply {
+                                doctorFio =
+                                    if (patronymic != "") "$surname $name $patronymic" else "$surname $name"
+                                specialityDoc = speciality
+                                idClinicDoc = idClinic
+                            }
+                        }
+                    }
+
+                    override fun onCancelled(error: DatabaseError) = Unit
+                })
+        }
+    }
+
+    private fun toRecommendation() {
+        getDoctorData()
+        binding.toRecommendation.setOnClickListener {
+            val action =
+                ChatWithPatientFragmentDirections.actionNavigationChatWithPatientFragmentToRecommendationFragment(
+                    patientFio,
+                    idDoctor,
+                    idClinicDoc,
+                    doctorFio,
+                    specialityDoc,
+                    patientAddress,
+                    patientBirthday,
+                    patientId,
+                    photoUrl,
+                    idNotification
+                )
+            findNavController().navigate(action)
+        }
+    }
+
+    private var pdfUploadActivity =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK && result.data != null) {
+                pdfFile = result.data!!.data
+                savePdf()
+                mBottomSheetBehavior.state =
+                    BottomSheetBehavior.STATE_HIDDEN
+            }
+        }
+
+    private fun savePdf() {
+        try {
+            lifecycleScope.launch(Dispatchers.IO) {
+                val key = DB.reference.child("message").child(idDoctor)
+                    .push().key.toString()
+                val path =
+                    REF_STORAGE_ROOT.child("message_files").child(key)
+                val timestamp = ServerValue.TIMESTAMP
+                val data = MessageData(idMessage = key,
+                    timestamp = tempTimestamp,
+                    idFrom = idDoctor,
+                    message = "Отправляется...",
+                    type = "file")
+                withContext(Dispatchers.Main) {
+                    listMessages.add(data)
+                    updateAdapter(listMessages)
+                }
+                val fileUrl = path.putFile(pdfFile!!)
+                    .await().storage.downloadUrl.await().toString()
+                val fileName = getFilenameFromUri(pdfFile!!)
+                sendToDB(key, fileUrl, fileName, timestamp)
+            }
+        } catch (e: Exception) {
+        }
 
     }
+
+    @SuppressLint("Range")
+    fun getFilenameFromUri(uri: Uri): String {
+        var result = ""
+        val cursor = requireActivity().contentResolver.query(uri, null, null, null, null)
+        try {
+            if (cursor != null && cursor.moveToFirst()) {
+                result =
+                    cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME))
+            }
+        } catch (e: Exception) {
+            showSnackbar(e.toString())
+        } finally {
+            cursor?.close()
+            return result
+        }
+    }
+
+    private fun sendImage() {
+        binding.addMedia.setOnClickListener {
+            mBottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+            view?.findViewById<ImageView>(R.id.btn_attach_file)?.setOnClickListener {
+                attachFile()
+            }
+            view?.findViewById<ImageView>(R.id.btn_attach_image)
+                ?.setOnClickListener { attachImage() }
+        }
+
+        binding.hidebtmsheet.setOnClickListener {
+            mBottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+        }
+        binding.recyclerChat.setOnClickListener {
+            mBottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+        }
+    }
+
+    private fun attachFile() {
+        val intent = Intent(Intent.ACTION_GET_CONTENT)
+        intent.type = "*/*"
+        pdfUploadActivity.launch(intent)
+    }
+
+    private fun attachImage() {
+        val intent = CropImage.activity()
+            .setAspectRatio(1, 1)
+            .setRequestedSize(400, 400)
+            .getIntent(activity as MainActivityDoctor)
+        launchSomeActivity.launch(intent)
+    }
+
 
     private fun setCallingActivity() {
         binding.toConsulting.setOnClickListener {
             val consultingLinc = "https://meet.jit.si/$patientId"
-            val message = "$consultingLinc \n \n Если хотите зайти в консультацию на компютере перейдиете по этой ссылке "
+            val message =
+                "$consultingLinc \n \n Если хотите зайти в консультацию на компютере перейдиете по этой ссылке "
             val idMess = DB.reference.push().key.toString()
             val timestamp: MutableMap<String, String> = ServerValue.TIMESTAMP
             sendToDB(idMess, message, "message", timestamp)
-            sendConsultingData(idMess,consultingLinc)
+            sendConsultingData(idMess, consultingLinc)
             val intent = Intent(requireActivity(), CallingToPatientActivity::class.java)
             intent.putExtra("consultingLinc", consultingLinc)
             intent.putExtra("patientId", patientId)
@@ -128,13 +286,21 @@ class ChatWithPatientFragment
     }
 
     private fun setAdapter() {
-        mAdapter = ChatAdapterForDoctor { messageData, view ->
-            if (messageData.message.isNotEmpty()) {
+        mAdapter = ChatAdapterForDoctor { messageData, view, type ->
+            if (messageData.message.isNotEmpty() && type == "image") {
                 setAnimationView(messageData, view)
+            } else {
+                viewpdf(messageData)
             }
         }
         mRecyclerView = binding.recyclerChat
         mRecyclerView.adapter = mAdapter
+    }
+
+    private fun viewpdf(messageData: MessageData) {
+        val value = messageData.message
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(value))
+        startActivity(intent)
     }
 
     private fun setAnimationView(messageData: MessageData, view: View) {
@@ -249,16 +415,6 @@ class ChatWithPatientFragment
             }
         }
 
-    private fun sendImage() {
-        binding.addMedia.setOnClickListener {
-            val intent = CropImage.activity()
-                .setAspectRatio(1, 1)
-                .setRequestedSize(400, 400)
-                .getIntent(activity as MainActivityDoctor)
-            launchSomeActivity.launch(intent)
-        }
-    }
-
     private fun updateAdapter(mListMessages: MutableList<MessageData>) {
         mAdapter.updateList(mListMessages)
         mRecyclerView.smoothScrollToPosition(mAdapter.itemCount)
@@ -300,16 +456,21 @@ class ChatWithPatientFragment
     }
 
     private fun sendToDB(idMess: String, text: String, type: String, timestamp: Any) {
-        viewModel.sendNotificationData(patientId, text, idNotification)
+        viewModel.sendNotificationData(patientId, text, idNotification, type)
         viewModel.sendMessage(idMess, patientId, text, timestamp, type, idNotification)
         viewModel.saveMainList(patientId, photoUrl, text, timestamp, type)
     }
+
 
     private fun setPatientsData() {
         viewModel.getPatientsData(patientId)
         viewModel.livedata.observe(viewLifecycleOwner) {
             it?.apply {
-                binding.fio.text = "$name $patronymic"
+                binding.fio.text = if (patronymic != "") "$name $patronymic" else "$name $surname"
+                patientFio =
+                    if (patronymic != "") "$surname $name $patronymic" else "$name $surname"
+                patientAddress = address
+                patientBirthday = birthday
                 if (stateTo == UID()) {
                     binding.experience.text = state.toString()
                 } else {

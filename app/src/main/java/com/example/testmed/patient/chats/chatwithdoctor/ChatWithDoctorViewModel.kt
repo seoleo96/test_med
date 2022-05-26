@@ -69,7 +69,14 @@ class ChatWithDoctorViewModel : ViewModel() {
         }
     }
 
-    fun sendNotificationData(idDoc: String, idPatient: String, message: String, idNotification:Int) {
+    fun sendNotificationData(
+        idDoc: String,
+        idPatient: String,
+        message: String,
+        idNotification: Int,
+        type: String
+    ) {
+
         viewModelScope.launch(Dispatchers.IO) {
             val reDoctorToken = DB.reference.child("doctors").child(idDoc).child("token")
             val refUserToken = DB.reference.child("patients").child(idPatient).child("token")
@@ -81,11 +88,12 @@ class ChatWithDoctorViewModel : ViewModel() {
             val notifyData = NotifyData(
                 fromId = UID(),
                 title = titleName,
-                icon = 1,
+                icon = if (type != "message" && type != "image") 100 else 1,
                 body = message,
                 idNotification = idNotification,
                 fromWho = "0",
-                toId = idDoc
+                toId = idDoc,
+                type = type
             )
             val tokenDoc = reDoctorToken.get().await().getValue(String::class.java)
             val tokenPat = refUserToken.get().await().getValue(String::class.java)

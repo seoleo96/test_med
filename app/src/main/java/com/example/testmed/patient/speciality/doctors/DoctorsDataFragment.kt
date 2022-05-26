@@ -45,7 +45,7 @@ class DoctorsDataFragment :
         binding.toComments.setOnClickListener {
             val action =
                 DoctorsDataFragmentDirections.actionNavigationDoctorsDataFragmentToCommentsToDoctorFragment(
-                    args.idDoctor)
+                    args.idDoctor, "1")
             findNavController().navigate(action)
         }
     }

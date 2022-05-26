@@ -123,7 +123,7 @@ class SelectDateConsultingFragment :
                         .also { it ->
                             if (it != null) {
                                 fullNameDoctor =
-                                    "${it.name} ${it.surname} ${it.patronymic}"
+                                    "${it.surname} ${it.name} ${it.patronymic}"
                                 tokenDoctor = it.token
                                 costOfConsulting = it.costOfConsultation
                                 phoneNumberDoctor = it.phoneNumber
@@ -191,7 +191,7 @@ class SelectDateConsultingFragment :
                         .also { it ->
                             commonPatientData = it!!
                             fullNamePatient =
-                                "${commonPatientData.name} ${commonPatientData.surname} ${commonPatientData.patronymic}"
+                                "${commonPatientData.surname} ${commonPatientData.name} ${commonPatientData.patronymic}"
                             idNotification =
                                 ((it.iin.toLong() - 999900000000).toInt()).toString()
                             idPatient = it.id

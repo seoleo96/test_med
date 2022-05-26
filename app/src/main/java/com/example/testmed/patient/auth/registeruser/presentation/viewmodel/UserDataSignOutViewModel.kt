@@ -20,12 +20,12 @@ class UserDataSignOutViewModel(
     fun validate(
         etIin: String, etBirthday: String, etCity: String,
         etFio: String, etPhoneNumber: String, etLogin: String,
-        etPassword: String, etPatronymic: String, etSurname: String,
+        etPassword: String, etPatronymic: String, etSurname: String, city: String,
     ) {
         viewModelScope.launch(Dispatchers.Main) {
             userRegistrationValidate.validate(etIin, etBirthday, etCity,
                 etFio, etPhoneNumber, etLogin,
-                etPassword, etPatronymic, etSurname).collect {
+                etPassword, etPatronymic, etSurname, city).collect {
                     _dataValidateLiveData.value = it
             }
         }

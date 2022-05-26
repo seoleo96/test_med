@@ -19,9 +19,15 @@
 
     <fragment
         android:id="@+id/navigation_profile_doctor"
-        android:name="com.example.testmed.doctor.profile.ProfileDoctorFragment"
+        android:name="com.example.testmed.doctor.profile.ui.ProfileDoctorFragment"
         android:label="@string/title_profile"
         tools:layout="@layout/fragment_profile_doctor">
+        <action
+            android:id="@+id/action_navigation_profile_doctor_to_changePasswordDoctorFragment"
+            app:destination="@id/changePasswordDoctorFragment" />
+        <action
+            android:id="@+id/action_navigation_profile_doctor_to_commentsToDoctorFragment2"
+            app:destination="@id/commentsToDoctorFragment2" />
     </fragment>
 
     <fragment
@@ -32,6 +38,12 @@
         <action
             android:id="@+id/action_navigation_home_doctor_to_navigation_chat_with_patient_fragment"
             app:destination="@id/navigation_chat_with_patient_fragment" />
+        <action
+            android:id="@+id/action_navigation_home_doctor_to_navigation_chat_with_patient_fragment2"
+            app:destination="@id/navigation_chat_with_patient_fragment" />
+        <action
+            android:id="@+id/action_navigation_home_doctor_to_patientRecFragment"
+            app:destination="@id/patientRecFragment" />
     </fragment>
 
     <fragment
@@ -44,6 +56,101 @@
             android:defaultValue="0"
             app:argType="string"
             app:nullable="false" />
+        <action
+            android:id="@+id/action_navigation_chat_with_patient_fragment_to_recommendationFragment"
+            app:destination="@id/recommendationFragment" />
+        <action
+            android:id="@+id/action_navigation_chat_with_patient_fragment_to_patientProfileFragment"
+            app:destination="@id/patientProfileFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/changePasswordDoctorFragment"
+        android:name="com.example.testmed.ChangePasswordDoctorFragment"
+        android:label="fragment_change_password_doctor"
+        tools:layout="@layout/fragment_change_password_doctor">
+        <argument
+            android:name="id"
+            app:argType="string" />
+        <argument
+            android:name="password"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_changePasswordDoctorFragment_to_navigation_profile_doctor"
+            app:destination="@id/navigation_profile_doctor"
+            app:popUpTo="@id/mobile_navigation_doctor"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/recommendationFragment"
+        android:name="com.example.testmed.RecommendationFragment"
+        android:label="fragment_recommendation"
+        tools:layout="@layout/fragment_recommendation">
+        <argument
+            android:name="patientFio"
+            app:argType="string" />
+        <argument
+            android:name="idDoctor"
+            app:argType="string" />
+        <argument
+            android:name="idClinic"
+            app:argType="string" />
+        <argument
+            android:name="doctorFio"
+            app:argType="string" />
+        <argument
+            android:name="specialityDoc"
+            app:argType="string" />
+        <argument
+            android:name="patientAddress"
+            app:argType="string" />
+        <argument
+            android:name="patientBirthday"
+            app:argType="string" />
+        <argument
+            android:name="patientId"
+            app:argType="string" />
+        <argument
+            android:name="patientPhotoUrl"
+            app:argType="string" />
+        <argument
+            android:name="idNotification"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/patientProfileFragment"
+        android:name="com.example.testmed.doctor.chatwithpatient.patientprofile.PatientProfileFragment"
+        android:label="patient_profile_fragment"
+        tools:layout="@layout/patient_profile_fragment">
+        <argument
+            android:name="patientId"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/patientRecFragment"
+        android:name="com.example.testmed.doctor.home.consulting.recommendation.PatientRecFragment"
+        android:label="patient_rec_fragment"
+        tools:layout="@layout/patient_rec_fragment">
+        <argument
+            android:name="idPatient"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_patientRecFragment_to_navigation_chat_with_patient_fragment"
+            app:destination="@id/navigation_chat_with_patient_fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/commentsToDoctorFragment2"
+        android:name="com.example.testmed.patient.speciality.doctors.CommentsToDoctorFragment"
+        android:label="comments_to_doctor_fragment"
+        tools:layout="@layout/comments_to_doctor_fragment">
+        <argument
+            android:name="idDoctor"
+            app:argType="string" />
+
+        <argument
+            android:name="type"
+            app:argType="string" />
+
+    </fragment>
+
 
 </navigation>

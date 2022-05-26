@@ -9,6 +9,7 @@ sealed class UserRegisterState{
     object SurnameEmpty : UserRegisterState()
     object PatronymicEmpty : UserRegisterState()
     object CitEmpty : UserRegisterState()
+    object CityEmpty : UserRegisterState()
     object BirthdayEmpty : UserRegisterState()
     object PhoneNumberEmpty : UserRegisterState()
     data class PhoneNumberLengthLess(val errorMessage: String) : UserRegisterState()

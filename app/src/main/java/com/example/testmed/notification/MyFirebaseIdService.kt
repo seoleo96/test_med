@@ -35,8 +35,9 @@ class MyFirebaseIdService : FirebaseMessagingService() {
         val icon: String = remoteMessage.data["icon"]!!
         val notificationID: Int = remoteMessage.data["idNotification"]!!.toInt()
         val fromWho: String = remoteMessage.data["fromWho"]!!
+        val type: String = remoteMessage.data["type"]!!
         val notifyData = NotifyData(
-            fromId, toId, body, title, notificationID, fromWho, icon.toInt()
+            fromId, toId, body, title, notificationID, fromWho, icon.toInt(), type
         )
         Log.d("EVENT", fromId)
         Log.d("EVENT", toId)
@@ -44,6 +45,7 @@ class MyFirebaseIdService : FirebaseMessagingService() {
         Log.d("EVENT", title)
         Log.d("EVENT", fromWho)
         Log.d("EVENT", icon)
+        Log.d("EVENT", type)
 //
 //        remoteMessage.data.forEach { event->
 //            Log.d("EVENT", event.toString())
@@ -73,7 +75,25 @@ class MyFirebaseIdService : FirebaseMessagingService() {
                     .setComponentName(MainActivity::class.java)
                     .setGraph(R.navigation.mobile_navigation)
                     .setDestination(R.id.navigation_chat_with_doctor)
-                    .setArguments(bundleOf(ID_DOCTOR to notifyData.fromId, CONSULTING to "CONSULTING"))
+                    .setArguments(bundleOf(ID_DOCTOR to notifyData.fromId,
+                        CONSULTING to "CONSULTING"))
+                    .createPendingIntent()
+            }
+
+            notifyData.icon == 100 && notifyData.fromWho == "0" && notifyData.type != "image" && notifyData.type != "message" -> {
+                NavDeepLinkBuilder(this)
+                    .setComponentName(MainActivityDoctor::class.java)
+                    .setGraph(R.navigation.mobile_navigation_doctor)
+                    .setDestination(R.id.navigation_chat_with_patient_fragment)
+                    .setArguments(bundleOf(ID_PATIENT to notifyData.fromId))
+                    .createPendingIntent()
+            }
+            notifyData.icon == 101 && notifyData.fromWho == "1" && notifyData.type != "image" && notifyData.type != "message" -> {
+                NavDeepLinkBuilder(this)
+                    .setComponentName(MainActivity::class.java)
+                    .setGraph(R.navigation.mobile_navigation)
+                    .setDestination(R.id.navigation_chat_with_doctor)
+                    .setArguments(bundleOf(ID_DOCTOR to notifyData.fromId))
                     .createPendingIntent()
             }
             notifyData.fromWho == "0" && notifyData.icon == 1 -> {
@@ -84,6 +104,7 @@ class MyFirebaseIdService : FirebaseMessagingService() {
                     .setArguments(bundleOf(ID_PATIENT to notifyData.fromId))
                     .createPendingIntent()
             }
+
             notifyData.icon == 2 && notifyData.fromWho == "0" -> {
                 Log.d("NOTIFY", notifyData.idNotification.toString())
                 NavDeepLinkBuilder(this)
@@ -120,7 +141,14 @@ class MyFirebaseIdService : FirebaseMessagingService() {
 
         val notification = NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle(notifyData.title)
-            .setContentText(notifyData.body)
+            .setContentText(
+                when (notifyData.type) {
+                    "image" -> "Фото"
+                    "message" -> notifyData.body
+                    "payment" -> notifyData.title
+                    else -> "Файл"
+                }
+            )
             .setSmallIcon(R.drawable.ic_double_check_black_24)
             .setAutoCancel(true)
             .setVibrate(longArrayOf(0, 500, 1000, 500, 1000))

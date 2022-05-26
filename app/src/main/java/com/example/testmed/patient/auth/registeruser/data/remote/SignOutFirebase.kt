@@ -34,7 +34,6 @@ class SignOutFirebase : ISignOutFirebase {
     }
 
     override suspend fun authUser(phoneNumber: String, context: MainActivity) {
-//        AUTH().firebaseAuthSettings.setAppVerificationDisabledForTesting(true)
         val options = PhoneAuthOptions.newBuilder(AUTH())
             .setPhoneNumber(phoneNumber)       // Phone number to verify
             .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit

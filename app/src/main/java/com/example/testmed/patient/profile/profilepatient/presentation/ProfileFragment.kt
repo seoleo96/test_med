@@ -53,11 +53,14 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
             if (data != null) {
                 refState.setValue(date)
                     .addOnCompleteListener {
-                        lifecycleScope.launch(Dispatchers.IO){
-                            val data = refState.get().await().getValue(Any::class.java)
-                            val date = data.toString().asDate()
-                            PATIENT_STATUS = date
-                        }
+                        try{
+                            lifecycleScope.launch(Dispatchers.IO){
+                                val data = refState.get().await().getValue(Any::class.java)
+                                val date = data.toString().asDate()
+                                PATIENT_STATUS = date
+                            }
+                        }catch (e:Exception){}
+
                     }
             }
         }
@@ -70,7 +73,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
     }
 
     private fun setProfileData() {
-        profileDataViewModel.patientDataLiveData.observe(viewLifecycleOwner, { data ->
+        profileDataViewModel.patientDataLiveData.observe(viewLifecycleOwner) { data ->
             when (data) {
                 is PatientDataResult.Loading -> {
                     binding.apply {
@@ -90,7 +93,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
                     visibleContent()
                     with(data.data) {
                         binding.iin.text = iin
-                        binding.fullName.text = "${name} ${surname} ${patronymic}"
+                        binding.fullName.text = "${surname} ${name} ${patronymic}"
                         binding.address.text = address
                         binding.phoneNumber.text = phoneNumber
                         binding.birthday.text = birthday
@@ -108,7 +111,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
                     }
                 }
             }
-        })
+        }
     }
 
     private fun visibleContent() {

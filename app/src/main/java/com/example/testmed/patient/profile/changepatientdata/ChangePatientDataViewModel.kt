@@ -20,12 +20,12 @@ class ChangePatientDataViewModel(
     fun validate(
         etIin: String, etBirthday: String, etCity: String,
         etFio: String, etPhoneNumber: String, etLogin: String,
-        etPassword: String, etPatronymic: String, etSurname: String,
+        etPassword: String, etPatronymic: String, etSurname: String, gender: String,
     ) {
         viewModelScope.launch(Dispatchers.Main) {
             userRegistrationValidate.validate(etIin, etBirthday, etCity,
                 etFio, etPhoneNumber, etLogin,
-                etPassword, etPatronymic, etSurname).collect {
+                etPassword, etPatronymic, etSurname, gender).collect {
                 _dataValidateLiveData.value = it
             }
         }

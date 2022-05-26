@@ -132,83 +132,85 @@
             tools:text="21:45" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-<!--    <androidx.constraintlayout.widget.ConstraintLayout-->
-<!--        android:id="@+id/bloc_user_message_file"-->
-<!--        android:layout_width="140dp"-->
-<!--        android:layout_height="150dp"-->
-<!--        android:layout_marginStart="100dp"-->
-<!--        android:layout_marginTop="24dp"-->
-<!--        android:layout_marginEnd="16dp"-->
-<!--        android:background="@drawable/round_fone_message_item"-->
-<!--        android:padding="4dp"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent">-->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/bloc_user_message_file"
+        android:layout_width="140dp"
+        android:layout_height="150dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/round_fone_message_item"
+        android:padding="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-<!--        <ImageView-->
-<!--            android:id="@+id/chat_user_message_file"-->
-<!--            android:layout_width="100dp"-->
-<!--            android:layout_height="100dp"-->
-<!--            android:gravity="end"-->
-<!--            android:maxWidth="240dp"-->
-<!--            android:padding="8dp"-->
-<!--            android:textColor="@color/black"-->
-<!--            android:textIsSelectable="true"-->
-<!--            android:src="@drawable/ic_baseline_insert_drive_file_24"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent"-->
-<!--            tools:text="Привет Doctor" />-->
+        <ImageView
+            android:id="@+id/chat_user_message_file"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:gravity="end"
+            android:maxWidth="240dp"
+            android:padding="8dp"
+            android:textColor="@color/black"
+            android:textIsSelectable="true"
+            android:src="@drawable/ic_baseline_insert_drive_file_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Привет Doctor" />
 
-<!--        <TextView-->
-<!--            android:id="@+id/file_name_send"-->
-<!--            android:layout_width="130dp"-->
-<!--            android:layout_height="24dp"-->
-<!--            android:layout_marginTop="2dp"-->
-<!--            android:layout_marginEnd="4dp"-->
-<!--            android:gravity="end"-->
-<!--            android:padding="2dp"-->
-<!--            android:textColor="@color/color_kul"-->
-<!--            android:textSize="14sp"-->
-<!--            app:layout_constraintEnd_toEndOf="@+id/chat_user_message_file"-->
-<!--            app:layout_constraintStart_toStartOf="@+id/chat_user_message_file"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/chat_user_message_file"-->
-<!--            tools:text="sjdgfjsc dgfjsf kdjfksjdfh"-->
-<!--            />-->
+        <TextView
+            android:id="@+id/file_name_send"
+            android:layout_width="130dp"
+            android:layout_height="24dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="4dp"
+            android:gravity="end"
+            android:maxWidth="126dp"
+            android:padding="2dp"
+            android:maxLines="1"
+            android:textColor="@color/color_kul"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="@+id/chat_user_message_file"
+            app:layout_constraintStart_toStartOf="@+id/chat_user_message_file"
+            app:layout_constraintTop_toBottomOf="@+id/chat_user_message_file"
+            tools:text="sjdgfjsc dgfjsf kdjfksjdfh"
+            />
 
-<!--        <ProgressBar-->
-<!--            android:id="@+id/chat_user_message_file_progress"-->
-<!--            android:layout_width="120dp"-->
-<!--            android:layout_height="120dp"-->
-<!--            android:padding="8dp"-->
-<!--            android:visibility="gone"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent" />-->
+        <ProgressBar
+            android:id="@+id/chat_user_message_file_progress"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:padding="8dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-<!--        <ImageView-->
-<!--            android:id="@+id/chat_user_message_file_seen"-->
-<!--            android:layout_width="16dp"-->
-<!--            android:layout_height="16dp"-->
-<!--            android:layout_marginTop="2dp"-->
-<!--            app:layout_constraintEnd_toEndOf="@+id/chat_user_message_file"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/file_name_send" />-->
+        <ImageView
+            android:id="@+id/chat_user_message_file_seen"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginTop="2dp"
+            app:layout_constraintEnd_toEndOf="@+id/chat_user_message_file"
+            app:layout_constraintTop_toBottomOf="@+id/file_name_send" />
 
-<!--        <TextView-->
-<!--            android:id="@+id/chat_user_file_time"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginTop="2dp"-->
-<!--            android:gravity="end"-->
-<!--            android:padding="2dp"-->
-<!--            android:layout_marginEnd="4dp"-->
-<!--            android:textColor="@color/color_kul"-->
-<!--            android:textSize="10sp"-->
-<!--            app:layout_constraintEnd_toStartOf="@+id/chat_user_message_file_seen"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/file_name_send"-->
-<!--            tools:ignore="SmallSp"-->
-<!--            tools:text="21:45" />-->
-<!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
+        <TextView
+            android:id="@+id/chat_user_file_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:gravity="end"
+            android:padding="2dp"
+            android:layout_marginEnd="4dp"
+            android:textColor="@color/color_kul"
+            android:textSize="10sp"
+            app:layout_constraintEnd_toStartOf="@+id/chat_user_message_file_seen"
+            app:layout_constraintTop_toBottomOf="@+id/file_name_send"
+            tools:ignore="SmallSp"
+            tools:text="21:45" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -256,6 +258,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+
         android:id="@+id/bloc_received_message_image"
         android:layout_width="170dp"
         android:layout_height="180dp"
@@ -306,6 +309,92 @@
             tools:ignore="SmallSp"
             tools:text="21:45" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/bloc_received_message_file"
+        android:layout_width="140dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginStart="16dp"
+        android:background="@drawable/round_fone_message_item"
+        android:padding="4dp"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        >
+
+        <ImageView
+            android:id="@+id/chat_received_message_file"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:gravity="end"
+            android:maxWidth="240dp"
+            android:padding="8dp"
+            android:src="@drawable/ic_baseline_insert_drive_file_24"
+            android:textColor="@color/black"
+            android:textIsSelectable="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Привет Doctor"
+            />
+
+        <TextView
+            android:id="@+id/file_received_send"
+            android:layout_width="130dp"
+            android:layout_height="24dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="4dp"
+            android:gravity="start"
+            android:padding="2dp"
+            android:maxLines="1"
+            android:maxWidth="126dp"
+            android:textColor="@color/color_kul"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="@+id/chat_received_message_file"
+            app:layout_constraintStart_toStartOf="@+id/chat_received_message_file"
+            app:layout_constraintTop_toBottomOf="@+id/chat_received_message_file"
+            tools:text="sjdgfjsc dgfjsf kdjfksjdfh"
+            />
+
+        <ProgressBar
+            android:id="@+id/chat_received_message_file_progress"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:padding="8dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+        <ImageView
+            android:id="@+id/chat_received_message_file_seen"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginTop="2dp"
+            app:layout_constraintEnd_toEndOf="@+id/chat_received_message_file"
+            app:layout_constraintTop_toBottomOf="@+id/file_received_send"
+            />
+
+        <TextView
+            android:id="@+id/chat_received_file_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:gravity="end"
+            android:padding="2dp"
+            android:textColor="@color/color_kul"
+            android:textSize="10sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/file_received_send"
+            app:layout_constraintTop_toBottomOf="@+id/file_received_send"
+            tools:ignore="SmallSp"
+            tools:text="21:45"
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

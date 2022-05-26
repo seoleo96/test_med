@@ -8,10 +8,10 @@ import android.view.View
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
+import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.testmed.*
-import com.example.testmed.base.BaseFragment
 import com.example.testmed.base.BaseFragmentAuth
 import com.example.testmed.databinding.FragmentUserDataSignOutBinding
 import com.example.testmed.model.PatientData
@@ -43,11 +43,62 @@ class UserDataSignOutFragment :
         val userRegistrationValidate = UserRegistrationValidate()
         viewModel = UserDataSignOutViewModel(userRegistrationValidate)
         setSpinnerGender()
-        setDatePicker()
         listeners()
         changePhotoUser()
         setPhoneNumber()
+        setIIN()
+    }
 
+    private fun setIIN() {
+        binding.etIin.doAfterTextChanged { it ->
+            if (it?.length == 12) {
+                val gender: Char = it[6]
+                val g = "$gender".toInt()
+                val yearIIN = it.substring(0, 2)
+                val monthIIN = it.substring(2, 4)
+                val dayIIN = it.substring(4, 6)
+                when (g) {
+                    3 -> {
+                        val date = "${dayIIN}.${monthIIN}.19${yearIIN}"
+                        binding.etBirthday.setText(date)
+                        binding.etGen.setText("Мужской")
+                    }
+                    5 -> {
+                        if (yearIIN.toInt() < 4) {
+                            val date = "${dayIIN}.${monthIIN}.20${yearIIN}"
+                            binding.etBirthday.setText(date)
+                            binding.etGen.setText("Мужской")
+                        } else {
+                            binding.etIin.requestFocus()
+                            binding.etIin.error = "Неправильный ИИН"
+                        }
+                    }
+                    4 -> {
+                        val date = "${dayIIN}.${monthIIN}.19${yearIIN}"
+                        binding.etBirthday.setText(date)
+                        binding.etGen.setText("Женской")
+                    }
+                    6 -> {
+                        if (yearIIN.toInt() < 4) {
+                            val date = "${dayIIN}.${monthIIN}.20${yearIIN}"
+                            binding.etBirthday.setText(date)
+                            binding.etGen.setText("Женской")
+                        } else {
+                            binding.etIin.requestFocus()
+                            binding.etIin.error = "Неправильный ИИН"
+                        }
+                    }
+                    else -> {
+
+                        binding.etIin.requestFocus()
+                        binding.etIin.error = "Неправильный ИИН"
+                    }
+                }
+            } else {
+                binding.etBirthday.setText("")
+                binding.etGen.setText("")
+            }
+        }
     }
 
     private fun setPhoneNumber() {
@@ -90,7 +141,7 @@ class UserDataSignOutFragment :
                     cal.get(Calendar.YEAR)
                     cal.get(Calendar.MONTH)
                     cal.get(Calendar.DAY_OF_MONTH)
-                    birthday = "$dayOfMonth.${(1+monthOfYear)}.$year"
+                    birthday = "$dayOfMonth.${(1 + monthOfYear)}.$year"
                     val age = getAge(year, monthOfYear, dayOfMonth)
                     if (checkAge(age)) {
                         binding.etBirthday.setText(birthday)
@@ -123,7 +174,23 @@ class UserDataSignOutFragment :
 
     private fun setSpinnerGender() {
         spinner = binding.etGender
-        personNames = arrayOf("Мужской", "Женской")
+        personNames = arrayOf(
+            "",
+            "Акмолинская",
+            "Актюбинская",
+            "Алматинская",
+            "Атырауская",
+            "Восточно-Казахстанская",
+            "Жамбылская",
+            "Западно-Казахстанская",
+            "Карагандинская",
+            "Костанайская",
+            "Кызылординская",
+            "Мангистауская",
+            "Павлодарская",
+            "Северо-Казахстанская",
+            "Туркестанская",
+        )
         val arrayAdapter =
             ArrayAdapter(requireContext(),
                 android.R.layout.simple_spinner_dropdown_item,
@@ -164,7 +231,8 @@ class UserDataSignOutFragment :
             binding.etLogin.text.toString(),
             binding.etPassword.text.toString(),
             binding.etPatronymic.text.toString(),
-            binding.etSurname.text.toString())
+            binding.etSurname.text.toString(),
+            gender        )
         viewModel.dataValidateLiveData.observe(viewLifecycleOwner) { userRegisterState ->
             when (userRegisterState) {
                 is UserRegisterState.AllDataEmpty -> {
@@ -189,13 +257,13 @@ class UserDataSignOutFragment :
                     invisibleProgress(binding.progressBar)
                     errorEditsTexts(binding.etSurname)
                 }
-                is UserRegisterState.PatronymicEmpty -> {
-                    invisibleProgress(binding.progressBar)
-                    errorEditsTexts(binding.etPatronymic)
-                }
                 is UserRegisterState.CitEmpty -> {
                     invisibleProgress(binding.progressBar)
                     errorEditsTexts(binding.etCity)
+                }
+                is UserRegisterState.CityEmpty -> {
+                    invisibleProgress(binding.progressBar)
+                    showSnackbar("Выбирайте область")
                 }
                 is UserRegisterState.BirthdayEmpty -> {
                     invisibleProgress(binding.progressBar)
@@ -269,9 +337,12 @@ class UserDataSignOutFragment :
         val id = AUTH().currentUser!!.uid
         val iin = binding.etIin.text.toString()
         val name = binding.etFio.text.toString()
-        val surname = binding.etSurname.text.toString()
-        val patronymic = binding.etPatronymic.text.toString()
-        val address = binding.etCity.text.toString()
+            .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
+        val surname = binding.etSurname.text.toString().replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
+        val patronymic = if (binding.etPatronymic.text.isEmpty()) "" else binding.etPatronymic.text.toString().replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
+        val address = binding.etCity.text.toString().replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
+        val city = gender
+        val gen = binding.etGen.text.toString()
         val login = binding.etLogin.text.toString()
         val password = binding.etPassword.text.toString()
         PHONE_NUMBER =
@@ -284,13 +355,16 @@ class UserDataSignOutFragment :
             surname,
             patronymic,
             address,
-            birthday,
-            gender,
+            binding.etBirthday.text.toString(),
+            gen,
             login,
             password,
             PHONE_NUMBER,
             photoUrl,
-            online)
+            online,
+            "1",
+            "",
+            city)
         DB.reference.child("patients").child(id).setValue(patient).addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 if (uri == null) {

@@ -215,7 +215,8 @@ class PaymentConsultingFragment :
                 body = "${navArgs.dateConsulting}, ${navArgs.timeConsulting}",
                 idNotification = navArgs.idNotification.toInt(),
                 fromWho = "0",
-                toId = navArgs.idDoctor
+                toId = navArgs.idDoctor,
+                type = "payment"
             )
             val sender = Sender(notifyData, navArgs.tokenDoctor)
             sendNotification(sender)

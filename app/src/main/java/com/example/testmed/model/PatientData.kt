@@ -16,9 +16,10 @@ data class PatientData(
     val state: Any,
     val stateTo: String = "1",
     val token: String = "",
-) {
-    constructor() : this("", "", "", "",
+    val city: String,
+)  {
+    constructor(
+    ) : this("", "", "", "","",
         "", "", "",
-        "", "", "", "",
-        "", "", "", "")
+        "", "", "", "", "", "", "", "")
 }

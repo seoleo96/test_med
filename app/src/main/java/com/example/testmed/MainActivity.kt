@@ -81,6 +81,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.changePasswordFragment,
                 R.id.newPasswordFragment,
                 R.id.commentsClinicsFragment,
+                R.id.mapsFragment,
                 -> {
                     supportActionBar?.hide()
                     navView.isVisible = false

@@ -8,12 +8,12 @@ class ValidatePhone : IValidatePhone {
         return when {
             phoneNumber.isEmpty() -> {
                 flow {
-                    emit(UIValidationState.IsEmpty("Please enter phone number"))
+                    emit(UIValidationState.IsEmpty("Пожалуйста, введите номер телефона"))
                 }
             }
             phoneNumber.length < 17 -> {
                 flow {
-                    emit(UIValidationState.PhoneNumberLess("Phone number must contain at least 12 digits"))
+                    emit(UIValidationState.PhoneNumberLess("Номер телефона должен содержать не менее 12 цифр"))
                 }
             }
             else -> {

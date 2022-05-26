@@ -7,6 +7,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.testmed.R
+import com.example.testmed.databinding.DocItemLayoutBinding
 import com.example.testmed.databinding.PatientItemLayoutBinding
 import com.example.testmed.model.CommonPatientData
 
@@ -40,7 +41,7 @@ class DoctorsAdapter(private val adapterOnClick: (CommonPatientData) -> Unit) :
     }
 
     private fun makeView(parent: ViewGroup) =
-        PatientItemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        DocItemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
 
     override fun onBindViewHolder(holder: DoctorsViewHolder, position: Int) {
         val bind: CommonPatientData = list[position]
@@ -55,7 +56,7 @@ class DoctorsAdapter(private val adapterOnClick: (CommonPatientData) -> Unit) :
     }
 
     class DoctorsViewHolder(
-        private val binding: PatientItemLayoutBinding,
+        private val binding: DocItemLayoutBinding,
         private val adapterOnClick: (CommonPatientData) -> Unit,
     ) :
         RecyclerView.ViewHolder(binding.root) {

@@ -51,6 +51,15 @@ class HomeDoctorFragment :
                 findNavController().navigate(action)
             }
         }
+        childFragmentManager.setFragmentResultListener("toRecommendation",
+            viewLifecycleOwner) { _, bundle ->
+            val result: String? = bundle.getString("idPatient")
+            if (result != null) {
+                val action =
+                    HomeDoctorFragmentDirections.actionNavigationHomeDoctorToPatientRecFragment(result)
+                findNavController().navigate(action)
+            }
+        }
     }
 
     private fun setTablayout() {

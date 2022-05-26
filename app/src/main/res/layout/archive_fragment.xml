@@ -46,12 +46,11 @@
         android:background="@drawable/round_fone_recycler"
         android:iconifiedByDefault="false"
         android:queryBackground="@android:color/transparent"
-        android:queryHint="Поиск врача"
+        android:queryHint="Поиск пациента"
         app:layout_constraintEnd_toEndOf="@+id/textview"
         app:layout_constraintStart_toStartOf="@+id/textview"
         app:layout_constraintTop_toBottomOf="@+id/textview"
         />
-
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/empty_messages"

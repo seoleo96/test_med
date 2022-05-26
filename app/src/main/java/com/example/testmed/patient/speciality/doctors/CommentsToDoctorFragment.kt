@@ -86,7 +86,8 @@ class CommentsToDoctorFragment :
 
     private fun setUserName() {
         lifecycleScope.launch(Dispatchers.IO) {
-            username = DB.reference.child("patients")
+            val name = if(args.type == "0") "doctors" else "patients"
+            username = DB.reference.child(name)
                 .child(UID())
                 .child("name")
                 .get().await().getValue(String::class.java).toString()

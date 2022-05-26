@@ -102,35 +102,38 @@ class ArchiveFragment : BaseFragmentDoctor<ArchiveFragmentBinding>(ArchiveFragme
         valueEventListener =
             refConsulting.addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    if (snapshot.exists()) {
-                        list.clear()
-                        snapshot.children.forEach { dataSnapshot ->
-                            val data = dataSnapshot.getValue(CommonPatientData::class.java)
-                            if (data != null) {
-                                try {
-                                    binding.recyclerView.isVisible = true
-                                    binding.emptyMessages.isGone = true
-                                }catch (e : Exception){
+                    try {
+                        if (snapshot.exists()) {
+                            list.clear()
+                            snapshot.children.forEach { dataSnapshot ->
+                                val data = dataSnapshot.getValue(CommonPatientData::class.java)
+                                if (data != null) {
+                                    try {
+                                        binding.recyclerView.isVisible = true
+                                        binding.emptyMessages.isGone = true
+                                    }catch (e : Exception){
 
+                                    }
+                                    list.add(data)
                                 }
-                                list.add(data)
                             }
                         }
-                    }
-                    if(list.isEmpty()){
-                        binding.apply {
-                            recyclerView.isVisible = false
-                            textview.isVisible = false
-                            emptyMessages.isVisible = true
+                        if(list.isEmpty()){
+                            binding.apply {
+                                recyclerView.isVisible = false
+                                textview.isVisible = false
+                                emptyMessages.isVisible = true
+                            }
+                        }else{
+                            binding.apply {
+                                recyclerView.isVisible = true
+                                textview.isVisible = true
+                                emptyMessages.isVisible = false
+                            }
                         }
-                    }else{
-                        binding.apply {
-                            recyclerView.isVisible = true
-                            textview.isVisible = true
-                            emptyMessages.isVisible = false
-                        }
+                        adapter.updateList(list)
+                    }catch (e:java.lang.Exception){
                     }
-                    adapter.updateList(list)
                 }
 
                 override fun onCancelled(error: DatabaseError) {
@@ -179,7 +182,7 @@ class ArchiveFragment : BaseFragmentDoctor<ArchiveFragmentBinding>(ArchiveFragme
 
     private fun setAdapter() {
         adapter = ArchiveAdapter {
-            setFragmentResult("requestKeyConsulting", bundleOf("key" to it.idPatient))
+            setFragmentResult("toRecommendation", bundleOf("idPatient" to it.idPatient))
         }
         mRecyclerView = binding.recyclerView
         mRecyclerView.adapter = adapter

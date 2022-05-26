@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_marginStart="8dp"
+    android:layout_height="wrap_content"
+    android:padding="8dp"
+    android:background="@drawable/round_fone"
+    android:layout_marginTop="8dp"
+    >
+
+    <TextView
+        android:id="@+id/fio_doctor"
+        android:layout_width="wrap_content"
+        android:layout_height="24dp"
+        android:gravity="left"
+        android:layout_marginStart="8dp"
+        android:maxLines="1"
+        android:padding="2dp"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Иванов Олег Иванович"
+        />
+
+
+    <TextView
+        android:id="@+id/speciality_doctor"
+        android:layout_width="wrap_content"
+        android:layout_height="24dp"
+        android:gravity="left"
+        android:maxLines="1"
+        android:padding="2dp"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:layout_marginStart="4dp"
+        app:layout_constraintBottom_toBottomOf="@+id/fio_doctor"
+        app:layout_constraintStart_toEndOf="@+id/fio_doctor"
+        app:layout_constraintTop_toTopOf="@+id/fio_doctor"
+        tools:text="Терапевт"
+        />
+
+    <ImageView
+        android:id="@+id/chat_user_message_file"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:gravity="end"
+        android:maxWidth="240dp"
+        android:padding="2dp"
+        android:src="@drawable/ic_baseline_insert_drive_file_24"
+        android:textColor="@color/black"
+        android:textIsSelectable="true"
+        app:layout_constraintStart_toStartOf="@+id/fio_doctor"
+        app:layout_constraintTop_toBottomOf="@+id/fio_doctor"
+        tools:text="Привет Doctor"
+        />
+
+    <TextView
+        android:id="@+id/file_name_send"
+        android:layout_width="130dp"
+        android:layout_height="24dp"
+        android:layout_marginTop="2dp"
+        android:gravity="left"
+        android:maxWidth="126dp"
+        android:maxLines="1"
+        android:padding="2dp"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@+id/chat_user_message_file"
+        app:layout_constraintTop_toBottomOf="@+id/chat_user_message_file"
+        tools:text="sjdgfjsc dgfjsf kdjfksjdfh"
+        />
+
+    <ProgressBar
+        android:id="@+id/chat_user_message_file_progress"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:padding="8dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/chat_user_file_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:gravity="end"
+        android:padding="2dp"
+        android:textColor="@color/black"
+        android:textSize="10sp"
+        app:layout_constraintStart_toStartOf="@+id/file_name_send"
+        app:layout_constraintTop_toBottomOf="@+id/file_name_send"
+        tools:ignore="SmallSp"
+        tools:text="12:42 11.04.22 г."
+        />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

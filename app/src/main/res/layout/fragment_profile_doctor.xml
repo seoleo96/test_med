@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/desfone"
-    tools:context=".doctor.profile.ProfileDoctorFragment">
+    tools:context=".doctor.profile.ui.ProfileDoctorFragment"
+    >
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -15,7 +17,8 @@
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        />
 
     <ScrollView
         android:id="@+id/content_all_view"
@@ -24,7 +27,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        >
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraint_layout"
@@ -36,24 +40,26 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            >
 
             <TextView
                 android:id="@+id/text_register"
+                style="@style/MaterialAlertDialog.MaterialComponents.Title.Text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="18dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="18dp"
-                style="@style/MaterialAlertDialog.MaterialComponents.Title.Text"
                 android:text="Профиль"
-                android:textIsSelectable="true"
                 android:textAlignment="center"
                 android:textColor="#27214D"
+                android:textIsSelectable="true"
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraint2"
@@ -64,7 +70,8 @@
                 android:paddingBottom="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_register">
+                app:layout_constraintTop_toBottomOf="@+id/text_register"
+                >
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/card_view"
@@ -76,7 +83,8 @@
                     app:cardCornerRadius="20dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintTop_toTopOf="parent"
+                    >
 
                     <ImageView
                         android:id="@+id/image_view"
@@ -86,7 +94,8 @@
                         android:src="@drawable/ic_profile_large"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        />
                 </androidx.cardview.widget.CardView>
 
 
@@ -98,7 +107,8 @@
                     android:background="#c0c0c0"
                     app:layout_constraintEnd_toEndOf="@id/card_view"
                     app:layout_constraintStart_toStartOf="@+id/card_view"
-                    app:layout_constraintTop_toBottomOf="@id/card_view" />
+                    app:layout_constraintTop_toBottomOf="@id/card_view"
+                    />
 
                 <TextView
                     android:id="@+id/tv_iin"
@@ -111,7 +121,8 @@
                     android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/line0" />
+                    app:layout_constraintTop_toBottomOf="@+id/line0"
+                    />
 
                 <TextView
                     android:id="@+id/iin"
@@ -122,15 +133,16 @@
                     android:layout_marginEnd="16dp"
                     android:maxWidth="300dp"
                     android:paddingStart="8dp"
-                    android:textIsSelectable="true"
                     android:paddingEnd="8dp"
                     android:paddingBottom="8dp"
                     android:text=""
                     android:textColor="@color/black"
+                    android:textIsSelectable="true"
                     android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="@+id/tv_iin"
                     app:layout_constraintStart_toStartOf="@+id/tv_iin"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_iin" />
+                    app:layout_constraintTop_toBottomOf="@+id/tv_iin"
+                    />
 
 
                 <View
@@ -141,7 +153,8 @@
                     android:background="#c0c0c0"
                     app:layout_constraintEnd_toEndOf="@id/iin"
                     app:layout_constraintStart_toStartOf="@+id/iin"
-                    app:layout_constraintTop_toBottomOf="@id/iin" />
+                    app:layout_constraintTop_toBottomOf="@id/iin"
+                    />
 
 
                 <TextView
@@ -154,7 +167,8 @@
                     android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="@+id/line1"
                     app:layout_constraintStart_toStartOf="@+id/tv_iin"
-                    app:layout_constraintTop_toBottomOf="@+id/line1" />
+                    app:layout_constraintTop_toBottomOf="@+id/line1"
+                    />
 
                 <TextView
                     android:id="@+id/full_name"
@@ -166,14 +180,15 @@
                     android:maxWidth="300dp"
                     android:paddingStart="8dp"
                     android:paddingEnd="8dp"
-                    android:textIsSelectable="true"
                     android:paddingBottom="8dp"
                     android:text=""
                     android:textColor="@color/black"
+                    android:textIsSelectable="true"
                     android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="@+id/tv_full_name"
                     app:layout_constraintStart_toStartOf="@+id/tv_full_name"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_full_name" />
+                    app:layout_constraintTop_toBottomOf="@+id/tv_full_name"
+                    />
 
                 <View
                     android:id="@+id/line2"
@@ -183,7 +198,8 @@
                     android:background="#c0c0c0"
                     app:layout_constraintEnd_toEndOf="@id/full_name"
                     app:layout_constraintStart_toStartOf="@+id/full_name"
-                    app:layout_constraintTop_toBottomOf="@id/full_name" />
+                    app:layout_constraintTop_toBottomOf="@id/full_name"
+                    />
 
 
                 <TextView
@@ -196,7 +212,8 @@
                     android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="@+id/line2"
                     app:layout_constraintStart_toStartOf="@+id/tv_iin"
-                    app:layout_constraintTop_toBottomOf="@+id/line2" />
+                    app:layout_constraintTop_toBottomOf="@+id/line2"
+                    />
 
                 <TextView
                     android:id="@+id/birthday"
@@ -208,14 +225,15 @@
                     android:maxWidth="300dp"
                     android:paddingStart="8dp"
                     android:paddingEnd="8dp"
-                    android:textIsSelectable="true"
                     android:paddingBottom="8dp"
                     android:text=""
                     android:textColor="@color/black"
+                    android:textIsSelectable="true"
                     android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="@+id/tv_birthday"
                     app:layout_constraintStart_toStartOf="@+id/tv_birthday"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_birthday" />
+                    app:layout_constraintTop_toBottomOf="@+id/tv_birthday"
+                    />
 
                 <View
                     android:id="@+id/line3"
@@ -225,7 +243,8 @@
                     android:background="#c0c0c0"
                     app:layout_constraintEnd_toEndOf="@id/birthday"
                     app:layout_constraintStart_toStartOf="@+id/birthday"
-                    app:layout_constraintTop_toBottomOf="@id/birthday" />
+                    app:layout_constraintTop_toBottomOf="@id/birthday"
+                    />
 
 
                 <TextView
@@ -238,7 +257,8 @@
                     android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="@+id/line3"
                     app:layout_constraintStart_toStartOf="@+id/tv_iin"
-                    app:layout_constraintTop_toBottomOf="@+id/line3" />
+                    app:layout_constraintTop_toBottomOf="@+id/line3"
+                    />
 
                 <TextView
                     android:id="@+id/gender"
@@ -251,13 +271,14 @@
                     android:paddingStart="8dp"
                     android:paddingEnd="8dp"
                     android:paddingBottom="8dp"
-                    android:textIsSelectable="true"
                     android:text=""
                     android:textColor="@color/black"
+                    android:textIsSelectable="true"
                     android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="@+id/tv_gender"
                     app:layout_constraintStart_toStartOf="@+id/tv_gender"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_gender" />
+                    app:layout_constraintTop_toBottomOf="@+id/tv_gender"
+                    />
 
                 <View
                     android:id="@+id/line4"
@@ -267,7 +288,8 @@
                     android:background="#c0c0c0"
                     app:layout_constraintEnd_toEndOf="@id/gender"
                     app:layout_constraintStart_toStartOf="@+id/gender"
-                    app:layout_constraintTop_toBottomOf="@id/gender" />
+                    app:layout_constraintTop_toBottomOf="@id/gender"
+                    />
 
 
                 <TextView
@@ -280,7 +302,8 @@
                     android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="@+id/line4"
                     app:layout_constraintStart_toStartOf="@+id/line4"
-                    app:layout_constraintTop_toBottomOf="@+id/line4" />
+                    app:layout_constraintTop_toBottomOf="@+id/line4"
+                    />
 
                 <TextView
                     android:id="@+id/phone_number"
@@ -293,13 +316,14 @@
                     android:paddingStart="8dp"
                     android:paddingEnd="8dp"
                     android:paddingBottom="8dp"
-                    android:textIsSelectable="true"
                     android:text=""
                     android:textColor="@color/black"
+                    android:textIsSelectable="true"
                     android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="@+id/tv_phone_number"
                     app:layout_constraintStart_toStartOf="@+id/tv_phone_number"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_phone_number" />
+                    app:layout_constraintTop_toBottomOf="@+id/tv_phone_number"
+                    />
 
                 <View
                     android:id="@+id/line5"
@@ -309,7 +333,8 @@
                     android:background="#c0c0c0"
                     app:layout_constraintEnd_toEndOf="@id/phone_number"
                     app:layout_constraintStart_toStartOf="@+id/phone_number"
-                    app:layout_constraintTop_toBottomOf="@id/phone_number" />
+                    app:layout_constraintTop_toBottomOf="@id/phone_number"
+                    />
 
 
                 <TextView
@@ -322,7 +347,8 @@
                     android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="@+id/line5"
                     app:layout_constraintStart_toStartOf="@+id/line5"
-                    app:layout_constraintTop_toBottomOf="@+id/line5" />
+                    app:layout_constraintTop_toBottomOf="@+id/line5"
+                    />
 
                 <TextView
                     android:id="@+id/address"
@@ -336,12 +362,13 @@
                     android:paddingEnd="8dp"
                     android:paddingBottom="8dp"
                     android:text=""
-                    android:textIsSelectable="true"
                     android:textColor="@color/black"
+                    android:textIsSelectable="true"
                     android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="@+id/tv_address"
                     app:layout_constraintStart_toStartOf="@+id/tv_address"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_address" />
+                    app:layout_constraintTop_toBottomOf="@+id/tv_address"
+                    />
 
                 <View
                     android:id="@+id/line6"
@@ -351,7 +378,8 @@
                     android:background="#c0c0c0"
                     app:layout_constraintEnd_toEndOf="@id/address"
                     app:layout_constraintStart_toStartOf="@+id/address"
-                    app:layout_constraintTop_toBottomOf="@id/address" />
+                    app:layout_constraintTop_toBottomOf="@id/address"
+                    />
 
 
                 <TextView
@@ -364,7 +392,8 @@
                     android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="@+id/line6"
                     app:layout_constraintStart_toStartOf="@+id/line6"
-                    app:layout_constraintTop_toBottomOf="@+id/line6" />
+                    app:layout_constraintTop_toBottomOf="@+id/line6"
+                    />
 
                 <TextView
                     android:id="@+id/login"
@@ -378,12 +407,13 @@
                     android:paddingEnd="8dp"
                     android:paddingBottom="8dp"
                     android:text=""
-                    android:textIsSelectable="true"
                     android:textColor="@color/black"
+                    android:textIsSelectable="true"
                     android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="@+id/tv_login"
                     app:layout_constraintStart_toStartOf="@+id/tv_login"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_login" />
+                    app:layout_constraintTop_toBottomOf="@+id/tv_login"
+                    />
 
                 <View
                     android:id="@+id/line7"
@@ -393,7 +423,8 @@
                     android:background="#c0c0c0"
                     app:layout_constraintEnd_toEndOf="@id/login"
                     app:layout_constraintStart_toStartOf="@+id/login"
-                    app:layout_constraintTop_toBottomOf="@id/login" />
+                    app:layout_constraintTop_toBottomOf="@id/login"
+                    />
 
 
                 <TextView
@@ -406,7 +437,8 @@
                     android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="@+id/line7"
                     app:layout_constraintStart_toStartOf="@+id/line7"
-                    app:layout_constraintTop_toBottomOf="@+id/line7" />
+                    app:layout_constraintTop_toBottomOf="@+id/line7"
+                    />
 
                 <TextView
                     android:id="@+id/password"
@@ -420,26 +452,53 @@
                     android:paddingEnd="8dp"
                     android:paddingBottom="8dp"
                     android:text=""
-                    android:textIsSelectable="true"
                     android:textColor="@color/black"
+                    android:textIsSelectable="true"
                     android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="@+id/tv_password"
                     app:layout_constraintStart_toStartOf="@+id/tv_password"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_password" />
+                    app:layout_constraintTop_toBottomOf="@+id/tv_password"
+                    />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/change_data"
                 android:layout_width="300dp"
                 android:layout_height="@dimen/button_height"
-                android:layout_marginTop="16dp"
                 android:backgroundTint="#2E58AB"
                 android:text="Выход"
                 android:textAlignment="center"
                 app:cornerRadius="8dp"
-                app:layout_constraintEnd_toEndOf="@+id/constraint2"
-                app:layout_constraintStart_toStartOf="@+id/constraint2"
-                app:layout_constraintTop_toBottomOf="@+id/constraint2" />
+                app:layout_constraintEnd_toEndOf="@+id/change_password"
+                app:layout_constraintStart_toStartOf="@+id/change_password"
+                app:layout_constraintTop_toBottomOf="@+id/change_password"
+                />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/to_comments"
+                android:layout_width="300dp"
+                android:layout_height="@dimen/button_height"
+                android:backgroundTint="#2E58AB"
+                android:text="Отзывы"
+                android:textAlignment="center"
+                app:cornerRadius="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/constraint2"
+                />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/change_password"
+                android:layout_width="300dp"
+                android:layout_height="@dimen/button_height"
+                android:backgroundTint="#2E58AB"
+                android:text="Изменить пароль"
+                android:textAlignment="center"
+                app:cornerRadius="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/to_comments"
+                />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

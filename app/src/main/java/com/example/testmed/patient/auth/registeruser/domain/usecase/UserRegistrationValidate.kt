@@ -14,6 +14,7 @@ class UserRegistrationValidate : IUserRegistrationValidate {
                 "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,25}" +
                 ")+"
     )
+
     override fun validate(
         etIin: String,
         etBirthday: String,
@@ -24,7 +25,13 @@ class UserRegistrationValidate : IUserRegistrationValidate {
         etPassword: String,
         etPatronymic: String,
         etSurname: String,
+        city: String,
     ): Flow<UserRegisterState> {
+        val yearIIN = etIin.substring(0, 2).toInt()
+        val monthIIN = etIin.substring(2, 4).toInt()
+        val dayIIN = etIin.substring(4, 6).toInt()
+        val gender: Char = etIin[6]
+        val g = "$gender".toInt()
         if (etIin.isEmpty() && etBirthday.isEmpty() && etCity.isEmpty() &&
             etFio.isEmpty() && etLogin.isEmpty() &&
             etPassword.isEmpty() && etPatronymic.isEmpty() && etSurname.isEmpty()
@@ -40,6 +47,14 @@ class UserRegistrationValidate : IUserRegistrationValidate {
             return flow {
                 emit(UserRegisterState.IinLengthLess("Номер ИИН должен быть 12 цифр, попробуйте еще раз."))
             }
+        } else if (yearIIN !in 1..99 || monthIIN !in 1..12 || dayIIN !in 1..31) {
+            return flow {
+                emit(UserRegisterState.IinLengthLess("Проверьте правильность ИИН."))
+            }
+        } else if (g !in 3..6) {
+            return flow {
+                emit(UserRegisterState.IinLengthLess("Проверьте правильность ИИН."))
+            }
         } else if (etFio.isEmpty()) {
             return flow {
                 emit(UserRegisterState.FIOEmpty)
@@ -48,13 +63,13 @@ class UserRegistrationValidate : IUserRegistrationValidate {
             return flow {
                 emit(UserRegisterState.SurnameEmpty)
             }
-        } else if (etPatronymic.isEmpty()) {
-            return flow {
-                emit(UserRegisterState.PatronymicEmpty)
-            }
-        } else if (etCity.isEmpty()) {
+        }else if (etCity.isEmpty()) {
             return flow {
                 emit(UserRegisterState.CitEmpty)
+            }
+        }else if (city.isEmpty()) {
+            return flow {
+                emit(UserRegisterState.CityEmpty)
             }
         } else if (etBirthday.isEmpty()) {
             return flow {
@@ -72,7 +87,7 @@ class UserRegistrationValidate : IUserRegistrationValidate {
             return flow {
                 emit(UserRegisterState.LoginEmpty)
             }
-        } else if(!EMAIL_ADDRESS_PATTERN.matcher(etLogin).matches()){
+        } else if (!EMAIL_ADDRESS_PATTERN.matcher(etLogin).matches()) {
             return flow {
                 emit(UserRegisterState.LoginValidate("Недействительные учетные данные, попробуйте еще раз."))
             }
@@ -80,7 +95,7 @@ class UserRegistrationValidate : IUserRegistrationValidate {
             return flow {
                 emit(UserRegisterState.PasswordEmpty)
             }
-        }  else if (etPassword.length <6) {
+        } else if (etPassword.length < 6) {
             return flow {
                 emit(UserRegisterState.PasswordLengthLess("Длина пароля должна быть более шести символов."))
             }

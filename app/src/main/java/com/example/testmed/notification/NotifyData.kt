@@ -12,4 +12,5 @@ data class NotifyData(
     val idNotification: Int,
     val fromWho: String,// 0-patient 1-doctor
     val icon: Int,
+    val type: String,
 ) : Parcelable

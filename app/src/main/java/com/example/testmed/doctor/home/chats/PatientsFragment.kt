@@ -22,8 +22,6 @@ import com.google.firebase.database.ValueEventListener
 class PatientsFragment
     :
     BaseFragmentDoctor<ChatsWithPatientFragmentBinding>(ChatsWithPatientFragmentBinding::inflate) {
-    private lateinit var valueEventListener: ValueEventListener
-    private lateinit var refDoctorMEssages: DatabaseReference
     private lateinit var adapter: PatientsAdapter
     private lateinit var viewModel: PatientViewModel
     private lateinit var mRecyclerView: RecyclerView
@@ -37,10 +35,6 @@ class PatientsFragment
         setPatients()
     }
 
-    override fun onPause() {
-        super.onPause()
-//        refDoctorMEssages.removeEventListener(valueEventListener)
-    }
 
     fun seenMessages(data: List<CommonPatientData>) {
 //        data.forEach { allPatients ->
@@ -79,7 +73,7 @@ class PatientsFragment
                     binding.apply {
                         progressBar.isVisible = true
                         textview.isVisible = false
-                        constraintLayout.isVisible = false
+                        recyclerView.isVisible = false
                     }
                 }
 
@@ -88,7 +82,7 @@ class PatientsFragment
                         progressBar.isVisible = false
                         textview.isVisible = true
                         textview.text = data.errorMessage
-                        constraintLayout.isVisible = false
+                        recyclerView.isVisible = false
                     }
                 }
 
@@ -98,7 +92,7 @@ class PatientsFragment
                         textview.isVisible = true
                         textview.text = "Нет сообщений."
                         adapter.clearList()
-                        constraintLayout.isVisible = false
+                        recyclerView.isVisible = false
                     }
                 }
 
@@ -111,7 +105,7 @@ class PatientsFragment
                         progressBar.isVisible = false
                         textview.isVisible = true
                         textview.text = "Пациенты"
-                        constraintLayout.isVisible = true
+                        recyclerView.isVisible = true
                     }
                 }
             }

@@ -87,7 +87,7 @@ abstract class BaseFragmentDoctor<VB : ViewBinding>(
     }
 
     fun setImage(url: String, imageView: ImageView) {
-        Glide.with(imageView.context).load(url).into(imageView)
+        Glide.with(imageView.context).load(url).placeholder(R.drawable.ic_profile).into(imageView)
     }
 
     fun getCachedPhotoURI(urlPhoto: String): Uri {
@@ -207,7 +207,7 @@ abstract class BaseFragmentDoctor<VB : ViewBinding>(
                         containerSen.isVisible = true
                         containerToolbar.isVisible = true
                         recyclerChat.isVisible = true
-                        container.setBackgroundResource(R.color.background_root)
+                        container.setBackgroundResource(R.drawable.desfone)
                         currentAnimator = null
                     }
 
@@ -217,7 +217,7 @@ abstract class BaseFragmentDoctor<VB : ViewBinding>(
                         recyclerChat.isVisible = true
                         thumbView.alpha = 1f
                         expandedImageView.isGone = true
-                        container.setBackgroundResource(R.color.background_root)
+                        container.setBackgroundResource(R.drawable.desfone)
                         currentAnimator = null
                     }
                 })

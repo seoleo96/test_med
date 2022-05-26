@@ -40,6 +40,9 @@
         <action
             android:id="@+id/action_navigation_clinic_to_commentsClinicsFragment"
             app:destination="@id/commentsClinicsFragment" />
+        <action
+            android:id="@+id/action_navigation_clinic_to_mapsFragment"
+            app:destination="@id/mapsFragment" />
     </fragment>
 
     <fragment
@@ -336,6 +339,10 @@
         <argument
             android:name="idDoctor"
             app:argType="string" />
+
+        <argument
+            android:name="type"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/clinicsFragment"
@@ -389,6 +396,21 @@
         tools:layout="@layout/fragment_comments_clinics" >
         <argument
             android:name="idClinic"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/mapsFragment"
+        android:name="com.example.testmed.patient.aboutclinic.presentation.MapsFragment"
+        android:label="fragment_maps"
+        tools:layout="@layout/fragment_maps" >
+        <argument
+            android:name="clinicName"
+            app:argType="string" />
+        <argument
+            android:name="lat"
+            app:argType="string" />
+        <argument
+            android:name="lon"
             app:argType="string" />
     </fragment>
 

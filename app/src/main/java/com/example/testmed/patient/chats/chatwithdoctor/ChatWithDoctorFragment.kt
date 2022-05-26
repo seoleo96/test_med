@@ -8,10 +8,8 @@ import android.content.Context.DOWNLOAD_SERVICE
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.os.Environment
-import android.provider.DocumentsContract
 import android.provider.OpenableColumns
 import android.util.Log
 import android.view.View
@@ -74,11 +72,14 @@ class ChatWithDoctorFragment :
         idDoctor =
             if (argsNav.idDoctor == "0") requireArguments()[ID_DOCTOR].toString() else argsNav.idDoctor
         lifecycleScope.launch(Dispatchers.IO) {
-            val temp = DB.reference.child("patients")
-                .child(idPatient)
-                .child("iin")
-                .get().await().getValue(String::class.java).toString()
-            idNotification = (temp.toLong() - 999900000000).toInt()
+            try {
+                val temp = DB.reference.child("patients")
+                    .child(idPatient)
+                    .child("iin")
+                    .get().await().getValue(String::class.java).toString()
+                idNotification = (temp.toLong() - 999900000000).toInt()
+            } catch (e: Exception) {
+            }
         }
         val viewBottomSheetBehavior = view.findViewById<LinearLayout>(R.id.bottom_sheet_choice)
         mBottomSheetBehavior = BottomSheetBehavior.from(viewBottomSheetBehavior)
@@ -196,50 +197,26 @@ class ChatWithDoctorFragment :
         })
     }
 
-    private fun downloadfile(data: MessageData) {
-        val file = File(Environment.getExternalStorageDirectory(), "mypdffile.pdf")
-        val downloadManager =
-            requireActivity().getSystemService(DOWNLOAD_SERVICE) as DownloadManager?
-        val request = DownloadManager.Request(data.message.toUri())
-            .setTitle(data.type)
-            .setDescription("This is file download demo")
-            .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE)
-            .setDestinationUri(Uri.fromFile(file))
-        downloadManager!!.enqueue(request)
-        val sendIntent: Intent = Intent().apply {
-            action = Intent.ACTION_SEND
-            putExtra(Intent.EXTRA_TEXT, "This is my text to send.")
-            type = "text/pdf"
-        }
-
-        val shareIntent = Intent.createChooser(sendIntent, null)
-        startActivity(shareIntent)
-    }
-
-    private fun getPermissions() {
-        val externalReadPermission = Manifest.permission.READ_EXTERNAL_STORAGE
-        val externalWritePermission = Manifest.permission.WRITE_EXTERNAL_STORAGE
-        if (ContextCompat.checkSelfPermission(requireContext(),
-                externalReadPermission) != PackageManager.PERMISSION_GRANTED
-            && ContextCompat.checkSelfPermission(requireContext(),
-                externalWritePermission) != PackageManager.PERMISSION_GRANTED
-        ) {
-            requestPermissions(arrayOf(externalReadPermission, externalWritePermission),
-                100)
-        }
-    }
-
     private fun setAdapter() {
         mAdapter = ChatAdapter { messageData, view, type ->
             if (messageData.message.isNotEmpty() && type == "image") {
                 setAnimationView(messageData, view)
             } else {
-//                getPermissions()
-//                downloadfile(messageData)
+                viewpdf(messageData)
+                Log.d("view", "VIEW")
             }
         }
         mRecyclerView = binding.recyclerChat
         mRecyclerView.adapter = mAdapter
+    }
+
+    private fun viewpdf(messageData: MessageData) {
+        // add the link of pdf
+        val value = messageData.message
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(value))
+
+        // start activity
+        startActivity(intent)
     }
 
     private fun setAnimationView(messageData: MessageData, view: View) {
@@ -300,8 +277,7 @@ class ChatWithDoctorFragment :
             }
         }
 
-    private
-    var pdfUploadActivity =
+    private var pdfUploadActivity =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK && result.data != null) {
                 pdfFile = result.data!!.data
@@ -322,7 +298,7 @@ class ChatWithDoctorFragment :
                 timestamp = tempTimestamp,
                 idFrom = idPatient,
                 message = "Отправляется...",
-                type = "message")
+                type = "file")
             withContext(Dispatchers.Main) {
                 mListMessages.add(data)
                 updateAdapter(mListMessages)
@@ -355,7 +331,7 @@ class ChatWithDoctorFragment :
         binding.addMedia.setOnClickListener {
             mBottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
             view?.findViewById<ImageView>(R.id.btn_attach_file)?.setOnClickListener {
-//                attachFile()
+                attachFile()
             }
             view?.findViewById<ImageView>(R.id.btn_attach_image)
                 ?.setOnClickListener { attachImage() }
@@ -430,7 +406,9 @@ class ChatWithDoctorFragment :
         chatWithDoctorViewModel.sendNotificationData(idDoctor,
             idPatient,
             text,
-            idNotification)
+            idNotification,
+            type
+        )
         chatWithDoctorViewModel.sendMessage(idMess,
             text,
             type,
@@ -448,7 +426,7 @@ class ChatWithDoctorFragment :
         chatWithDoctorViewModel.getDoctorsData(idDoctor)
         chatWithDoctorViewModel.livedata.observe(viewLifecycleOwner) {
             it?.apply {
-                view?.findViewById<TextView>(R.id.fio)?.text = "${name} ${patronymic}"
+                binding.fio.text = if (patronymic != "") "$name $patronymic" else "$name $surname"
                 doctorName = "$name $patronymic $surname"
                 if (stateTo == idPatient) {
                     binding.experience.text = state.toString()

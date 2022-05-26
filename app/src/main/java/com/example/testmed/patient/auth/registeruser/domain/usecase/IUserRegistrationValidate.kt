@@ -6,6 +6,6 @@ interface IUserRegistrationValidate {
     fun validate(
         etIin: String, etBirthday: String, etCity: String,
         etFio: String, etPhoneNumber: String, etLogin: String,
-        etPassword: String, etPatronymic: String, etSurname: String,
+        etPassword: String, etPatronymic: String, etSurname: String, city: String,
     ): Flow<UserRegisterState>
 }

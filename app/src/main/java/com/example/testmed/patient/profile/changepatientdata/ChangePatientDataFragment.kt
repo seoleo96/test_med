@@ -5,10 +5,10 @@ import android.app.DatePickerDialog
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
-import android.widget.EditText
-import android.widget.ProgressBar
+import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
+import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
@@ -31,6 +31,7 @@ import com.google.firebase.database.ValueEventListener
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -44,13 +45,16 @@ class ChangePatientDataFragment :
     private lateinit var rdbRef: DatabaseReference
     private lateinit var viewModel: ChangePatientDataViewModel
     private var cal = Calendar.getInstance()
-    private var birthday = ""
     private var uri: Uri? = null
-    private lateinit var gender: String
     private lateinit var photoUrl: String
     private lateinit var login: String
+    private lateinit var city: String
     private lateinit var loginIsSame: String
     private lateinit var password: String
+    private lateinit var spinner: Spinner
+    private var personNames = emptyArray<String>()
+    private var birthday = ""
+    private var gender = ""
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -64,9 +68,102 @@ class ChangePatientDataFragment :
         authStateListener.onAuthStateChanged(auth)
         setProfileData()
         saveData()
-        setDatePicker()
+//        setDatePicker()
         changePhotoUser()
         navigateBack()
+        setIIN()
+        setSpinnerGender()
+    }
+
+    private fun setSpinnerGender() {
+        spinner = binding.etGender
+        personNames = arrayOf(
+            "",
+            "Акмолинская",
+            "Актюбинская",
+            "Алматинская",
+            "Атырауская",
+            "Восточно-Казахстанская",
+            "Жамбылская",
+            "Западно-Казахстанская",
+            "Карагандинская",
+            "Костанайская",
+            "Кызылординская",
+            "Мангистауская",
+            "Павлодарская",
+            "Северо-Казахстанская",
+            "Туркестанская",
+        )
+        val arrayAdapter =
+            ArrayAdapter(requireContext(),
+                android.R.layout.simple_spinner_dropdown_item,
+                personNames)
+        spinner.adapter = arrayAdapter
+        setGender()
+    }
+
+    private fun setGender() {
+
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                gender = personNames[p2]
+            }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+            }
+        }
+    }
+
+    private fun setIIN() {
+        binding.etIin.doAfterTextChanged { it ->
+            if (it?.length == 12) {
+                val gender: Char = it[6]
+                val g = "$gender".toInt()
+                val yearIIN = it.substring(0, 2)
+                val monthIIN = it.substring(2, 4)
+                val dayIIN = it.substring(4, 6)
+                when (g) {
+                    3 -> {
+                        val date = "${dayIIN}.${monthIIN}.19${yearIIN}"
+                        binding.etBirthday.setText(date)
+                        binding.etGen.setText("Мужской")
+                    }
+                    5 -> {
+                        if (yearIIN.toInt() < 4) {
+                            val date = "${dayIIN}.${monthIIN}.20${yearIIN}"
+                            binding.etBirthday.setText(date)
+                            binding.etGen.setText("Мужской")
+                        } else {
+                            binding.etIin.requestFocus()
+                            binding.etIin.error = "Неправильный ИИН"
+                        }
+                    }
+                    4 -> {
+                        val date = "${dayIIN}.${monthIIN}.19${yearIIN}"
+                        binding.etBirthday.setText(date)
+                        binding.etGen.setText("Женской")
+                    }
+                    6 -> {
+                        if (yearIIN.toInt() < 4) {
+                            val date = "${dayIIN}.${monthIIN}.20${yearIIN}"
+                            binding.etBirthday.setText(date)
+                            binding.etGen.setText("Женской")
+                        } else {
+                            binding.etIin.requestFocus()
+                            binding.etIin.error = "Неправильный ИИН"
+                        }
+                    }
+                    else -> {
+
+                        binding.etIin.requestFocus()
+                        binding.etIin.error = "Неправильный ИИН"
+                    }
+                }
+            } else {
+                binding.etBirthday.setText("")
+                binding.etGen.setText("")
+            }
+        }
     }
 
     override fun onResume() {
@@ -120,7 +217,9 @@ class ChangePatientDataFragment :
             binding.etLogin.text.toString(),
             binding.etPassword.text.toString(),
             binding.etPatronymic.text.toString(),
-            binding.etSurname.text.toString())
+            binding.etSurname.text.toString(),
+            gender
+        )
         viewModel.dataValidateLiveData.observe(viewLifecycleOwner) { userRegisterState ->
             when (userRegisterState) {
                 is UserRegisterState.AllDataEmpty -> {
@@ -152,6 +251,10 @@ class ChangePatientDataFragment :
                 is UserRegisterState.CitEmpty -> {
                     invisibleProgress(binding.progressBar)
                     errorEditsTexts(binding.etCity)
+                }
+                is UserRegisterState.CityEmpty -> {
+                    invisibleProgress(binding.progressBar)
+                    showSnackbar("Это обезятельное поле - Область")
                 }
                 is UserRegisterState.BirthdayEmpty -> {
                     invisibleProgress(binding.progressBar)
@@ -216,12 +319,19 @@ class ChangePatientDataFragment :
         login: String,
         password: String,
     ) {
+        val name = binding.etFio.text.toString()
+            .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
+        val surname = binding.etSurname.text.toString()
+            .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
+        val patronymic =
+            if (binding.etPatronymic.text.isEmpty()) "" else binding.etPatronymic.text.toString()
+                .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
+        val address = binding.etCity.text.toString()
+            .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
+        val city = gender
+        val gen = binding.etGen.text.toString()
         val id = currentUser.uid
         val iin = binding.etIin.text.toString()
-        val name = binding.etFio.text.toString()
-        val surname = binding.etSurname.text.toString()
-        val patronymic = binding.etPatronymic.text.toString()
-        val address = binding.etCity.text.toString()
         PHONE_NUMBER = binding.etPhoneNumber.text.toString()
         val patient = PatientData(
             id,
@@ -230,13 +340,16 @@ class ChangePatientDataFragment :
             surname,
             patronymic,
             address,
-            birthday,
-            gender,
+            binding.etBirthday.text.toString(),
+            gen,
             login,
             password,
             PHONE_NUMBER,
             photoUrl,
-        online)
+            online,
+            "1",
+            "",
+            city)
         DB.reference.child("patients").child(id).setValue(patient)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
@@ -250,36 +363,44 @@ class ChangePatientDataFragment :
     }
 
     private fun navigateToProfile() {
-        showSnackbar("Профиль обновлен.")
-        findNavController().navigate(R.id.action_navigation_change_patient_data_to_navigation_profile)
+        lifecycleScope.launch {
+            showSnackbar("Профиль обновлен.")
+            delay(500)
+            findNavController().navigate(R.id.action_navigation_change_patient_data_to_navigation_profile)
+
+        }
     }
 
     private fun savePhoto() {
-        val path =
-            REF_STORAGE_ROOT.child("images").child(DB.reference.push().key.toString())
-        path.putFile(uri!!)
-            .addOnCompleteListener { task1 ->
-                if (task1.isSuccessful) {
-                    path.downloadUrl.addOnCompleteListener { task2 ->
-                        if (task2.isSuccessful) {
-                            val photoUrl = task2.result.toString()
-                            DB.getReference("/patients/${currentUser.uid}/photoUrl")
-                                .setValue(photoUrl)
-                                .addOnCompleteListener {
-                                    if (it.isSuccessful) {
-                                        navigateToProfile()
-                                    } else {
-                                        tryOne()
+        try {
+            val path =
+                REF_STORAGE_ROOT.child("images").child(DB.reference.push().key.toString())
+            path.putFile(uri!!)
+                .addOnCompleteListener { task1 ->
+                    if (task1.isSuccessful) {
+                        path.downloadUrl.addOnCompleteListener { task2 ->
+                            if (task2.isSuccessful) {
+                                val photoUrl = task2.result.toString()
+                                DB.getReference("/patients/${currentUser.uid}/photoUrl")
+                                    .setValue(photoUrl)
+                                    .addOnCompleteListener {
+                                        if (it.isSuccessful) {
+                                            navigateToProfile()
+                                        } else {
+                                            tryOne()
+                                        }
                                     }
-                                }
-                        } else {
-                            tryOne()
+                            } else {
+                                tryOne()
+                            }
                         }
+                    } else {
+                        tryOne()
                     }
-                } else {
-                    tryOne()
                 }
-            }
+        }catch (e:java.lang.Exception){
+
+        }
     }
 
     private fun tryOne() {
@@ -331,6 +452,8 @@ class ChangePatientDataFragment :
                             etPassword.setText(data.password)
                             password = data.password
                             login = data.login
+                            city = data.city
+                            city = data.city
                             loginIsSame = data.login
                             etPhoneNumber.setText(data.phoneNumber)
                             photoUrl = data.photoUrl ?: ""

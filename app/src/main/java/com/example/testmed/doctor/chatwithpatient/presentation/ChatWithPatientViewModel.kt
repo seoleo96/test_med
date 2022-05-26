@@ -10,6 +10,7 @@ import com.example.testmed.*
 import com.example.testmed.model.CommonPatientData
 import com.example.testmed.model.MessageData
 import com.example.testmed.model.PatientData
+import com.example.testmed.model.RecommendationData
 import com.example.testmed.notification.NotifyData
 import com.example.testmed.notification.RetrofitClient
 import com.example.testmed.notification.Sender
@@ -99,7 +100,33 @@ class ChatWithPatientViewModel() : ViewModel() {
         }
     }
 
-    fun sendNotificationData(idPatient: String, message: String, idNotification: Int) {
+    fun sendRecommendation(
+        idDoctor: String,
+        patientId: String,
+        doctorFio: String,
+        doctorSpeciality: String,
+        patientFio: String,
+        timestamp: Any,
+        recommendationUrl: String,
+        idRecommendation: String,
+    ) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val rec = RecommendationData(
+                idDoctor = idDoctor,
+                patientId = patientId,
+                doctorFio = doctorFio,
+                doctorSpeciality = doctorSpeciality,
+                patientFio = patientFio,
+                timestamp = timestamp,
+                recommendationUrl = recommendationUrl,
+                idRecommendation = idRecommendation,
+            )
+            val refRec = "recommendation/${patientId}"
+            DB.reference.child(refRec).child(idRecommendation).setValue(rec)
+        }
+    }
+
+    fun sendNotificationData(idPatient: String, message: String, idNotification: Int, type: String) {
         val idDoc = UID()
         viewModelScope.launch(Dispatchers.IO) {
             val reDoctorToken = DB.reference.child("doctors").child(idDoc).child("token")
@@ -112,11 +139,12 @@ class ChatWithPatientViewModel() : ViewModel() {
             val notifyData = NotifyData(
                 fromId = idDoc,
                 title = titleName,
-                icon = 1,
+                icon = if (type != "message" && type != "image") 101 else 1,
                 body = message,
                 idNotification = idNotification,
                 fromWho = "1",
-                toId = idPatient
+                toId = idPatient,
+                type = type
             )
             val tokenDoc = reDoctorToken.get().await().getValue(String::class.java)
             val tokenPat = refPatientToken.get().await().getValue(String::class.java)

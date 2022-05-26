@@ -1,7 +1,9 @@
 package com.example.testmed.patient.aboutclinic.presentation
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.util.Linkify
+import android.util.Log
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
@@ -18,7 +20,9 @@ import com.google.firebase.database.ValueEventListener
 class ClinicFragment : BaseFragment<FragmentClinicBinding>(FragmentClinicBinding::inflate) {
 
     private lateinit var viewModel: ClinicDataViewModel
-    private val navArgs : ClinicFragmentArgs by navArgs()
+    private val navArgs: ClinicFragmentArgs by navArgs()
+    private var clinicName = ""
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -27,9 +31,11 @@ class ClinicFragment : BaseFragment<FragmentClinicBinding>(FragmentClinicBinding
         setUpData()
 
         binding.comments.setOnClickListener {
-            val action = ClinicFragmentDirections.actionNavigationClinicToCommentsClinicsFragment(navArgs.idClinic)
+            val action =
+                ClinicFragmentDirections.actionNavigationClinicToCommentsClinicsFragment(navArgs.idClinic)
             findNavController().navigate(action)
         }
+
 
     }
 
@@ -50,6 +56,9 @@ class ClinicFragment : BaseFragment<FragmentClinicBinding>(FragmentClinicBinding
                 is ClinicDataResult.Success -> {
                     visibleContent()
                     with(data.data) {
+                        val an = lat
+                        val on = lon
+                        val clinicName = name
                         binding.clinicName.text = name
                         binding.email.text = email
                         binding.link.text = link
@@ -60,18 +69,27 @@ class ClinicFragment : BaseFragment<FragmentClinicBinding>(FragmentClinicBinding
                         binding.bank.text = bank
                         binding.bik.text = bik
                         binding.bin.text = bin
+                        binding.city.text = city
                         binding.iik.text = iik
                         Glide
                             .with(binding.viewPager.context)
                             .load(imageUrl)
                             .fitCenter()
                             .into(binding.viewPager)
+                        binding.map.setOnClickListener {
+
+                            val action = ClinicFragmentDirections.actionNavigationClinicToMapsFragment(clinicName,
+                                an,
+                                on)
+                            findNavController().navigate(action)
+                        }
                     }
 
                     binding.sendUsersDataButton.setOnClickListener {
-                        val action = ClinicFragmentDirections.actionNavigationClinicToSpecialitiesFragment()
+                        val action =
+                            ClinicFragmentDirections.actionNavigationClinicToSpecialitiesFragment()
                         action.idClinic = data.data.id
-                            findNavController().navigate(action)
+                        findNavController().navigate(action)
                     }
                 }
             }
