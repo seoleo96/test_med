@@ -53,7 +53,7 @@ class DoctorsAdapter(private val adapterOnClick: (DoctorData) -> Unit) :
                 if (hideline) {
                     binding.line4.setBackgroundResource(R.drawable.round_fone_recycler)
                 }
-                binding.fio.text = "$name $surname $patronymic"
+                binding.fio.text = "$surname $name $patronymic"
                 binding.experience.text = experience
                 Glide
                     .with(binding.root.context)

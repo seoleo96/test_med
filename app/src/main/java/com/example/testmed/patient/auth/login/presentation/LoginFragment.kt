@@ -1,6 +1,8 @@
 package com.example.testmed.patient.auth.login.presentation
 
 import android.os.Bundle
+import android.text.method.HideReturnsTransformationMethod
+import android.text.method.PasswordTransformationMethod
 import android.util.Log
 import android.view.View
 import androidx.core.view.isVisible
@@ -31,6 +33,17 @@ class LoginFragment : BaseFragmentAuth<FragmentLoginBinding>(FragmentLoginBindin
         setEditTexts()
         binding.tvToRegister.setOnClickListener {
             findNavController().navigate(R.id.action_navigation_login_to_navigation_register)
+        }
+
+        binding.show.setOnClickListener {
+
+            if(binding.show.tag.toString() == "Show"){
+                binding.etPassword.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                binding.show.tag = "Hide"
+            } else{
+                binding.etPassword.transformationMethod = PasswordTransformationMethod.getInstance()
+                binding.show.tag = "Show"
+            }
         }
 
         setPhoneNumbers()

@@ -105,6 +105,18 @@
                     app:layout_constraintStart_toStartOf="@+id/et_login"
                     app:layout_constraintTop_toBottomOf="@+id/et_login" />
 
+
+                <ImageButton
+                    android:id="@+id/show"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:tag="Show"
+                    android:foreground="@drawable/ic_eye_24"
+                    app:layout_constraintBottom_toBottomOf="@+id/et_password"
+                    app:layout_constraintEnd_toEndOf="@+id/et_password"
+                    app:layout_constraintTop_toTopOf="@+id/et_password"
+                    />
+
                 <TextView
                     android:id="@+id/error_otp_code"
                     android:layout_width="wrap_content"

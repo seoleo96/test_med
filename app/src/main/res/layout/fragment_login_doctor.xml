@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/desfone"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".doctor.login.LoginDoctorFragment">
+    tools:context=".doctor.login.LoginDoctorFragment"
+    >
 
     <ScrollView
         android:id="@+id/all_content"
@@ -14,12 +16,14 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        >
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            >
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/vector"
@@ -30,7 +34,8 @@
                 android:paddingBottom="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toTopOf="parent"
+                >
 
                 <ImageView
                     android:id="@+id/imageView"
@@ -41,7 +46,8 @@
                     android:background="@drawable/ic_group_970"
                     app:layout_constraintEnd_toEndOf="@+id/vector"
                     app:layout_constraintStart_toStartOf="@+id/vector"
-                    app:layout_constraintTop_toTopOf="@+id/vector" />
+                    app:layout_constraintTop_toTopOf="@+id/vector"
+                    />
 
                 <TextView
                     android:id="@+id/text_login"
@@ -52,7 +58,8 @@
                     android:textSize="24sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/imageView" />
+                    app:layout_constraintTop_toBottomOf="@+id/imageView"
+                    />
 
 
                 <TextView
@@ -65,10 +72,10 @@
                     android:textColor="#616161"
                     android:textSize="16sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/text_login" />
+                    app:layout_constraintTop_toBottomOf="@+id/text_login"
+                    />
 
                 <EditText
-                    android:textIsSelectable="true"
                     android:id="@+id/et_login"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -78,15 +85,30 @@
                     android:background="@drawable/phone_number_round"
                     android:hint="doctor@gmail.com"
                     android:inputType="textEmailAddress"
-                    android:textAlignment="center"
                     android:maxLength="28"
                     android:padding="16dp"
+                    android:textAlignment="center"
+                    android:textIsSelectable="true"
                     app:layout_constraintEnd_toEndOf="@+id/text_phone_number"
                     app:layout_constraintStart_toStartOf="@+id/text_phone_number"
-                    app:layout_constraintTop_toBottomOf="@+id/text_phone_number" />
+                    app:layout_constraintTop_toBottomOf="@+id/text_phone_number"
+                    />
+
+                <!--                <com.google.android.material.textfield.TextInputLayout-->
+                <!--                    android:id="@+id/show"-->
+                <!--                    android:layout_width="80dp"-->
+                <!--                    android:layout_height="40dp"-->
+                <!--                    android:layout_marginEnd="4dp"-->
+                <!--                    android:background="@color/black"-->
+                <!--                    android:tag="Show"-->
+                <!--                    app:layout_constraintBottom_toBottomOf="@+id/error_otp_code"-->
+                <!--                    app:layout_constraintEnd_toEndOf="parent"-->
+                <!--                    app:layout_constraintTop_toBottomOf="@+id/text_login"-->
+                <!--                    app:layout_constraintVertical_bias="0.788"-->
+                <!--                    />-->
+
 
                 <EditText
-                    android:textIsSelectable="true"
                     android:id="@+id/et_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -94,14 +116,29 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="16dp"
                     android:background="@drawable/phone_number_round"
-                    android:maxLength="20"
-                    android:textAlignment="center"
                     android:hint="******"
-                    android:inputType="textVisiblePassword"
+                    android:inputType="textPassword"
+                    android:maxLength="20"
                     android:padding="16dp"
-                    app:layout_constraintEnd_toEndOf="@+id/et_login"
+                    android:textAlignment="center"
+                    android:textIsSelectable="true"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/et_login"
-                    app:layout_constraintTop_toBottomOf="@+id/et_login" />
+                    app:layout_constraintTop_toBottomOf="@+id/et_login"
+                    />
+
+                <ImageButton
+                    android:id="@+id/show"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginEnd="16dp"
+                    android:tag="Show"
+                    android:foreground="@drawable/ic_eye_24"
+                    app:layout_constraintBottom_toBottomOf="@+id/et_password"
+                    app:layout_constraintEnd_toEndOf="@+id/et_password"
+                    app:layout_constraintTop_toTopOf="@+id/et_password"
+                    />
+
 
                 <TextView
                     android:id="@+id/error_otp_code"
@@ -117,7 +154,9 @@
                     android:visibility="invisible"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/et_password" />
+                    app:layout_constraintTop_toBottomOf="@+id/et_password"
+                    />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <com.google.android.material.button.MaterialButton
@@ -130,7 +169,8 @@
                 app:cornerRadius="8dp"
                 app:layout_constraintEnd_toEndOf="@+id/vector"
                 app:layout_constraintStart_toStartOf="@+id/vector"
-                app:layout_constraintTop_toBottomOf="@+id/vector" />
+                app:layout_constraintTop_toBottomOf="@+id/vector"
+                />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
@@ -144,6 +184,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

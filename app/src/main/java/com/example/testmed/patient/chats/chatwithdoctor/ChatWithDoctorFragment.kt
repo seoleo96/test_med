@@ -426,7 +426,7 @@ class ChatWithDoctorFragment :
         chatWithDoctorViewModel.getDoctorsData(idDoctor)
         chatWithDoctorViewModel.livedata.observe(viewLifecycleOwner) {
             it?.apply {
-                binding.fio.text = if (patronymic != "") "$name $patronymic" else "$name $surname"
+                binding.fio.text = "$surname $name"
                 doctorName = "$name $patronymic $surname"
                 if (stateTo == idPatient) {
                     binding.experience.text = state.toString()

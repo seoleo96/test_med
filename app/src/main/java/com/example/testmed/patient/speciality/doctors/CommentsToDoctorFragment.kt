@@ -104,7 +104,7 @@ class CommentsToDoctorFragment :
                             val data = snapshot.getValue(DoctorData::class.java)!!
                             lifecycleScope.launch {
                                 binding.apply {
-                                    val doctorName = "${data.name} ${data.surname}"
+                                    val doctorName = "${data.surname} ${data.name}"
                                     fio.text = doctorName
                                     setImage(data.photoUrl, binding.profileImage)
                                 }

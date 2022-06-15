@@ -77,6 +77,7 @@ class ArchiveAdapter(private val adapterOnClick: (CommonPatientData) -> Unit) :
 //                if (hideLine){
 //                    binding.line4.setBackgroundResource(R.drawable.round_fone_recycler)
 //                }
+                val names = data.fullNamePatient.split(" ")
                 binding.apply {
                     binding.line4.isVisible = false
                     phoneNumber.text = data.phoneNumber

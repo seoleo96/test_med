@@ -73,6 +73,7 @@ class CommentsAdapter() : RecyclerView.Adapter<CommentsAdapter.CommentsHolder>()
                 }
                 binding.username.text = message.username
                 binding.commentTime.text = message.timestamp.toString().asTime()
+
                 binding.comment.text = message.message
             }
         }

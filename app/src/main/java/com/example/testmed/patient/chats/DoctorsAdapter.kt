@@ -71,7 +71,7 @@ class DoctorsAdapter(private val adapterOnClick: (CommonPatientData) -> Unit) :
 //                if (hideLine){
 //                    binding.line4.setBackgroundResource(R.drawable.round_fone_recycler)
 //                }
-                binding.patientName.text = "$name $surname"
+                binding.patientName.text = "$surname $name"
                 binding.lastMessage.text = message
                 if (photoUrl != null) {
                     if (photoUrl.isNotEmpty()) {

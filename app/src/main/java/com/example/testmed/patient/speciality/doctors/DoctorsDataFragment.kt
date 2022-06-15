@@ -76,7 +76,7 @@ class DoctorsDataFragment :
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
                     snapshot.getValue(DoctorData::class.java)?.apply {
-                        binding.fullName.text = "${name} ${surname} ${patronymic}"
+                        binding.fullName.text = "${surname} ${name} ${patronymic}"
                         binding.speciality.text = speciality
                         binding.specialization.text = specialization
                         binding.experience.text = experience

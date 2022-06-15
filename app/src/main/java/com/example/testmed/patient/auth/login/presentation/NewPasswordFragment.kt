@@ -1,6 +1,8 @@
 package com.example.testmed.patient.auth.login.presentation
 
 import android.os.Bundle
+import android.text.method.HideReturnsTransformationMethod
+import android.text.method.PasswordTransformationMethod
 import android.util.Log
 import android.view.View
 import androidx.core.view.isVisible
@@ -23,6 +25,16 @@ class NewPasswordFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         AUTH().signOut()
+        binding.show.setOnClickListener {
+
+            if(binding.show.tag.toString() == "Show"){
+                binding.etPassword.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                binding.show.tag = "Hide"
+            } else{
+                binding.etPassword.transformationMethod = PasswordTransformationMethod.getInstance()
+                binding.show.tag = "Show"
+            }
+        }
         lifecycleScope.launch {
             try {
                 val temp: DataSnapshot =

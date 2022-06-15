@@ -87,9 +87,11 @@
         <entry key="..\:/diplomproject/app/src/main/res/drawable/ic_baseline_filter_list_24.xml" value="0.195" />
         <entry key="..\:/diplomproject/app/src/main/res/drawable/ic_baseline_image_24.xml" value="0.182" />
         <entry key="..\:/diplomproject/app/src/main/res/drawable/ic_baseline_insert_drive_file_24.xml" value="0.182" />
+        <entry key="..\:/diplomproject/app/src/main/res/drawable/ic_baseline_money_off_csred_24.xml" value="0.191" />
         <entry key="..\:/diplomproject/app/src/main/res/drawable/ic_baseline_video_call_24.xml" value="0.214" />
         <entry key="..\:/diplomproject/app/src/main/res/drawable/ic_chats.xml" value="0.169" />
         <entry key="..\:/diplomproject/app/src/main/res/drawable/ic_clinic_svg.xml" value="0.2105" />
+        <entry key="..\:/diplomproject/app/src/main/res/drawable/ic_eye_24.xml" value="0.191" />
         <entry key="..\:/diplomproject/app/src/main/res/drawable/ic_mastercard.xml" value="0.169" />
         <entry key="..\:/diplomproject/app/src/main/res/drawable/ic_profile.xml" value="0.234" />
         <entry key="..\:/diplomproject/app/src/main/res/drawable/ic_send_black_24.xml" value="0.182" />
@@ -134,8 +136,8 @@
         <entry key="..\:/diplomproject/app/src/main/res/layout/fragment_enter_code.xml" value="0.264" />
         <entry key="..\:/diplomproject/app/src/main/res/layout/fragment_home.xml" value="0.2234375" />
         <entry key="..\:/diplomproject/app/src/main/res/layout/fragment_home_doctor.xml" value="0.2234375" />
-        <entry key="..\:/diplomproject/app/src/main/res/layout/fragment_login.xml" value="0.2234375" />
-        <entry key="..\:/diplomproject/app/src/main/res/layout/fragment_login_doctor.xml" value="0.2234375" />
+        <entry key="..\:/diplomproject/app/src/main/res/layout/fragment_login.xml" value="0.176" />
+        <entry key="..\:/diplomproject/app/src/main/res/layout/fragment_login_doctor.xml" value="0.4" />
         <entry key="..\:/diplomproject/app/src/main/res/layout/fragment_maps.xml" value="0.1834117144078666" />
         <entry key="..\:/diplomproject/app/src/main/res/layout/fragment_new_password.xml" value="0.264" />
         <entry key="..\:/diplomproject/app/src/main/res/layout/fragment_profile.xml" value="0.2234375" />
@@ -164,7 +166,7 @@
     <option name="OUTPUT_DIRECTORY" value="$USER_HOME$/Downloads" />
     <option name="OPTION_SCOPE" value="private" />
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_16_PREVIEW" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_16" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

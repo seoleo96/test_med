@@ -58,7 +58,7 @@ class PatientRecFragment :
         viewModel.getPatientsData(args.idPatient)
         viewModel.livedata.observe(viewLifecycleOwner) {
             it?.apply {
-                binding.fio.text = if (patronymic != "") "$name $patronymic" else "$name $surname"
+                binding.fio.text = "$surname $name"
                 super.setImage(photoUrl, binding.profileImage)
             }
         }

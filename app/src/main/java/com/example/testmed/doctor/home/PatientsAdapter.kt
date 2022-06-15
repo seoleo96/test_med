@@ -67,7 +67,7 @@ class PatientsAdapter(private val adapterOnClick: (CommonPatientData) -> Unit) :
                 binding.sizeNotReadingMessages.isVisible = false
             }
             data.apply {
-                binding.patientName.text = "$name $surname"
+                binding.patientName.text = "$surname $name"
                 binding.lastMessage.text = message
 
                 if (photoUrl!!.isNotEmpty()) {

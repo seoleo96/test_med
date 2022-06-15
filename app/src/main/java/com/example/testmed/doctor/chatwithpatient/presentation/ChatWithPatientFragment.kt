@@ -466,7 +466,7 @@ class ChatWithPatientFragment
         viewModel.getPatientsData(patientId)
         viewModel.livedata.observe(viewLifecycleOwner) {
             it?.apply {
-                binding.fio.text = if (patronymic != "") "$name $patronymic" else "$name $surname"
+                binding.fio.text = "$surname $name"
                 patientFio =
                     if (patronymic != "") "$surname $name $patronymic" else "$name $surname"
                 patientAddress = address

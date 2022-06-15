@@ -1,6 +1,8 @@
 package com.example.testmed.doctor.login
 
 import android.os.Bundle
+import android.text.method.HideReturnsTransformationMethod
+import android.text.method.PasswordTransformationMethod
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -44,6 +46,17 @@ class LoginDoctorFragment : Fragment(R.layout.fragment_login_doctor) {
             binding.progressBar.isVisible = true
             binding.allContent.isVisible = false
             signInWithEmail()
+        }
+
+        binding.show.setOnClickListener {
+
+            if(binding.show.tag.toString() == "Show"){
+                binding.etPassword.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                binding.show.tag = "Hide"
+            } else{
+                binding.etPassword.transformationMethod = PasswordTransformationMethod.getInstance()
+                binding.show.tag = "Show"
+            }
         }
 
     }

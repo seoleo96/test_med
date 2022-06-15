@@ -19,6 +19,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.lang.Exception
 
 
 class ConsultationInfoFragment :
@@ -158,12 +159,16 @@ class ConsultationInfoFragment :
                         snapshot.children.forEach { dataSnapshot ->
                             val data = dataSnapshot.getValue(CommonPatientData::class.java)
                             if (data != null) {
-                                binding.recyclerView.isVisible = true
-                                binding.emptyMessages.isGone = true
-                                list.add(data)
-                                list.removeIf {
-                                    it.statusConsulting == "inactive"
-                                }
+                               try {
+                                   binding.recyclerView.isVisible = true
+                                   binding.emptyMessages.isGone = true
+                                   list.add(data)
+                                   list.removeIf {
+                                       it.statusConsulting == "inactive"
+                                   }
+                               }catch (e : Exception){
+
+                               }
                             }
                             Log.d("CONSUL",
                                 dataSnapshot.getValue(CommonPatientData::class.java).toString())
